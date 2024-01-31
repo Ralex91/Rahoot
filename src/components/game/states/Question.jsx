@@ -19,8 +19,8 @@ export default function Question({ data: { question } }) {
       </div>
       <div
         ref={barRef}
-        className="h-6 bg-primary mb-32 rounded-full w-0 self-start justify-self-end"
-        style={{ transition: `width ${6}s linear` }}
+        className="h-6 bg-primary mb-32 rounded-full self-start justify-self-end"
+        style={{ transition: `width ${6}s linear`, width: "0%" }}
       ></div>
     </section>
   )

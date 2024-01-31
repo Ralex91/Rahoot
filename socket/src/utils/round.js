@@ -28,6 +28,11 @@ const sleep = (sec) => new Promise((r) => setTimeout(r, sec * 1000))
 export const startRound = async (game, io, socket) => {
   const question = game.questions[game.currentQuestion]
 
+  io.to(game.room).emit("game:updateQuestion", {
+    current: game.currentQuestion + 1,
+    total: game.questions.length,
+  })
+
   io.to(game.room).emit("game:status", {
     name: "SHOW_QUESTION",
     data: {

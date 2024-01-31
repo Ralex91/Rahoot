@@ -17,7 +17,7 @@ const Player = {
       id: socket.id,
       points: 0,
     }
-    socket.to(player.room).emit("manager:newPlayer", playerData)
+    socket.to(player.room).emit("manager:newPlayer", { ...playerData })
 
     game.players.push(playerData)
 

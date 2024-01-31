@@ -19,6 +19,7 @@ export default function Username() {
       payload: username,
     })
 
+    socket.emit("player:join", { username: username, room: player.room })
     router.push("/game")
   }
 

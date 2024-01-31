@@ -14,6 +14,7 @@ const gameStateComponent = {
   SHOW_QUESTION: Question,
   WAIT: Wait,
   SHOW_RESULT: Result,
+  SHOW_LEADERBOARD: Leaderboard,
 }
 
 export default function Game() {
@@ -26,8 +27,6 @@ export default function Game() {
     //router.push("/")
     return
   }
-
-  socket.emit("player:join", { username: "Test", room: player.room })
 
   const [state, setState] = useState({
     status: {
@@ -42,16 +41,14 @@ export default function Game() {
 
   socket.on("game:status", (status) => {
     setState({
-      ...gameState,
+      ...state,
       status: status,
+      question: {
+        ...state.question,
+        current: status.question,
+      },
     })
   })
-
-  /*socket.on("game:", (question) => {
-    setState({
-      ...state,
-      
-  })*/
 
   return (
     <GameWrapper>

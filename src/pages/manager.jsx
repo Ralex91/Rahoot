@@ -2,62 +2,71 @@ import GameWrapper from "@/components/game/GameWrapper"
 import Answers from "@/components/game/states/Answers"
 import Leaderboard from "@/components/game/states/Leaderboard"
 import Question from "@/components/game/states/Question"
+import Result from "@/components/game/states/Result"
+import Start from "@/components/game/states/Start"
 import Wait from "@/components/game/states/Wait"
+import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
-import { createElement, useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/router"
+import { createElement, useState } from "react"
 
-export default function Manager({ children }) {
+const gameStateComponent = {
+  SHOW_START: Start,
+  SELECT_ANSWER: Answers,
+  SHOW_QUESTION: Question,
+  WAIT: Wait,
+  SHOW_RESULT: Result,
+  SHOW_LEADERBOARD: Leaderboard,
+}
+
+export default function Manager() {
   const { socket } = useSocketContext()
+  const { player } = usePlayerContext()
 
-  const [gameState, setGameState] = useState({
+  const [state, setState] = useState({
     status: {
-      name: "PENDING",
+      name: "SHOW_START",
+      data: { text: "Waiting for the players" },
     },
-    cooldown: 0,
-    answers: [],
+    question: {
+      current: 1,
+      total: null,
+    },
   })
 
   socket.on("game:status", (status) => {
-    setGameState({
-      ...gameState,
+    setState({
+      ...state,
       status: status,
-      cooldown: 0,
+      question: {
+        ...state.question,
+        current: status.question,
+      },
     })
   })
 
+  const handleSkip = () => {
+    switch (state.status.name) {
+      case "SHOW_START":
+        socket.emit("manager:startGame")
+        break
+
+      case "SHOW_RESPONSES":
+        socket.emit("manager:showLeaderboard")
+        break
+
+      case "SHOW_LEADERBOARD":
+        socket.emit("manager:nextQuestion")
+        break
+    }
+  }
+
   return (
-    <>
-      <p className="text-white">{JSON.stringify(gameState)}</p>
-      <hr></hr>
-      <div className="flex gap-2">
-        <button
-          className="bg-primary p-2"
-          onClick={() => socket.emit("manager:createRoom")}
-        >
-          Create Room
-        </button>
-
-        <button
-          className="bg-primary p-2"
-          onClick={() => socket.emit("manager:startGame")}
-        >
-          Start Game
-        </button>
-
-        <button
-          className="bg-primary p-2"
-          onClick={() => socket.emit("manager:showLeaderboard")}
-        >
-          Leaderboard
-        </button>
-
-        <button
-          className="bg-primary p-2"
-          onClick={() => socket.emit("manager:nextQuestion")}
-        >
-          Next Question
-        </button>
-      </div>
-    </>
+    <GameWrapper textNext="" onNext={handleSkip} manager>
+      {gameStateComponent[state.status.name] &&
+        createElement(gameStateComponent[state.status.name], {
+          data: state.status.data,
+        })}
+    </GameWrapper>
   )
 }

@@ -2,9 +2,21 @@ import Image from "next/image"
 import Button from "@/components/Button"
 import background from "@/assets/2238431_1694.jpg"
 import { usePlayerContext } from "@/context/player"
+import { useSocketContext } from "@/context/socket"
+import { useState } from "react"
 
-export default function GameWrapper({ children }) {
+export default function GameWrapper({ children, onNext, manager }) {
+  const { socket } = useSocketContext()
   const { player } = usePlayerContext()
+
+  const [questionState, setQuestionState] = useState()
+
+  socket.on("game:updateQuestion", ({ current, total }) => {
+    setQuestionState({
+      current,
+      total,
+    })
+  })
 
   return (
     <section className="relative flex justify-between flex-col w-full min-h-screen">
@@ -16,10 +28,20 @@ export default function GameWrapper({ children }) {
       </div>
 
       <div className="p-4 w-full flex justify-between">
-        <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex items-center text-lg">
-          1/10
-        </div>
-        <Button className="bg-white !text-black px-4">Skip</Button>
+        {questionState && (
+          <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex items-center text-lg">
+            {`${questionState.current} / ${questionState.total}`}
+          </div>
+        )}
+
+        {manager && (
+          <Button
+            className="bg-white !text-black px-4 self-end"
+            onClick={() => onNext()}
+          >
+            Skip
+          </Button>
+        )}
       </div>
 
       {children}
