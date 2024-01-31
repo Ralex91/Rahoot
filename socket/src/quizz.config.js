@@ -1,0 +1,83 @@
+export const GAME_STATE_INIT = {
+  started: false,
+  players: [],
+  playersAnswer: [],
+  manager: null,
+  room: null,
+  currentQuestion: 0,
+  roundStartTime: 0,
+  questions: [
+    {
+      question: "Who are the founders of Adobe?",
+      answers: [
+        "Steve Jobs and Charles Geschke",
+        "Jhon Warnock and Charles Geschke",
+        "Jhon Jonse and Charles Geskie",
+        "Bill Gate",
+      ],
+      image: "/question/Adobe-Logo.png",
+      solution: 1,
+      time: 15,
+    },
+    {
+      question: "What is Adobe's most famous software?",
+      answers: ["Encore", "AfterEffect", "Creative Cloud", "Photoshop"],
+      image: "/question/Adobe-Packages.webp",
+      solution: 3,
+      time: 15,
+    },
+    {
+      question: "When was Adobe created?",
+      answers: ["2000", "1982", "2003", "1987"],
+      solution: 1,
+      time: 15,
+    },
+    {
+      question: "Where is headquertes located?",
+      answers: [
+        "San Jose, California",
+        "Bookworm, Cascui",
+        "DowTown, Texas",
+        "Tokyo, Japan",
+      ],
+      image: "/question/Adobe_World_Headquarters.jpg",
+      solution: 0,
+      time: 15,
+    },
+    {
+      question: "How many employees at Adobe?",
+      answers: [
+        "15,423 employees",
+        "30,803 employees",
+        "25,988 employees",
+        "5,073 employees",
+      ],
+      image: "/question/000012204568_Large.jpg",
+      solution: 2,
+      time: 15,
+    },
+    {
+      question: "Who is the Current CEO?",
+      answers: [
+        "Jhon Warnock",
+        "Victor Newway",
+        "Mark Java",
+        "Shantanu Narayen",
+      ],
+      image: "/question/guess-the-person.png",
+      solution: 3,
+      time: 15,
+    },
+    {
+      question: "Adobe's core business is focused on?",
+      answers: [
+        "Creative Software",
+        "Video Game",
+        "Logistics software",
+        "Other",
+      ],
+      solution: 0,
+      time: 15,
+    },
+  ],
+}
