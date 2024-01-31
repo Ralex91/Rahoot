@@ -23,6 +23,7 @@ export default function Manager() {
   const { socket } = useSocketContext()
   const { player } = usePlayerContext()
 
+  const [nextText, setNextText] = useState("Start")
   const [state, setState] = useState({
     status: {
       name: "SHOW_START",
@@ -46,6 +47,8 @@ export default function Manager() {
   })
 
   const handleSkip = () => {
+    setNextText("Skip")
+
     switch (state.status.name) {
       case "SHOW_START":
         socket.emit("manager:startGame")
@@ -62,7 +65,7 @@ export default function Manager() {
   }
 
   return (
-    <GameWrapper textNext="" onNext={handleSkip} manager>
+    <GameWrapper textNext={nextText} onNext={handleSkip} manager>
       {gameStateComponent[state.status.name] &&
         createElement(gameStateComponent[state.status.name], {
           data: state.status.data,

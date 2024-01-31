@@ -5,7 +5,7 @@ import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import { useState } from "react"
 
-export default function GameWrapper({ children, onNext, manager }) {
+export default function GameWrapper({ children, textNext, onNext, manager }) {
   const { socket } = useSocketContext()
   const { player } = usePlayerContext()
 
@@ -39,19 +39,21 @@ export default function GameWrapper({ children, onNext, manager }) {
             className="bg-white !text-black px-4 self-end"
             onClick={() => onNext()}
           >
-            Skip
+            {textNext}
           </Button>
         )}
       </div>
 
       {children}
 
-      <div className="bg-white py-2 px-4 flex items-center text-lg justify-between font-bold text-white">
-        <p className="text-gray-800">{!!player && player.username}</p>
-        <div className="bg-gray-800 rounded-sm py-1 px-3 text-lg">
-          {!!player && player.points}
+      {!manager && (
+        <div className="bg-white py-2 px-4 flex items-center text-lg justify-between font-bold text-white">
+          <p className="text-gray-800">{!!player && player.username}</p>
+          <div className="bg-gray-800 rounded-sm py-1 px-3 text-lg">
+            {!!player && player.points}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   )
 }
