@@ -4,7 +4,7 @@ import { usePlayerContext } from "@/context/player"
 import { useEffect } from "react"
 
 export default function Result({
-  data: { correct, message, points, myPoints, totalPlayer, rank },
+  data: { correct, message, points, myPoints, totalPlayer, rank, aheadOfMe },
 }) {
   const { dispatch } = usePlayerContext()
 
@@ -25,6 +25,9 @@ export default function Result({
       <h2 className="text-white font-bold text-4xl mt-1 drop-shadow-lg">
         {message}
       </h2>
+      <p className="text-white font-bold text-xl mt-1 drop-shadow-lg">
+        {`You are top ${rank}` + (aheadOfMe ? ", behind " + aheadOfMe : "")}
+      </p>
       {correct && (
         <span className="py-2 px-4 text-white font-bold text-2xl drop-shadow-lg bg-black/40 rounded mt-2">
           +{points}

@@ -99,12 +99,12 @@ export default function Answers({
 
       <div>
         {!responses && (
-          <div className="max-w-7xl mx-auto mb-4 rounded-full w-full flex justify-between gap-1 font-bold text-white text-lg md:text-xl px-2">
-            <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex flex-col items-center text-lg">
+          <div className="max-w-7xl mx-auto mb-4 w-full flex justify-between gap-1 font-bold text-white text-lg md:text-xl px-2">
+            <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
               <span className="text-sm">Time</span>
               <span className="-translate-y-1">{cooldown}</span>
             </div>
-            <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex flex-col items-center text-lg">
+            <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
               <span className="text-sm">Answers</span>
               <span className="-translate-y-1">{totalAnswer}</span>
             </div>

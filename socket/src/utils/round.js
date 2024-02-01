@@ -73,10 +73,9 @@ export const startRound = async (game, io, socket) => {
     game.players.find((p) => p.id === player.id).points += points
 
     setTimeout(() => {
-      let rank =
-        game.players
-          .sort((a, b) => b.points - a.points)
-          .findIndex((p) => p.id === player.id) + 1
+      let sortPlayers = game.players.sort((a, b) => b.points - a.points)
+
+      let rank = sortPlayers.findIndex((p) => p.id === player.id) + 1
 
       io.to(player.id).emit("game:status", {
         name: "SHOW_RESULT",
@@ -86,7 +85,10 @@ export const startRound = async (game, io, socket) => {
           points: points,
           myPoints: player.points,
           totalPlayer: game.players.length,
-          rank: rank,
+          rank,
+          aheadOfMe: sortPlayers[rank - 2]
+            ? sortPlayers[rank - 2].username
+            : null,
         },
       })
     }, 200)
