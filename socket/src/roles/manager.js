@@ -60,7 +60,7 @@ const Manager = {
 
   showLoaderboard: (game, io, socket) => {
     if (!game.questions[game.currentQuestion + 1]) {
-      io.to(game.room).emit("game:status", {
+      io.to(socket).emit("game:status", {
         name: "FINISH",
         data: {
           winners: game.players.slice(0, 3).sort((a, b) => b.points - a.points),
@@ -71,7 +71,7 @@ const Manager = {
       return
     }
 
-    io.to(game.room).emit("game:status", {
+    io.to(socket.id).emit("game:status", {
       name: "SHOW_LEADERBOARD",
       data: {
         leaderboard: game.players

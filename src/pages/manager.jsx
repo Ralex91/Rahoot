@@ -2,7 +2,6 @@ import GameWrapper from "@/components/game/GameWrapper"
 import Answers from "@/components/game/states/Answers"
 import Leaderboard from "@/components/game/states/Leaderboard"
 import Question from "@/components/game/states/Question"
-import Result from "@/components/game/states/Result"
 import Start from "@/components/game/states/Start"
 import Wait from "@/components/game/states/Wait"
 import { usePlayerContext } from "@/context/player"
@@ -15,7 +14,7 @@ const gameStateComponent = {
   SELECT_ANSWER: Answers,
   SHOW_QUESTION: Question,
   WAIT: Wait,
-  SHOW_RESULT: Result,
+  SHOW_RESPONSES: Answers,
   SHOW_LEADERBOARD: Leaderboard,
 }
 

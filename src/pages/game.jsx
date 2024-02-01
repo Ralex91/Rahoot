@@ -14,7 +14,6 @@ const gameStateComponent = {
   SHOW_QUESTION: Question,
   WAIT: Wait,
   SHOW_RESULT: Result,
-  SHOW_LEADERBOARD: Leaderboard,
 }
 
 export default function Game() {

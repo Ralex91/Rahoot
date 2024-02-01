@@ -16,7 +16,7 @@ export default function Result({
   }, [])
 
   return (
-    <section className="max-w-7xl mx-auto w-full flex-1 relative items-center justify-center flex flex-col">
+    <section className="max-w-7xl mx-auto w-full flex-1 relative items-center justify-center flex flex-col anim-show">
       {correct ? (
         <CricleCheck className="max-h-60 aspect-square w-full" />
       ) : (

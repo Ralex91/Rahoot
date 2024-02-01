@@ -7,7 +7,7 @@ import { useState } from "react"
 export default function Room() {
   const { player, dispatch } = usePlayerContext()
   const [loading, setLoading] = useState(false)
-  const [roomId, setRoomId] = useState("")
+  const [roomId, setRoomId] = useState("207223")
 
   const handleLogin = () => {
     dispatch({ type: "JOIN", payload: roomId })
