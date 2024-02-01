@@ -102,7 +102,7 @@ export default function Answers({
           <div className="max-w-7xl mx-auto mb-4 w-full flex justify-between gap-1 font-bold text-white text-lg md:text-xl px-2">
             <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
               <span className="text-sm translate-y-1">Time</span>
-              <span>{cooldown}</span>
+              <span className="anim-timer">{cooldown}</span>
             </div>
             <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
               <span className="text-sm translate-y-1">Answers</span>

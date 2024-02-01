@@ -1,5 +1,4 @@
-import { useSocketContext } from "@/context/socket"
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 
 export default function Question({ data: { question } }) {
   const barRef = useRef(null)

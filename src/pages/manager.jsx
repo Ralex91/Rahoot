@@ -2,6 +2,7 @@ import Button from "@/components/Button"
 import GameWrapper from "@/components/game/GameWrapper"
 import Answers from "@/components/game/states/Answers"
 import Leaderboard from "@/components/game/states/Leaderboard"
+import Prepared from "@/components/game/states/Prepared"
 import Question from "@/components/game/states/Question"
 import Start from "@/components/game/states/Start"
 import Wait from "@/components/game/states/Wait"
@@ -90,12 +91,15 @@ export default function Manager() {
           <Button onClick={handleCreate}>Create Room</Button>
         </div>
       ) : (
-        <GameWrapper textNext={nextText} onNext={handleSkip} manager>
-          {gameStateComponent[state.status.name] &&
-            createElement(gameStateComponent[state.status.name], {
-              data: state.status.data,
-            })}
-        </GameWrapper>
+        <>
+          <GameWrapper textNext={nextText} onNext={handleSkip} manager>
+            <Prepared />
+            {/*gameStateComponent[state.status.name] &&
+              createElement(gameStateComponent[state.status.name], {
+                data: state.status.data,
+              })*/}
+          </GameWrapper>
+        </>
       )}
     </>
   )

@@ -36,6 +36,20 @@
   animation: show 0.5s ease-out;
 }
 
+.anim-timer {
+  animation: timer 1s ease-out infinite;
+}
+
+.anim-quizz {
+  animation: quizz 1s ease-out;
+  transform: perspective(1200px) rotateY(-15deg) rotateX(15deg)
+    translateZ(100px);
+}
+
+.anim-quizz .button {
+  animation: quizzButton 1s ease-out;
+}
+
 @keyframes show {
   0% {
     transform: scale(0);
@@ -57,5 +71,40 @@
   }
   to {
     width: 100%;
+  }
+}
+
+@keyframes timer {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.4) rotate(-6deg);
+  }
+  60% {
+    transform: scale(0.8) rotate(6deg);
+  }
+  80% {
+    transform: scale(1);
+  }
+}
+
+@keyframes quizz {
+  0% {
+    transform: scale(0) perspective(1200px) rotateY(-35deg) rotateX(15deg)
+      translateZ(100px);
+  }
+  100% {
+    transform: scale(1) perspective(1200px) rotateY(-15deg) rotateX(15deg)
+      translateZ(100px);
+  }
+}
+
+@keyframes quizzButton {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
   }
 }

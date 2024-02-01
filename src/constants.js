@@ -1,1 +1,1 @@
-export const WEBSOCKET_URL = "http://localhost:3000" ///"https://rahoot.ralex.app"
+export const WEBSOCKET_URL = "http://localhost:5157" ///"https://rahoot.ralex.app"

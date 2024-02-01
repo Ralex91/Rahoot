@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Button from "@/components/Button"
-import background from "@/assets/2238431_1694.jpg"
+import background from "@/assets/background.webp"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import { useState } from "react"
