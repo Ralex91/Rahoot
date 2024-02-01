@@ -16,20 +16,20 @@ export default function Result({
   }, [])
 
   return (
-    <section className="max-w-7xl mx-auto w-full flex-1 relative items-center justify-center flex flex-col anim-show">
+    <section className="anim-show relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
       {correct ? (
-        <CricleCheck className="max-h-60 aspect-square w-full" />
+        <CricleCheck className="aspect-square max-h-60 w-full" />
       ) : (
-        <CricleXmark className=" max-h-60 aspect-square w-full" />
+        <CricleXmark className=" aspect-square max-h-60 w-full" />
       )}
-      <h2 className="text-white font-bold text-4xl mt-1 drop-shadow-lg">
+      <h2 className="mt-1 text-4xl font-bold text-white drop-shadow-lg">
         {message}
       </h2>
-      <p className="text-white font-bold text-xl mt-1 drop-shadow-lg">
+      <p className="mt-1 text-xl font-bold text-white drop-shadow-lg">
         {`You are top ${rank}` + (aheadOfMe ? ", behind " + aheadOfMe : "")}
       </p>
       {correct && (
-        <span className="py-2 px-4 text-white font-bold text-2xl drop-shadow-lg bg-black/40 rounded mt-2">
+        <span className="mt-2 rounded bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
           +{points}
         </span>
       )}

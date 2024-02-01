@@ -3,22 +3,29 @@ import { SocketContextProvider } from "@/context/socket"
 import "@/styles/globals.css"
 import clsx from "clsx"
 import { Montserrat, Plaster } from "next/font/google"
+import Head from "next/head"
 
 const montserrat = Montserrat({ subsets: ["latin"] })
 
 export default function App({ Component, pageProps }) {
   return (
-    <SocketContextProvider>
-      <PlayerContextProvider>
-        <main
-          className={clsx(
-            "flex flex-col text-base-[8px]",
-            montserrat.className
-          )}
-        >
-          <Component {...pageProps} />
-        </main>
-      </PlayerContextProvider>
-    </SocketContextProvider>
+    <>
+      <Head>
+        <link rel="shortcut icon" href="/icon.svg" />
+        <title>Rahoot !</title>
+      </Head>
+      <SocketContextProvider>
+        <PlayerContextProvider>
+          <main
+            className={clsx(
+              "text-base-[8px] flex flex-col",
+              montserrat.className,
+            )}
+          >
+            <Component {...pageProps} />
+          </main>
+        </PlayerContextProvider>
+      </SocketContextProvider>
+    </>
   )
 }

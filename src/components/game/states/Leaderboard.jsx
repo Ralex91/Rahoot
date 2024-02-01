@@ -1,12 +1,12 @@
 export default function Leaderboard({ data: { leaderboard } }) {
   return (
-    <section className="max-w-7xl mx-auto w-full flex-1 flex-col relative items-center justify-center flex px-2">
-      <h2 className="text-white drop-shadow-md text-5xl font-bold mb-6">
+    <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
+      <h2 className="mb-6 text-5xl font-bold text-white drop-shadow-md">
         Leaderboard
       </h2>
-      <div className="w-full flex-col flex gap-2">
+      <div className="flex w-full flex-col gap-2">
         {leaderboard.map(({ username, points }) => (
-          <div className="bg-primary rounded-md p-3 flex justify-between w-full font-bold text-white text-2xl">
+          <div className="flex w-full justify-between rounded-md bg-primary p-3 text-2xl font-bold text-white">
             <span className="drop-shadow-md">{username}</span>
             <span className="drop-shadow-md">{points}</span>
           </div>

@@ -1,29 +1,26 @@
 import Circle from "@/components/icons/Circle"
-import CricleCheck from "@/components/icons/CricleCheck"
-import CricleXmark from "@/components/icons/CricleXmark"
 import Rhombus from "@/components/icons/Rhombus"
 import Square from "@/components/icons/Square"
 import Triangle from "@/components/icons/Triangle"
-import { usePlayerContext } from "@/context/player"
-import { useEffect } from "react"
-/*{ data: { number, total, question } }*/
-export default function Prepared() {
-  const { dispatch } = usePlayerContext()
 
+export default function Prepared({ data: { totalAnswers, questionNumber } }) {
   return (
-    <section className="max-w-7xl mx-auto w-full flex-1 relative items-center justify-center flex flex-col anim-show">
-      <div className="anim-quizz bg-gray-700 p-5 gap-4 rounded-2xl w-80 h-[400px] grid grid-cols-2 shadow-[10px_10px_0_rgba(20,24,29,1)] ">
-        <div className="button flex justify-center items-center bg-red-500 w-full h-full aspect-square shadow-inset rounded-2xl">
-          <Triangle className="h-14" />
+    <section className="anim-show relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
+      <h2 className="anim-show mb-10 text-center text-2xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+        Question #{questionNumber}
+      </h2>
+      <div className="anim-quizz grid h-[300px] w-60 grid-cols-2 gap-4 rounded-2xl bg-gray-700 p-5 md:h-[400px] md:w-80 ">
+        <div className="button shadow-inset flex aspect-square h-full w-full items-center justify-center rounded-2xl bg-red-500">
+          <Triangle className="h-10 md:h-14" />
         </div>
-        <div className="button flex justify-center items-center bg-blue-500 w-full h-full aspect-square shadow-inset rounded-2xl">
-          <Rhombus className="h-14" />
+        <div className="button shadow-inset flex aspect-square h-full w-full items-center justify-center rounded-2xl bg-blue-500">
+          <Rhombus className="h-10 md:h-14" />
         </div>
-        <div className="button flex justify-center items-center bg-yellow-500 w-full h-full aspect-square shadow-inset rounded-2xl">
-          <Square className="h-14" />
+        <div className="button shadow-inset flex aspect-square h-full w-full items-center justify-center rounded-2xl bg-yellow-500">
+          <Square className="h-10 md:h-14" />
         </div>
-        <div className="button flex justify-center items-center bg-green-500 w-full h-full aspect-square shadow-inset rounded-2xl">
-          <Circle className="h-14" />
+        <div className="button shadow-inset flex aspect-square h-full w-full items-center justify-center rounded-2xl bg-green-500">
+          <Circle className="h-10 md:h-14" />
         </div>
       </div>
     </section>

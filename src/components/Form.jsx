@@ -1,6 +1,6 @@
 export default function Form({ children }) {
   return (
-    <div className="bg-white rounded-md shadow-sm p-4 z-10 flex-col flex gap-4 w-full max-w-80">
+    <div className="z-10 flex w-full max-w-80 flex-col gap-4 rounded-md bg-white p-4 shadow-sm">
       {children}
     </div>
   )

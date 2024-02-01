@@ -27,7 +27,7 @@ const calculatePercentages = (objectResponses) => {
 
   const totalSum = values.reduce(
     (accumulator, currentValue) => accumulator + currentValue,
-    0
+    0,
   )
 
   let result = {}
@@ -67,9 +67,9 @@ export default function Answers({
   })
 
   return (
-    <div className="flex h-full flex-col justify-between flex-1">
-      <div className="h-full max-w-7xl mx-auto w-full inline-flex flex-col items-center justify-center gap-5 flex-1">
-        <h2 className="text-white text-2xl md:text-4xl lg:text-5xl font-bold drop-shadow-lg text-center">
+    <div className="flex h-full flex-1 flex-col justify-between">
+      <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-5">
+        <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
           {question}
         </h2>
 
@@ -77,18 +77,18 @@ export default function Answers({
 
         {responses && (
           <div
-            className={`w-full gap-4 grid grid-cols-${answers.length} px-2 max-w-3xl h-40 mt-8`}
+            className={`grid w-full gap-4 grid-cols-${answers.length} mt-8 h-40 max-w-3xl px-2`}
           >
             {answers.map((_, key) => (
               <div
                 key={key}
                 className={clsx(
-                  "flex flex-col rounded-md overflow-hidden self-end justify-end",
-                  answersColors[key]
+                  "flex flex-col justify-end self-end overflow-hidden rounded-md",
+                  answersColors[key],
                 )}
                 style={{ height: percentages[key] }}
               >
-                <span className="text-white font-bold drop-shadow-md text-lg bg-black/10 w-full text-center">
+                <span className="w-full bg-black/10 text-center text-lg font-bold text-white drop-shadow-md">
                   {responses[key] || 0}
                 </span>
               </div>
@@ -99,19 +99,19 @@ export default function Answers({
 
       <div>
         {!responses && (
-          <div className="max-w-7xl mx-auto mb-4 w-full flex justify-between gap-1 font-bold text-white text-lg md:text-xl px-2">
-            <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
-              <span className="text-sm translate-y-1">Time</span>
-              <span className="anim-timer">{cooldown}</span>
+          <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
+            <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
+              <span className="translate-y-1 text-sm">Time</span>
+              <span>{cooldown}</span>
             </div>
-            <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
-              <span className="text-sm translate-y-1">Answers</span>
+            <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
+              <span className="translate-y-1 text-sm">Answers</span>
               <span>{totalAnswer}</span>
             </div>
           </div>
         )}
 
-        <div className="max-w-7xl mx-auto mb-4 rounded-full w-full grid grid-cols-2 gap-1 font-bold text-white text-lg md:text-xl px-2">
+        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-xl">
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}

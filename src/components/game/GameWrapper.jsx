@@ -19,24 +19,24 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
   })
 
   return (
-    <section className="relative flex justify-between flex-col w-full min-h-screen">
-      <div className="fixed h-full w-full top-0 left-0 bg-orange-600 opacity-70 -z-10">
+    <section className="relative flex min-h-screen w-full flex-col justify-between">
+      <div className="fixed left-0 top-0 -z-10 h-full w-full bg-orange-600 opacity-70">
         <Image
-          className="object-cover h-full w-full opacity-60 pointer-events-none"
+          className="pointer-events-none h-full w-full object-cover opacity-60"
           src={background}
         />
       </div>
 
-      <div className="p-4 w-full flex justify-between">
+      <div className="flex w-full justify-between p-4">
         {questionState && (
-          <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex items-center text-lg p-2">
+          <div className="shadow-inset flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
             {`${questionState.current} / ${questionState.total}`}
           </div>
         )}
 
         {manager && (
           <Button
-            className="bg-white !text-black px-4 self-end"
+            className="self-end bg-white px-4 !text-black"
             onClick={() => onNext()}
           >
             {textNext}
@@ -47,9 +47,9 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
       {children}
 
       {!manager && (
-        <div className="bg-white py-2 px-4 flex items-center text-lg justify-between font-bold text-white">
+        <div className="flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
           <p className="text-gray-800">{!!player && player.username}</p>
-          <div className="bg-gray-800 rounded-sm py-1 px-3 text-lg">
+          <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
             {!!player && player.points}
           </div>
         </div>

@@ -18,6 +18,7 @@ const gameStateComponent = {
   WAIT: Wait,
   SHOW_RESPONSES: Answers,
   SHOW_LEADERBOARD: Leaderboard,
+  SHOW_PREPARED: Prepared,
 }
 
 export default function Manager() {
@@ -93,11 +94,10 @@ export default function Manager() {
       ) : (
         <>
           <GameWrapper textNext={nextText} onNext={handleSkip} manager>
-            <Prepared />
-            {/*gameStateComponent[state.status.name] &&
+            {gameStateComponent[state.status.name] &&
               createElement(gameStateComponent[state.status.name], {
                 data: state.status.data,
-              })*/}
+              })}
           </GameWrapper>
         </>
       )}

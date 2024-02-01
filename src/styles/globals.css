@@ -41,13 +41,14 @@
 }
 
 .anim-quizz {
-  animation: quizz 1s ease-out;
+  animation: quizz 0.8s linear;
   transform: perspective(1200px) rotateY(-15deg) rotateX(15deg)
     translateZ(100px);
+  box-shadow: 10px 10px 0 rgba(20, 24, 29, 1);
 }
 
 .anim-quizz .button {
-  animation: quizzButton 1s ease-out;
+  animation: quizzButton 0.8s ease-out;
 }
 
 @keyframes show {
@@ -91,8 +92,9 @@
 
 @keyframes quizz {
   0% {
-    transform: scale(0) perspective(1200px) rotateY(-35deg) rotateX(15deg)
+    transform: scale(0) perspective(1200px) rotateY(-60deg) rotateX(60deg)
       translateZ(100px);
+    box-shadow: 40px 10px 0 rgba(20, 24, 29, 1);
   }
   100% {
     transform: scale(1) perspective(1200px) rotateY(-15deg) rotateX(15deg)

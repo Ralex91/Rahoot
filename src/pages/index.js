@@ -16,19 +16,19 @@ export default function Home() {
   const { player } = usePlayerContext()
 
   return (
-    <section className="min-h-screen relative flex justify-center items-center flex-col">
-      <div className="absolute w-full h-full overflow-hidden">
-        <div className="absolute min-w-[75vmin] min-h-[75vmin] -top-[15vmin] -left-[15vmin] bg-primary/15 rounded-full"></div>
-        <div className="absolute min-w-[75vmin] min-h-[75vmin] -bottom-[15vmin] -right-[15vmin] bg-primary/15 rotate-45"></div>
+    <section className="relative flex min-h-screen flex-col items-center justify-center">
+      <div className="absolute h-full w-full overflow-hidden">
+        <div className="absolute -left-[15vmin] -top-[15vmin] min-h-[75vmin] min-w-[75vmin] rounded-full bg-primary/15"></div>
+        <div className="absolute -bottom-[15vmin] -right-[15vmin] min-h-[75vmin] min-w-[75vmin] rotate-45 bg-primary/15"></div>
       </div>
 
       {loading && (
-        <div className="absolute w-full h-full z-30 bg-black/40 flex justify-center items-center">
+        <div className="absolute z-30 flex h-full w-full items-center justify-center bg-black/40">
           <Loader />
         </div>
       )}
 
-      <Image src={logo} className="h-32 mb-6" />
+      <Image src={logo} className="mb-6 h-32" />
 
       {!player ? <Room /> : <Username />}
     </section>

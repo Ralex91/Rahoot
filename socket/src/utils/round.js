@@ -34,6 +34,16 @@ export const startRound = async (game, io, socket) => {
   })
 
   io.to(game.room).emit("game:status", {
+    name: "SHOW_PREPARED",
+    data: {
+      totalAnswers: game.questions[game.currentQuestion].answers.length,
+      questionNumber: game.currentQuestion + 1,
+    },
+  })
+
+  await sleep(4)
+
+  io.to(game.room).emit("game:status", {
     name: "SHOW_QUESTION",
     data: {
       question: question.question,

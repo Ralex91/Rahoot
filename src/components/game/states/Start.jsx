@@ -10,12 +10,12 @@ export default function Start({ data: { text, inviteCode } }) {
   })
 
   return (
-    <section className="max-w-7xl mx-auto w-full flex-1 relative items-center justify-center flex flex-col px-2">
-      <div className="py-4 px-6 mb-10 rotate-3 bg-white rounded-md text-6xl font-extrabold">
+    <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
+      <div className="mb-10 rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
         {inviteCode}
       </div>
 
-      <h2 className="text-white font-bold text-4xl drop-shadow-lg mb-4">
+      <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg">
         {text}
       </h2>
 
@@ -23,10 +23,10 @@ export default function Start({ data: { text, inviteCode } }) {
         {playerList.map((player) => (
           <div
             key={player.id}
-            className="py-3 px-4 bg-primary shadow-inset rounded-md text-white font-bold"
+            className="shadow-inset rounded-md bg-primary px-4 py-3 font-bold text-white"
             onClick={() => socket.emit("manager:kickPlayer", player.id)}
           >
-            <span className="drop-shadow-md text-xl hover:line-through cursor-pointer">
+            <span className="cursor-pointer text-xl drop-shadow-md hover:line-through">
               {player.username}
             </span>
           </div>

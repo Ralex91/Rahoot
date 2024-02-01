@@ -4,8 +4,8 @@ export default function Button({ children, className, ...otherProps }) {
   return (
     <button
       className={clsx(
-        "p-2 bg-primary rounded-md text-white font-semibold text-lg btn-shadow",
-        className
+        "btn-shadow rounded-md bg-primary p-2 text-lg font-semibold text-white",
+        className,
       )}
       {...otherProps}
     >

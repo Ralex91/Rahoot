@@ -26,7 +26,7 @@ export default function Username() {
   return (
     <>
       {loading && (
-        <div className="absolute w-full h-full z-30 bg-black/40 flex justify-center items-center">
+        <div className="absolute z-30 flex h-full w-full items-center justify-center bg-black/40">
           <Loader />
         </div>
       )}

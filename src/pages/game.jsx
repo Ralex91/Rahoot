@@ -1,6 +1,7 @@
 import GameWrapper from "@/components/game/GameWrapper"
 import Answers from "@/components/game/states/Answers"
 import Leaderboard from "@/components/game/states/Leaderboard"
+import Prepared from "@/components/game/states/Prepared"
 import Question from "@/components/game/states/Question"
 import Result from "@/components/game/states/Result"
 import Wait from "@/components/game/states/Wait"
@@ -14,6 +15,7 @@ const gameStateComponent = {
   SHOW_QUESTION: Question,
   WAIT: Wait,
   SHOW_RESULT: Result,
+  SHOW_PREPARED: Prepared,
 }
 
 export default function Game() {

@@ -18,28 +18,28 @@ io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
 
   socket.on("player:join", (player) =>
-    Player.join(gameState, io, socket, player)
+    Player.join(gameState, io, socket, player),
   )
 
   socket.on("manager:createRoom", () =>
-    Manager.createRoom(gameState, io, socket)
+    Manager.createRoom(gameState, io, socket),
   )
   socket.on("manager:kickPlayer", (playerId) =>
-    Manager.kickPlayer(gameState, socket, io, playerId)
+    Manager.kickPlayer(gameState, socket, io, playerId),
   )
 
   socket.on("manager:startGame", () => Manager.startGame(gameState, io, socket))
 
   socket.on("player:selectedAnswer", (answerKey) =>
-    Player.selectedAnswer(gameState, io, socket, answerKey)
+    Player.selectedAnswer(gameState, io, socket, answerKey),
   )
 
   socket.on("manager:nextQuestion", () =>
-    Manager.nextQuestion(gameState, io, socket)
+    Manager.nextQuestion(gameState, io, socket),
   )
 
   socket.on("manager:showLeaderboard", () =>
-    Manager.showLoaderboard(gameState, io, socket)
+    Manager.showLoaderboard(gameState, io, socket),
   )
 
   socket.on("disconnect", () => {

@@ -10,8 +10,8 @@ export default function AnswerButton({
   return (
     <button
       className={clsx(
-        "text-left px-4 py-6 rounded shadow-inset flex items-center gap-3",
-        className
+        "shadow-inset flex items-center gap-3 rounded px-4 py-6 text-left",
+        className,
       )}
       {...otherProps}
     >

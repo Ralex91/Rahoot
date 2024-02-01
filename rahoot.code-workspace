@@ -1,0 +1,55 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "formulahendry.auto-rename-tag",
+      "naumovs.color-highlight",
+      "usernamehw.errorlens",
+      "bradlc.vscode-tailwindcss"
+    ]
+  },
+  "settings": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": true,
+    "editor.rulers": [80],
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.suggestSelection": "recentlyUsed",
+      "editor.suggest.showKeywords": false
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.renderWhitespace": "selection",
+    "files.exclude": {
+      "USE_GITIGNORE": true
+    },
+    "javascript.validate.enable": false,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/coverage": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/.build": true,
+      "**/.gh-pages": true
+    },
+    "npm.runSilent": true,
+    "explorer.confirmDragAndDrop": false,
+    "editor.formatOnPaste": false,
+    "files.autoSave": "onFocusChange",
+    "editor.cursorSmoothCaretAnimation": "off",
+    "editor.smoothScrolling": true,
+    "explorer.confirmDelete": false,
+    "git.autofetch": true,
+    "editor.tabSize": 2,
+    "scss.lint.unknownAtRules": "ignore"
+  }
+}
