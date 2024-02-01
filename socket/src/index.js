@@ -12,7 +12,7 @@ const io = new Server({
   path: "/ws/",
 })
 
-io.listen(5057)
+io.listen(5157)
 
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)

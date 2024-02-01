@@ -1,12 +1,12 @@
 export default function CricleCheck({ className }) {
   return (
     <svg
-      fill="#28d524"
+      fill="#22c55e"
       width="800px"
       height="800px"
       viewBox="0 0 56.00 56.00"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="#28d524"
+      stroke="#22c55e"
       strokeWidth="0.00056"
       className={className}
     >

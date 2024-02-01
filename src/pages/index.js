@@ -28,7 +28,7 @@ export default function Home() {
         </div>
       )}
 
-      <Image src={logo} className="h-10 mb-6" />
+      <Image src={logo} className="h-32 mb-6" />
 
       {!player ? <Room /> : <Username />}
     </section>

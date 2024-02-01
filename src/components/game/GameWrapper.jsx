@@ -29,7 +29,7 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
 
       <div className="p-4 w-full flex justify-between">
         {questionState && (
-          <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex items-center text-lg">
+          <div className="bg-white shadow-inset text-black px-4 font-bold rounded-md flex items-center text-lg p-2">
             {`${questionState.current} / ${questionState.total}`}
           </div>
         )}

@@ -1,8 +1,7 @@
-import Loader from "@/components/Loader"
 import { useSocketContext } from "@/context/socket"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
-export default function Start({ data: { text } }) {
+export default function Start({ data: { text, inviteCode } }) {
   const { socket } = useSocketContext()
   const [playerList, setPlayerList] = useState([])
 
@@ -10,12 +9,12 @@ export default function Start({ data: { text } }) {
     setPlayerList([...playerList, player])
   })
 
-  useEffect(() => {
-    socket.emit("manager:createRoom")
-  }, [])
-
   return (
     <section className="max-w-7xl mx-auto w-full flex-1 relative items-center justify-center flex flex-col px-2">
+      <div className="py-4 px-6 mb-10 rotate-3 bg-white rounded-md text-6xl font-extrabold">
+        {inviteCode}
+      </div>
+
       <h2 className="text-white font-bold text-4xl drop-shadow-lg mb-4">
         {text}
       </h2>

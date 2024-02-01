@@ -9,7 +9,7 @@ const Manager = {
       return
     }
 
-    let roomInvite = "207223" //generateRoomId()
+    let roomInvite = generateRoomId()
     game.room = roomInvite
     game.manager = socket.id
 

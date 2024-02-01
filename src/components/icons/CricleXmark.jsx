@@ -1,12 +1,12 @@
 export default function CricleXmark({ className }) {
   return (
     <svg
-      fill="#fb1e1e"
+      fill="#ef4444"
       width="800px"
       height="800px"
       viewBox="0 0 56.00 56.00"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="#fb1e1e"
+      stroke="#ef4444"
       className={className}
     >
       <g strokeWidth="0" transform="translate(12.4,12.4), scale(0.6)">

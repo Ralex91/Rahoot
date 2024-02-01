@@ -2,7 +2,7 @@ import { io } from "socket.io-client"
 import { createContext, useContext, useState } from "react"
 import { WEBSOCKET_URL } from "@/constants"
 
-export const socket = io("http://localhost:5057", {
+export const socket = io("http://localhost:5157", {
   path: "/ws/",
   //addTrailingSlash: false,
   transports: ["websocket"],

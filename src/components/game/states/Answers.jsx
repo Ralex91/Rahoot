@@ -69,7 +69,7 @@ export default function Answers({
   return (
     <div className="flex h-full flex-col justify-between flex-1">
       <div className="h-full max-w-7xl mx-auto w-full inline-flex flex-col items-center justify-center gap-5 flex-1">
-        <h2 className="text-white text-2xl md:text-4xl font-bold drop-shadow-lg text-center">
+        <h2 className="text-white text-2xl md:text-4xl lg:text-5xl font-bold drop-shadow-lg text-center">
           {question}
         </h2>
 
@@ -101,12 +101,12 @@ export default function Answers({
         {!responses && (
           <div className="max-w-7xl mx-auto mb-4 w-full flex justify-between gap-1 font-bold text-white text-lg md:text-xl px-2">
             <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
-              <span className="text-sm">Time</span>
-              <span className="-translate-y-1">{cooldown}</span>
+              <span className="text-sm translate-y-1">Time</span>
+              <span>{cooldown}</span>
             </div>
             <div className="bg-black/40 px-4 font-bold rounded-full flex flex-col items-center text-lg">
-              <span className="text-sm">Answers</span>
-              <span className="-translate-y-1">{totalAnswer}</span>
+              <span className="text-sm translate-y-1">Answers</span>
+              <span>{totalAnswer}</span>
             </div>
           </div>
         )}
