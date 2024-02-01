@@ -76,6 +76,7 @@ export const startRound = async (game, io, socket) => {
       let sortPlayers = game.players.sort((a, b) => b.points - a.points)
 
       let rank = sortPlayers.findIndex((p) => p.id === player.id) + 1
+      let aheadPlayer = sortPlayers[rank - 2]
 
       io.to(player.id).emit("game:status", {
         name: "SHOW_RESULT",
@@ -84,11 +85,8 @@ export const startRound = async (game, io, socket) => {
           message: isCorrect ? "Nice !" : "Too bad",
           points: points,
           myPoints: player.points,
-          totalPlayer: game.players.length,
           rank,
-          aheadOfMe: sortPlayers[rank - 2]
-            ? sortPlayers[rank - 2].username
-            : null,
+          aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
         },
       })
     }, 200)
