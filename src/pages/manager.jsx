@@ -4,14 +4,16 @@ import Answers from "@/components/game/states/Answers"
 import Leaderboard from "@/components/game/states/Leaderboard"
 import Prepared from "@/components/game/states/Prepared"
 import Question from "@/components/game/states/Question"
+import Room from "@/components/game/states/Room"
 import Start from "@/components/game/states/Start"
 import Wait from "@/components/game/states/Wait"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import { useRouter } from "next/router"
-import { createElement, useState } from "react"
+import { createElement, useEffect, useState } from "react"
 
 const gameStateComponent = {
+  SHOW_ROOM: Room,
   SHOW_START: Start,
   SELECT_ANSWER: Answers,
   SHOW_QUESTION: Question,
@@ -23,13 +25,12 @@ const gameStateComponent = {
 
 export default function Manager() {
   const { socket } = useSocketContext()
-  const { player } = usePlayerContext()
 
   const [nextText, setNextText] = useState("Start")
   const [state, setState] = useState({
     created: false,
     status: {
-      name: "SHOW_START",
+      name: "SHOW_ROOM",
       data: { text: "Waiting for the players" },
     },
     question: {
@@ -38,30 +39,37 @@ export default function Manager() {
     },
   })
 
-  socket.on("game:status", (status) => {
-    setState({
-      ...state,
-      status: status,
-      question: {
-        ...state.question,
-        current: status.question,
-      },
-    })
-  })
-
-  socket.on("manager:inviteCode", (inviteCode) => {
-    setState({
-      ...state,
-      created: true,
-      status: {
-        ...state.status,
-        data: {
-          ...state.status.data,
-          inviteCode: inviteCode,
+  useEffect(() => {
+    socket.on("game:status", (status) => {
+      setState({
+        ...state,
+        status: status,
+        question: {
+          ...state.question,
+          current: status.question,
         },
-      },
+      })
     })
-  })
+
+    socket.on("manager:inviteCode", (inviteCode) => {
+      setState({
+        ...state,
+        created: true,
+        status: {
+          ...state.status,
+          data: {
+            ...state.status.data,
+            inviteCode: inviteCode,
+          },
+        },
+      })
+    })
+
+    return () => {
+      socket.off("game:status")
+      socket.off("manager:inviteCode")
+    }
+  }, [state])
 
   const handleCreate = () => {
     socket.emit("manager:createRoom")
@@ -71,7 +79,7 @@ export default function Manager() {
     setNextText("Skip")
 
     switch (state.status.name) {
-      case "SHOW_START":
+      case "SHOW_ROOM":
         socket.emit("manager:startGame")
         break
 

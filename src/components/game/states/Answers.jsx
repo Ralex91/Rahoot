@@ -1,21 +1,9 @@
-import Circle from "@/components/icons/Circle"
-import Triangle from "@/components/icons/Triangle"
-import Square from "@/components/icons/Square"
-import Rhombus from "@/components/icons/Rhombus"
 import AnswerButton from "../../AnswerButton"
 import { useSocketContext } from "@/context/socket"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
-
-const answersColors = [
-  "bg-red-500",
-  "bg-blue-500",
-  "bg-yellow-500",
-  "bg-green-500",
-]
-
-const answersIcons = [Triangle, Rhombus, Circle, Square]
+import { ANSWERS_COLORS, ANSWERS_ICONS } from "@/constants"
 
 const calculatePercentages = (objectResponses) => {
   const keys = Object.keys(objectResponses)
@@ -35,8 +23,6 @@ const calculatePercentages = (objectResponses) => {
   keys.map((key) => {
     result[key] = ((objectResponses[key] / totalSum) * 100).toFixed() + "%"
   })
-
-  console.log(result)
 
   return result
 }
@@ -58,13 +44,20 @@ export default function Answers({
     setPercentages(calculatePercentages(responses))
   }, [responses])
 
-  socket.on("game:cooldown", (sec) => {
-    setCooldown(sec)
-  })
+  useEffect(() => {
+    socket.on("game:cooldown", (sec) => {
+      setCooldown(sec)
+    })
 
-  socket.on("game:playerAnswer", (count) => {
-    setTotalAnswer(count)
-  })
+    socket.on("game:playerAnswer", (count) => {
+      setTotalAnswer(count)
+    })
+
+    return () => {
+      socket.off("game:cooldown")
+      socket.off("game:playerAnswer")
+    }
+  }, [])
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between">
@@ -84,7 +77,7 @@ export default function Answers({
                 key={key}
                 className={clsx(
                   "flex flex-col justify-end self-end overflow-hidden rounded-md",
-                  answersColors[key],
+                  ANSWERS_COLORS[key],
                 )}
                 style={{ height: percentages[key] }}
               >
@@ -115,10 +108,10 @@ export default function Answers({
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}
-              className={clsx(answersColors[key], {
+              className={clsx(ANSWERS_COLORS[key], {
                 "opacity-65": responses && correct !== key,
               })}
-              icon={answersIcons[key]}
+              icon={ANSWERS_ICONS[key]}
               onClick={() => socket.emit("player:selectedAnswer", key)}
             >
               {answer}

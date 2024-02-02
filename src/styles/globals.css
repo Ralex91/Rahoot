@@ -48,6 +48,7 @@
 }
 
 .anim-quizz .button {
+  box-shadow: rgba(0, 0, 0, 0.25) -4px -4px inset;
   animation: quizzButton 0.8s ease-out;
 }
 
@@ -94,7 +95,14 @@
   0% {
     transform: scale(0) perspective(1200px) rotateY(-60deg) rotateX(60deg)
       translateZ(100px);
-    box-shadow: 40px 10px 0 rgba(20, 24, 29, 1);
+  }
+  60% {
+    transform: scale(1) perspective(1200px) rotateY(-15deg) rotateX(15deg)
+      translateZ(100px);
+  }
+  80% {
+    transform: scale(0.8) perspective(1200px) rotateY(-15deg) rotateX(15deg)
+      translateZ(100px);
   }
   100% {
     transform: scale(1) perspective(1200px) rotateY(-15deg) rotateX(15deg)
@@ -105,6 +113,12 @@
 @keyframes quizzButton {
   0% {
     transform: scale(0);
+  }
+  60% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(0.8);
   }
   100% {
     transform: scale(1);

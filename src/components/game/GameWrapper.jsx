@@ -3,7 +3,7 @@ import Button from "@/components/Button"
 import background from "@/assets/background.webp"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function GameWrapper({ children, textNext, onNext, manager }) {
   const { socket } = useSocketContext()
@@ -11,12 +11,18 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
 
   const [questionState, setQuestionState] = useState()
 
-  socket.on("game:updateQuestion", ({ current, total }) => {
-    setQuestionState({
-      current,
-      total,
+  useEffect(() => {
+    socket.on("game:updateQuestion", ({ current, total }) => {
+      setQuestionState({
+        current,
+        total,
+      })
     })
-  })
+
+    return () => {
+      socket.off("game:updateQuestion")
+    }
+  }, [])
 
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-between">
@@ -24,6 +30,7 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
         <Image
           className="pointer-events-none h-full w-full object-cover opacity-60"
           src={background}
+          alt="background"
         />
       </div>
 
@@ -47,7 +54,7 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
       {children}
 
       {!manager && (
-        <div className="flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
+        <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
           <p className="text-gray-800">{!!player && player.username}</p>
           <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
             {!!player && player.points}

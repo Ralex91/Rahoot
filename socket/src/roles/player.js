@@ -1,7 +1,17 @@
 import convertTimeToPoint from "../utils/convertTimeToPoint.js"
-import { abortCooldown } from "../utils/round.js"
+import { abortCooldown } from "../utils/cooldown.js"
 
 const Player = {
+  checkRoom: (game, io, socket, roomId) => {
+    if (!game.room || roomId !== game.room) {
+      io.to(socket.id).emit("game:errorMessage", "Room not found")
+      console.log("zaza")
+      return
+    }
+
+    io.to(socket.id).emit("game:successRoom", roomId)
+  },
+
   join: (game, io, socket, player) => {
     if (!player.room || !player.room || game.started) {
       return

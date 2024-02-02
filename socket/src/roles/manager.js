@@ -1,6 +1,7 @@
 import { GAME_STATE_INIT } from "../quizz.config.js"
 import { startRound } from "../utils/round.js"
 import generateRoomId from "../utils/generateRoomId.js"
+import { cooldown, sleep } from "../utils/cooldown.js"
 
 const Manager = {
   createRoom: (game, io, socket) => {
@@ -31,13 +32,24 @@ const Manager = {
     io.to(game.manager).emit("manager:playerKicked", player.id)
   },
 
-  startGame: (game, io, socket) => {
+  startGame: async (game, io, socket) => {
     if (game.started || !game.room) {
       return
     }
 
     game.started = true
-    io.to(game.room).emit("startGame", game.room)
+    io.to(game.room).emit("game:status", {
+      name: "SHOW_START",
+      data: {
+        time: 3,
+        subject: "Adobe",
+      },
+    })
+
+    await sleep(3)
+    io.to(game.room).emit("game:startCooldown")
+
+    await cooldown(3, io, game.room)
     startRound(game, io, socket)
   },
 

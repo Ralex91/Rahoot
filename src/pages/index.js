@@ -4,16 +4,28 @@ import Form from "@/components/Form"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
 import logo from "@/assets/logo.svg"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Loader from "@/components/Loader"
 import { usePlayerContext } from "@/context/player"
 import Room from "@/components/game/join/Room"
 import Username from "@/components/game/join/Username"
+import { useSocketContext } from "@/context/socket"
 
 export default function Home() {
   const [loading, setLoading] = useState(false)
 
-  const { player } = usePlayerContext()
+  const { player, dispatch } = usePlayerContext()
+  const { socket } = useSocketContext()
+
+  useMemo(() => {
+    socket.on("game:errorMessage", (message) => {
+      console.log(message)
+    })
+
+    return () => {
+      socket.off("game:errorMessage")
+    }
+  }, [])
 
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center">
@@ -28,7 +40,7 @@ export default function Home() {
         </div>
       )}
 
-      <Image src={logo} className="mb-6 h-32" />
+      <Image src={logo} className="mb-6 h-32" alt="logo" />
 
       {!player ? <Room /> : <Username />}
     </section>

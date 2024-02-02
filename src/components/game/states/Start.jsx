@@ -1,37 +1,48 @@
 import { useSocketContext } from "@/context/socket"
-import { useState } from "react"
+import clsx from "clsx"
+import { useEffect, useState } from "react"
 
-export default function Start({ data: { text, inviteCode } }) {
+export default function Start({ data: { time, subject } }) {
   const { socket } = useSocketContext()
-  const [playerList, setPlayerList] = useState([])
+  const [showTitle, setShowTitle] = useState(true)
+  const [cooldown, setCooldown] = useState(time)
 
-  socket.on("manager:newPlayer", (player) => {
-    setPlayerList([...playerList, player])
-  })
+  useEffect(() => {
+    socket.on("game:startCooldown", () => {
+      setShowTitle(false)
+    })
+
+    socket.on("game:cooldown", (sec) => {
+      setCooldown(sec)
+    })
+
+    return () => {
+      socket.off("game:startCooldown")
+      socket.off("game:cooldown")
+    }
+  }, [])
 
   return (
-    <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
-      <div className="mb-10 rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
-        {inviteCode}
-      </div>
-
-      <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg">
-        {text}
-      </h2>
-
-      <div className="flex flex-wrap gap-3">
-        {playerList.map((player) => (
+    <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
+      {showTitle ? (
+        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+          {subject}
+        </h2>
+      ) : (
+        <>
           <div
-            key={player.id}
-            className="shadow-inset rounded-md bg-primary px-4 py-3 font-bold text-white"
-            onClick={() => socket.emit("manager:kickPlayer", player.id)}
-          >
-            <span className="cursor-pointer text-xl drop-shadow-md hover:line-through">
-              {player.username}
-            </span>
-          </div>
-        ))}
-      </div>
+            className={clsx(
+              `anim-show aspect-square h-32 bg-primary transition-all md:h-60`,
+            )}
+            style={{
+              transform: `rotate(${45 * (time - cooldown)}deg)`,
+            }}
+          ></div>
+          <span className="absolute text-6xl font-bold text-white drop-shadow-md md:text-8xl">
+            {cooldown}
+          </span>
+        </>
+      )}
     </section>
   )
 }

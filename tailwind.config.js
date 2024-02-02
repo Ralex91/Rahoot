@@ -13,6 +13,7 @@ module.exports = {
       },
     },
   },
-  safelist: ["grid-cols-4", "grid-cols-3", "grid-cols-2"],
+  safelist: ["grid-cols-4", "grid-cols-3", "grid-cols-2", {
+    pattern: /bg-(red|blue|yellow|green)/}],
   plugins: [],
 }

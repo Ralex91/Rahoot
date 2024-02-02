@@ -1,29 +1,4 @@
-let cooldownTimeout
-let cooldownResolve
-
-export const abortCooldown = () => {
-  clearInterval(cooldownTimeout)
-  cooldownResolve()
-}
-
-function cooldown(ms, io, room) {
-  let count = ms - 1
-
-  return new Promise((resolve) => {
-    cooldownResolve = resolve
-
-    cooldownTimeout = setInterval(() => {
-      if (!count) {
-        clearInterval(cooldownTimeout)
-        resolve()
-      }
-      io.to(room).emit("game:cooldown", count)
-      count -= 1
-    }, 1000)
-  })
-}
-
-const sleep = (sec) => new Promise((r) => setTimeout(r, sec * 1000))
+import { cooldown, sleep } from "./cooldown.js"
 
 export const startRound = async (game, io, socket) => {
   const question = game.questions[game.currentQuestion]

@@ -17,6 +17,10 @@ io.listen(5157)
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
 
+  socket.on("player:checkRoom", (roomId) =>
+    Player.checkRoom(gameState, io, socket, roomId),
+  )
+
   socket.on("player:join", (player) =>
     Player.join(gameState, io, socket, player),
   )
