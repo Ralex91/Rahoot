@@ -4,14 +4,24 @@ import background from "@/assets/background.webp"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 export default function GameWrapper({ children, textNext, onNext, manager }) {
   const { socket } = useSocketContext()
-  const { player } = usePlayerContext()
+  const { player, dispatch } = usePlayerContext()
+  const router = useRouter()
 
   const [questionState, setQuestionState] = useState()
 
   useEffect(() => {
+    socket.on("game:kick", () => {
+      dispatch({
+        type: "LOGOUT",
+      })
+
+      router.replace("/")
+    })
+
     socket.on("game:updateQuestion", ({ current, total }) => {
       setQuestionState({
         current,
@@ -20,6 +30,7 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
     })
 
     return () => {
+      socket.off("game:kick")
       socket.off("game:updateQuestion")
     }
   }, [])

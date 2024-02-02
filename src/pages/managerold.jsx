@@ -4,7 +4,7 @@ import Leaderboard from "@/components/game/states/Leaderboard"
 import Question from "@/components/game/states/Question"
 import Wait from "@/components/game/states/Wait"
 import { useSocketContext } from "@/context/socket"
-import { createElement, useEffect, useMemo, useState } from "react"
+import { createElement, useEffect, useState } from "react"
 
 export default function Manager({ children }) {
   const { socket } = useSocketContext()

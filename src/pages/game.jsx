@@ -9,7 +9,7 @@ import Start from "@/components/game/states/Start"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import { useRouter } from "next/router"
-import { createElement, useMemo, useState } from "react"
+import { createElement, useEffect, useState } from "react"
 
 const gameStateComponent = {
   SELECT_ANSWER: Answers,
@@ -26,10 +26,11 @@ export default function Game() {
   const { socket } = useSocketContext()
   const { player } = usePlayerContext()
 
-  if (!player) {
-    //router.push("/")
-    return
-  }
+  useEffect(() => {
+    if (!player) {
+      router.replace("/")
+    }
+  }, [])
 
   const [state, setState] = useState({
     status: {
@@ -42,7 +43,7 @@ export default function Game() {
     },
   })
 
-  useMemo(() => {
+  useEffect(() => {
     socket.on("game:status", (status) => {
       setState({
         ...state,

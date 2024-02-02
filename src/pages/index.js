@@ -4,12 +4,13 @@ import Form from "@/components/Form"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
 import logo from "@/assets/logo.svg"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import Loader from "@/components/Loader"
 import { usePlayerContext } from "@/context/player"
 import Room from "@/components/game/join/Room"
 import Username from "@/components/game/join/Username"
 import { useSocketContext } from "@/context/socket"
+import toast from "react-hot-toast"
 
 export default function Home() {
   const [loading, setLoading] = useState(false)
@@ -17,9 +18,9 @@ export default function Home() {
   const { player, dispatch } = usePlayerContext()
   const { socket } = useSocketContext()
 
-  useMemo(() => {
+  useEffect(() => {
     socket.on("game:errorMessage", (message) => {
-      console.log(message)
+      toast.error(message)
     })
 
     return () => {

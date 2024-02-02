@@ -2,7 +2,7 @@ import { usePlayerContext } from "@/context/player"
 import Form from "@/components/Form"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSocketContext } from "@/context/socket"
 import { useRouter } from "next/router"
 
@@ -14,14 +14,23 @@ export default function Username() {
   const [username, setUsername] = useState("")
 
   const handleJoin = () => {
-    dispatch({
-      type: "LOGIN",
-      payload: username,
+    socket.emit("player:join", { username: username, room: player.room })
+  }
+
+  useEffect(() => {
+    socket.on("game:successJoin", () => {
+      dispatch({
+        type: "LOGIN",
+        payload: username,
+      })
+
+      router.replace("/game")
     })
 
-    socket.emit("player:join", { username: username, room: player.room })
-    router.push("/game")
-  }
+    return () => {
+      socket.off("game:successJoin")
+    }
+  }, [username])
 
   return (
     <>

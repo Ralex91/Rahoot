@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
     Manager.createRoom(gameState, io, socket),
   )
   socket.on("manager:kickPlayer", (playerId) =>
-    Manager.kickPlayer(gameState, socket, io, playerId),
+    Manager.kickPlayer(gameState, io, socket, playerId),
   )
 
   socket.on("manager:startGame", () => Manager.startGame(gameState, io, socket))

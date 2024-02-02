@@ -2,7 +2,7 @@ import { usePlayerContext } from "@/context/player"
 import Form from "@/components/Form"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { socket } from "@/context/socket"
 
 export default function Room() {

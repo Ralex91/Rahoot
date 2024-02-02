@@ -1,3 +1,4 @@
+import Toaster from "@/components/Toaster"
 import { PlayerContextProvider } from "@/context/player"
 import { SocketContextProvider } from "@/context/socket"
 import "@/styles/globals.css"
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }) {
           </main>
         </PlayerContextProvider>
       </SocketContextProvider>
+      <Toaster />
     </>
   )
 }

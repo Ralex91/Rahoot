@@ -1,23 +1,43 @@
 import convertTimeToPoint from "../utils/convertTimeToPoint.js"
 import { abortCooldown } from "../utils/cooldown.js"
+import { inviteCodeValidator, usernameValidator } from "../validator.js"
 
 const Player = {
-  checkRoom: (game, io, socket, roomId) => {
-    if (!game.room || roomId !== game.room) {
-      io.to(socket.id).emit("game:errorMessage", "Room not found")
-      console.log("zaza")
+  checkRoom: async (game, io, socket, roomId) => {
+    try {
+      await inviteCodeValidator.validate(roomId)
+    } catch (error) {
+      socket.emit("game:errorMessage", error.errors[0])
       return
     }
 
-    io.to(socket.id).emit("game:successRoom", roomId)
+    if (!game.room || roomId !== game.room) {
+      socket.emit("game:errorMessage", "Room not found")
+      return
+    }
+
+    socket.emit("game:successRoom", roomId)
   },
 
-  join: (game, io, socket, player) => {
-    if (!player.room || !player.room || game.started) {
+  join: async (game, io, socket, player) => {
+    try {
+      await usernameValidator.validate(player.username)
+    } catch (error) {
+      socket.emit("game:errorMessage", error.errors[0])
       return
     }
 
-    console.log("joined", player)
+    if (!game.room || player.room !== game.room) {
+      socket.emit("game:errorMessage", "Room not found")
+      return
+    }
+
+    if (game.started) {
+      socket.emit("game:errorMessage", "Game already started")
+      return
+    }
+
+    console.log("New Player", player)
 
     socket.join(player.room)
 
