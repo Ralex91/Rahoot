@@ -51,7 +51,7 @@ const Player = {
 
     game.players.push(playerData)
 
-    io.to(socket.id).emit("game:successJoin")
+    socket.emit("game:successJoin")
   },
 
   selectedAnswer: (game, io, socket, answerKey) => {
@@ -72,7 +72,7 @@ const Player = {
       points: convertTimeToPoint(game.roundStartTime, question.time),
     })
 
-    io.to(socket.id).emit("game:status", {
+    socket.emit("game:status", {
       name: "WAIT",
       data: { text: "Waiting for the players to answer" },
     })

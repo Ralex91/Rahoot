@@ -1,6 +1,5 @@
 import AnswerButton from "../../AnswerButton"
 import { useSocketContext } from "@/context/socket"
-import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
 import { ANSWERS_COLORS, ANSWERS_ICONS } from "@/constants"
@@ -66,7 +65,9 @@ export default function Answers({
           {question}
         </h2>
 
-        {/*<Image src={image} className="h-60 w-auto rounded-md" />*/}
+        {!!image && !responses && (
+          <img src={image} className="h-48 max-h-60 w-auto rounded-md" />
+        )}
 
         {responses && (
           <div

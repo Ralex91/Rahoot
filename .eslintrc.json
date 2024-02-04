@@ -6,7 +6,7 @@
     "next/core-web-vitals",
     "plugin:react/recommended"
   ],
-  "plugins": ["react", "react-hooks"],
+  "plugins": ["react"],
   "env": {
     "browser": true,
     "node": true,

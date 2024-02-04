@@ -2,11 +2,17 @@ import { GAME_STATE_INIT } from "../quizz.config.js"
 import { startRound } from "../utils/round.js"
 import generateRoomId from "../utils/generateRoomId.js"
 import { cooldown, sleep } from "../utils/cooldown.js"
+import deepClone from "../utils/deepClone.js"
 
 const Manager = {
-  createRoom: (game, io, socket) => {
+  createRoom: (game, io, socket, password) => {
+    if (game.password !== password) {
+      io.to(socket.id).emit("game:errorMessage", "Bad Password")
+      return
+    }
+
     if (game.manager || game.room) {
-      io.to(socket.id).emit("message", "Already manager")
+      io.to(socket.id).emit("game:errorMessage", "Already manager")
       return
     }
 
@@ -28,6 +34,7 @@ const Manager = {
     const player = game.players.find((p) => p.id === playerId)
     game.players = game.players.filter((p) => p.id !== playerId)
 
+    io.in(playerId).socketsLeave(game.room)
     io.to(player.id).emit("game:kick")
     io.to(game.manager).emit("manager:playerKicked", player.id)
   },
@@ -72,18 +79,19 @@ const Manager = {
 
   showLoaderboard: (game, io, socket) => {
     if (!game.questions[game.currentQuestion + 1]) {
-      io.to(socket).emit("game:status", {
+      socket.emit("game:status", {
         name: "FINISH",
         data: {
-          winners: game.players.slice(0, 3).sort((a, b) => b.points - a.points),
+          subject: game.subject,
+          top: game.players.slice(0, 3).sort((a, b) => b.points - a.points),
         },
       })
 
-      game = GAME_STATE_INIT
+      game = deepClone(GAME_STATE_INIT)
       return
     }
 
-    io.to(socket.id).emit("game:status", {
+    socket.emit("game:status", {
       name: "SHOW_LEADERBOARD",
       data: {
         leaderboard: game.players

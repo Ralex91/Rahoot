@@ -1,11 +1,13 @@
 export const GAME_STATE_INIT = {
   started: false,
+  password: "PASSWORD",
   players: [],
   playersAnswer: [],
   manager: null,
   room: null,
   currentQuestion: 0,
   roundStartTime: 0,
+  subject: "Adobe",
   questions: [
     {
       question: "Who are the founders of Adobe?",
@@ -15,21 +17,24 @@ export const GAME_STATE_INIT = {
         "Jhon Jonse and Charles Geskie",
         "Bill Gate",
       ],
-      image: "/question/Adobe-Logo.png",
       solution: 1,
+      cooldow: 5,
       time: 15,
     },
     {
       question: "What is Adobe's most famous software?",
       answers: ["Encore", "AfterEffect", "Creative Cloud", "Photoshop"],
-      image: "/question/Adobe-Packages.webp",
+      image:
+        "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=500&auto=webp",
       solution: 3,
+      cooldown: 5,
       time: 15,
     },
     {
       question: "When was Adobe created?",
       answers: ["2000", "1982", "2003", "1987"],
       solution: 1,
+      cooldown: 5,
       time: 15,
     },
     {
@@ -40,8 +45,8 @@ export const GAME_STATE_INIT = {
         "DowTown, Texas",
         "Tokyo, Japan",
       ],
-      image: "/question/Adobe_World_Headquarters.jpg",
       solution: 0,
+      cooldown: 5,
       time: 15,
     },
     {
@@ -52,8 +57,10 @@ export const GAME_STATE_INIT = {
         "25,988 employees",
         "5,073 employees",
       ],
-      image: "/question/000012204568_Large.jpg",
+      image:
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=500&auto=webp",
       solution: 2,
+      cooldown: 5,
       time: 15,
     },
     {
@@ -64,8 +71,10 @@ export const GAME_STATE_INIT = {
         "Mark Java",
         "Shantanu Narayen",
       ],
-      image: "/question/guess-the-person.png",
+      image:
+        "https://images.unsplash.com/photo-1435348773030-a1d74f568bc2?q=80&w=500&auto=webp",
       solution: 3,
+      cooldown: 5,
       time: 15,
     },
     {
@@ -76,7 +85,10 @@ export const GAME_STATE_INIT = {
         "Logistics software",
         "Other",
       ],
+      image:
+        "https://images.unsplash.com/photo-1582736317407-371893d9e146?q=80&w=500&auto=webp",
       solution: 0,
+      cooldown: 5,
       time: 15,
     },
   ],

@@ -7,7 +7,6 @@ import { socket } from "@/context/socket"
 
 export default function Room() {
   const { player, dispatch } = usePlayerContext()
-  const [loading, setLoading] = useState(false)
   const [roomId, setRoomId] = useState("")
 
   const handleLogin = () => {
@@ -25,20 +24,12 @@ export default function Room() {
   }, [])
 
   return (
-    <>
-      {loading && (
-        <div className="absolute z-30 flex h-full w-full items-center justify-center bg-black/40">
-          <Loader />
-        </div>
-      )}
-
-      <Form>
-        <Input
-          onChange={(e) => setRoomId(e.target.value)}
-          placeholder="PIN Code here"
-        />
-        <Button onClick={() => handleLogin()}>Submit</Button>
-      </Form>
-    </>
+    <Form>
+      <Input
+        onChange={(e) => setRoomId(e.target.value)}
+        placeholder="PIN Code here"
+      />
+      <Button onClick={() => handleLogin()}>Submit</Button>
+    </Form>
   )
 }

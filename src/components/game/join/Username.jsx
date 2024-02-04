@@ -9,7 +9,6 @@ import { useRouter } from "next/router"
 export default function Username() {
   const { socket } = useSocketContext()
   const { player, dispatch } = usePlayerContext()
-  const [loading, setLoading] = useState(false)
   const router = useRouter()
   const [username, setUsername] = useState("")
 
@@ -33,20 +32,12 @@ export default function Username() {
   }, [username])
 
   return (
-    <>
-      {loading && (
-        <div className="absolute z-30 flex h-full w-full items-center justify-center bg-black/40">
-          <Loader />
-        </div>
-      )}
-
-      <Form>
-        <Input
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Usernname here"
-        />
-        <Button onClick={() => handleJoin()}>Submit</Button>
-      </Form>
-    </>
+    <Form>
+      <Input
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Usernname here"
+      />
+      <Button onClick={() => handleJoin()}>Submit</Button>
+    </Form>
   )
 }

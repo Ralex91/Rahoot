@@ -3,6 +3,8 @@ import { cooldown, sleep } from "./cooldown.js"
 export const startRound = async (game, io, socket) => {
   const question = game.questions[game.currentQuestion]
 
+  if (!game.started) return
+
   io.to(game.room).emit("game:updateQuestion", {
     current: game.currentQuestion + 1,
     total: game.questions.length,
@@ -16,19 +18,22 @@ export const startRound = async (game, io, socket) => {
     },
   })
 
-  await sleep(4)
+  await sleep(2)
+
+  if (!game.started) return
 
   io.to(game.room).emit("game:status", {
     name: "SHOW_QUESTION",
     data: {
       question: question.question,
-      number: game.currentQuestion + 1,
       image: question.image,
-      cooldown: 6,
+      cooldown: question.cooldown,
     },
   })
 
-  await sleep(6)
+  await sleep(question.cooldown)
+
+  if (!game.started) return
 
   game.roundStartTime = Date.now()
 
@@ -45,6 +50,8 @@ export const startRound = async (game, io, socket) => {
 
   await cooldown(question.time, io, game.room)
 
+  if (!game.started) return
+
   game.players.map(async (player) => {
     let playerAnswer = await game.playersAnswer.find((p) => p.id === player.id)
 
@@ -55,32 +62,30 @@ export const startRound = async (game, io, socket) => {
     let points =
       (isCorrect && Math.round(playerAnswer && playerAnswer.points)) || 0
 
-    game.players.find((p) => p.id === player.id).points += points
+    player.points += points
 
-    setTimeout(() => {
-      let sortPlayers = game.players.sort((a, b) => b.points - a.points)
+    let sortPlayers = game.players.sort((a, b) => b.points - a.points)
 
-      let rank = sortPlayers.findIndex((p) => p.id === player.id) + 1
-      let aheadPlayer = sortPlayers[rank - 2]
+    let rank = sortPlayers.findIndex((p) => p.id === player.id) + 1
+    let aheadPlayer = sortPlayers[rank - 2]
 
-      io.to(player.id).emit("game:status", {
-        name: "SHOW_RESULT",
-        data: {
-          correct: isCorrect,
-          message: isCorrect ? "Nice !" : "Too bad",
-          points: points,
-          myPoints: player.points,
-          rank,
-          aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
-        },
-      })
-    }, 200)
+    io.to(player.id).emit("game:status", {
+      name: "SHOW_RESULT",
+      data: {
+        correct: isCorrect,
+        message: isCorrect ? "Nice !" : "Too bad",
+        points: points,
+        myPoints: player.points,
+        rank,
+        aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
+      },
+    })
   })
 
-  let totalParType = {}
+  let totalType = {}
 
   game.playersAnswer.forEach(({ answer }) => {
-    totalParType[answer] = (totalParType[answer] || 0) + 1
+    totalType[answer] = (totalType[answer] || 0) + 1
   })
 
   // Manager
@@ -88,7 +93,7 @@ export const startRound = async (game, io, socket) => {
     name: "SHOW_RESPONSES",
     data: {
       question: game.questions[game.currentQuestion].question,
-      responses: totalParType,
+      responses: totalType,
       correct: game.questions[game.currentQuestion].solution,
       answers: game.questions[game.currentQuestion].answers,
       image: game.questions[game.currentQuestion].image,

@@ -10,12 +10,17 @@ export default function Room({ data: { text, inviteCode } }) {
       setPlayerList([...playerList, player])
     })
 
+    socket.on("manager:removePlayer", (playerId) => {
+      setPlayerList(playerList.filter((p) => p.id !== playerId))
+    })
+
     socket.on("manager:playerKicked", (playerId) => {
       setPlayerList(playerList.filter((p) => p.id !== playerId))
     })
 
     return () => {
       socket.off("manager:newPlayer")
+      socket.off("manager:removePlayer")
       socket.off("manager:playerKicked")
     }
   }, [playerList])

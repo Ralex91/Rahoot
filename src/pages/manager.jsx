@@ -1,41 +1,21 @@
 import Button from "@/components/Button"
 import GameWrapper from "@/components/game/GameWrapper"
-import Answers from "@/components/game/states/Answers"
-import Leaderboard from "@/components/game/states/Leaderboard"
-import Prepared from "@/components/game/states/Prepared"
-import Question from "@/components/game/states/Question"
-import Room from "@/components/game/states/Room"
-import Start from "@/components/game/states/Start"
-import Wait from "@/components/game/states/Wait"
+import ManagerPassword from "@/components/ManagerPassword"
+import { GAME_STATES, GAME_STATE_COMPONENTS_MANAGER } from "@/constants"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import { useRouter } from "next/router"
 import { createElement, useEffect, useState } from "react"
-
-const gameStateComponent = {
-  SHOW_ROOM: Room,
-  SHOW_START: Start,
-  SELECT_ANSWER: Answers,
-  SHOW_QUESTION: Question,
-  WAIT: Wait,
-  SHOW_RESPONSES: Answers,
-  SHOW_LEADERBOARD: Leaderboard,
-  SHOW_PREPARED: Prepared,
-}
 
 export default function Manager() {
   const { socket } = useSocketContext()
 
   const [nextText, setNextText] = useState("Start")
   const [state, setState] = useState({
-    created: false,
+    ...GAME_STATES,
     status: {
+      ...GAME_STATES.status,
       name: "SHOW_ROOM",
-      data: { text: "Waiting for the players" },
-    },
-    question: {
-      current: 1,
-      total: null,
     },
   })
 
@@ -97,13 +77,13 @@ export default function Manager() {
     <>
       {!state.created ? (
         <div>
-          <Button onClick={handleCreate}>Create Room</Button>
+          <ManagerPassword />
         </div>
       ) : (
         <>
           <GameWrapper textNext={nextText} onNext={handleSkip} manager>
-            {gameStateComponent[state.status.name] &&
-              createElement(gameStateComponent[state.status.name], {
+            {GAME_STATE_COMPONENTS_MANAGER[state.status.name] &&
+              createElement(GAME_STATE_COMPONENTS_MANAGER[state.status.name], {
                 data: state.status.data,
               })}
           </GameWrapper>

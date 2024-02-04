@@ -1,20 +1,20 @@
 import Image from "next/image"
-import { Montserrat } from "next/font/google"
+import { usePlayerContext } from "@/context/player"
 import Form from "@/components/Form"
 import Button from "@/components/Button"
 import Input from "@/components/Input"
-import logo from "@/assets/logo.svg"
 import { useEffect, useState } from "react"
-import Loader from "@/components/Loader"
-import { usePlayerContext } from "@/context/player"
-import Room from "@/components/game/join/Room"
-import Username from "@/components/game/join/Username"
-import { useSocketContext } from "@/context/socket"
+import { socket } from "@/context/socket"
+import logo from "@/assets/logo.svg"
 import toast from "react-hot-toast"
 
-export default function Home() {
-  const { player, dispatch } = usePlayerContext()
-  const { socket } = useSocketContext()
+export default function ManagerPassword() {
+  const [loading, setLoading] = useState(false)
+  const [password, setPassword] = useState("")
+
+  const handleCreate = () => {
+    socket.emit("manager:createRoom", password)
+  }
 
   useEffect(() => {
     socket.on("game:errorMessage", (message) => {
@@ -35,7 +35,13 @@ export default function Home() {
 
       <Image src={logo} className="mb-6 h-32" alt="logo" />
 
-      {!player ? <Room /> : <Username />}
+      <Form>
+        <Input
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Manager password"
+        />
+        <Button onClick={() => handleCreate()}>Submit</Button>
+      </Form>
     </section>
   )
 }

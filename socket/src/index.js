@@ -2,8 +2,10 @@ import { Server } from "socket.io"
 import { GAME_STATE_INIT } from "./quizz.config.js"
 import Manager from "./roles/manager.js"
 import Player from "./roles/player.js"
+import { abortCooldown } from "./utils/cooldown.js"
+import deepClone from "./utils/deepClone.js"
 
-let gameState = GAME_STATE_INIT
+let gameState = deepClone(GAME_STATE_INIT)
 
 const io = new Server({
   cors: {
@@ -25,8 +27,8 @@ io.on("connection", (socket) => {
     Player.join(gameState, io, socket, player),
   )
 
-  socket.on("manager:createRoom", () =>
-    Manager.createRoom(gameState, io, socket),
+  socket.on("manager:createRoom", (password) =>
+    Manager.createRoom(gameState, io, socket, password),
   )
   socket.on("manager:kickPlayer", (playerId) =>
     Manager.kickPlayer(gameState, io, socket, playerId),
@@ -48,9 +50,21 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`user disconnected ${socket.id}`)
-    /*if (gameState.manager === socket.id) {
+    if (gameState.manager === socket.id) {
       console.log("Reset game")
-      gameState = gameStateInit
-    }*/
+      io.to(gameState.room).emit("game:reset")
+      gameState.started = false
+      gameState = deepClone(GAME_STATE_INIT)
+
+      abortCooldown()
+      return
+    }
+
+    const player = gameState.players.find((p) => p.id === socket.id)
+
+    if (player) {
+      gameState.players = gameState.players.filter((p) => p.id !== socket.id)
+      socket.to(gameState.manager).emit("manager:removePlayer", player.id)
+    }
   })
 })

@@ -1,4 +1,3 @@
-import clsx from "clsx"
 import { Toaster as ToasterRaw, ToastBar } from "react-hot-toast"
 
 const Toaster = () => (
