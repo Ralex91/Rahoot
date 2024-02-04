@@ -57,6 +57,9 @@ export default function Podium({ data: { subject, top } }) {
             {
               "opacity-100": apparition >= 3,
             },
+            {
+              "md:min-w-64": top.length < 2,
+            },
           )}
         >
           <p
