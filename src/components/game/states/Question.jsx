@@ -1,7 +1,13 @@
-import { useRef } from "react"
+import { SFX_SHOW_SOUND } from "@/constants"
+import { useEffect, useRef } from "react"
+import useSound from "use-sound"
 
 export default function Question({ data: { question, image, cooldown } }) {
-  const barRef = useRef(null)
+  const [sfxShow] = useSound(SFX_SHOW_SOUND, { volume: 0.5 })
+
+  useEffect(() => {
+    sfxShow()
+  }, [sfxShow])
 
   return (
     <section className="relative mx-auto flex h-full w-full max-w-7xl flex-1 flex-col items-center px-4">
@@ -15,7 +21,6 @@ export default function Question({ data: { question, image, cooldown } }) {
         )}
       </div>
       <div
-        ref={barRef}
         className="mb-20 h-4 self-start justify-self-end rounded-full bg-primary"
         style={{ animation: `progressBar ${cooldown}s linear forwards` }}
       ></div>

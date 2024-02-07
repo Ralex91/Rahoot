@@ -12,10 +12,12 @@
     "clsx": "^2.1.0",
     "next": "14.1.0",
     "react": "^18",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "socket.io": "^4.7.4",
-    "socket.io-client": "^4.7.4"
+    "socket.io-client": "^4.7.4",
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

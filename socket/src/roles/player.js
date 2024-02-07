@@ -32,6 +32,11 @@ const Player = {
       return
     }
 
+    if (game.players.find((p) => p.username === player.username)) {
+      socket.emit("game:errorMessage", "Username already exists")
+      return
+    }
+
     if (game.started) {
       socket.emit("game:errorMessage", "Game already started")
       return
