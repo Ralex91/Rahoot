@@ -1,17 +1,60 @@
 import Loader from "@/components/Loader"
+import {
+  SFX_PODIUM_FIRST,
+  SFX_PODIUM_SECOND,
+  SFX_PODIUM_THREE,
+  SFX_SNEAR_ROOL,
+} from "@/constants"
 import useScreenSize from "@/hook/useScreenSize"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
+import useSound from "use-sound"
 
 export default function Podium({ data: { subject, top } }) {
   const [apparition, setApparition] = useState(0)
 
   const { width, height } = useScreenSize()
 
+  const [sfxtThree] = useSound(SFX_PODIUM_THREE, {
+    volume: 0.2,
+  })
+
+  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, {
+    volume: 0.2,
+  })
+
+  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
+    volume: 0.2,
+  })
+
+  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, {
+    volume: 0.2,
+  })
+
+  useEffect(() => {
+    console.log(apparition)
+    switch (apparition) {
+      case 4:
+        sfxRoolStop()
+        sfxFirst()
+        break
+      case 3:
+        sfxRool()
+        break
+      case 2:
+        sfxSecond()
+        break
+      case 1:
+        sfxtThree()
+        break
+    }
+  }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool])
+
   useEffect(() => {
     if (top.length < 3) {
       setApparition(4)
+      return
     }
 
     const interval = setInterval(() => {
@@ -23,7 +66,7 @@ export default function Podium({ data: { subject, top } }) {
     }, 2000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [apparition])
 
   return (
     <>
@@ -46,13 +89,13 @@ export default function Podium({ data: { subject, top } }) {
         </h2>
 
         <div
-          className={`grid w-full max-w-[800px] flex-1 grid-cols-3 items-end justify-center justify-self-end overflow-y-hidden overflow-x-visible`}
+          className={`grid w-full max-w-[800px] flex-1 grid-cols-${top.length} items-end justify-center justify-self-end overflow-y-hidden overflow-x-visible`}
         >
           {top[1] && (
             <div
               className={clsx(
                 "z-20 flex h-[50%] w-full translate-y-full flex-col items-center justify-center gap-3 opacity-0 transition-all",
-                { "translate-y-0 opacity-100": apparition >= 2 },
+                { "!translate-y-0 opacity-100": apparition >= 2 },
               )}
             >
               <p
@@ -80,7 +123,7 @@ export default function Podium({ data: { subject, top } }) {
             className={clsx(
               "z-30 flex h-[60%] w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all",
               {
-                "translate-y-0 opacity-100": apparition >= 3,
+                "!translate-y-0 opacity-100": apparition >= 3,
               },
               {
                 "md:min-w-64": top.length < 2,
@@ -110,7 +153,7 @@ export default function Podium({ data: { subject, top } }) {
               className={clsx(
                 "z-10 flex h-[40%] w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all",
                 {
-                  "translate-y-0 opacity-100": apparition >= 1,
+                  "!translate-y-0 opacity-100": apparition >= 1,
                 },
               )}
             >

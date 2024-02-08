@@ -50,9 +50,17 @@ export default function Answers({
     volume: 0.2,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(SFX_ANSWERS_MUSIC, {
-    volume: 0.2,
-  })
+  const [playMusic, { stop: stopMusic, isPlaying }] = useSound(
+    SFX_ANSWERS_MUSIC,
+    {
+      volume: 0.2,
+    },
+  )
+
+  const handleAnswer = (answer) => {
+    socket.emit("player:selectedAnswer", answer)
+    sfxPop()
+  }
 
   useEffect(() => {
     if (!responses) {
@@ -64,11 +72,19 @@ export default function Answers({
     sfxResults()
 
     setPercentages(calculatePercentages(responses))
+  }, [responses, playMusic, stopMusic])
 
+  useEffect(() => {
+    if (!isPlaying) {
+      playMusic()
+    }
+  }, [isPlaying])
+
+  useEffect(() => {
     return () => {
       stopMusic()
     }
-  }, [responses])
+  }, [playMusic, stopMusic])
 
   useEffect(() => {
     socket.on("game:cooldown", (sec) => {
@@ -84,7 +100,7 @@ export default function Answers({
       socket.off("game:cooldown")
       socket.off("game:playerAnswer")
     }
-  }, [])
+  }, [sfxPop])
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between">
@@ -141,7 +157,7 @@ export default function Answers({
                 "opacity-65": responses && correct !== key,
               })}
               icon={ANSWERS_ICONS[key]}
-              onClick={() => socket.emit("player:selectedAnswer", key)}
+              onClick={() => handleAnswer(key)}
             >
               {answer}
             </AnswerButton>

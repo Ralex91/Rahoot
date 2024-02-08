@@ -18,7 +18,7 @@ export const GAME_STATE_INIT = {
         "Bill Gate",
       ],
       solution: 1,
-      cooldow: 5,
+      cooldown: 5,
       time: 15,
     },
     {
