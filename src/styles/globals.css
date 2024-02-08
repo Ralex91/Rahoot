@@ -32,6 +32,49 @@
   box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
 }
 
+.spotlight {
+  position: absolute;
+  height: 200%;
+  width: 200%;
+  z-index: 100;
+  background-image: radial-gradient(
+    circle,
+    transparent 180px,
+    rgba(0, 0, 0, 0.6) 200px
+  );
+  opacity: 0;
+  left: -50%;
+  top: -50%;
+  transition: all 0.5s;
+  animation: spotlightAnim 2.5s ease-in;
+}
+
+@keyframes spotlightAnim {
+  0% {
+    left: -20%;
+    top: -20%;
+  }
+  30% {
+    opacity: 100;
+    top: -80%;
+    left: -80%;
+  }
+  60% {
+    top: -50%;
+    left: -20%;
+  }
+  80% {
+    top: -50%;
+    left: -50%;
+  }
+  98% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .anim-show {
   animation: show 0.5s ease-out;
 }
@@ -50,6 +93,28 @@
 .anim-quizz .button {
   box-shadow: rgba(0, 0, 0, 0.25) -4px -4px inset;
   animation: quizzButton 0.8s ease-out;
+}
+
+.anim-balanced {
+  animation: balanced 0.8s linear infinite;
+}
+
+@keyframes balanced {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg) translateY(-10px);
+  }
+  50% {
+    transform: rotate(0deg) translateY(0px);
+  }
+  75% {
+    transform: rotate(10deg) translateY(-10px);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 @keyframes show {

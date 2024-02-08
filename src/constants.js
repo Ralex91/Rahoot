@@ -51,3 +51,13 @@ export const GAME_STATE_COMPONENTS_MANAGER = {
   SHOW_LEADERBOARD: Leaderboard,
   FINISH: Podium,
 }
+
+export const SFX_ANSWERS_MUSIC = "/sounds/answersMusic.mp3"
+export const SFX_ANSWERS_SOUND = "/sounds/answersSound.mp3"
+export const SFX_RESULTS_SOUND = "/sounds/results.mp3"
+export const SFX_SHOW_SOUND = "/sounds/show.mp3"
+export const SFX_BOUMP_SOUND = "/sounds/boump.mp3"
+export const SFX_PODIUM_THREE = "/sounds/three.mp3"
+export const SFX_PODIUM_SECOND = "/sounds/second.mp3"
+export const SFX_PODIUM_FIRST = "/sounds/first.mp3"
+export const SFX_SNEAR_ROOL = "/sounds/snearRoll.mp3"

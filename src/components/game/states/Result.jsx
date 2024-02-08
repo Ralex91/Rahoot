@@ -1,19 +1,27 @@
 import CricleCheck from "@/components/icons/CricleCheck"
 import CricleXmark from "@/components/icons/CricleXmark"
+import { SFX_RESULTS_SOUND } from "@/constants"
 import { usePlayerContext } from "@/context/player"
 import { useEffect } from "react"
+import useSound from "use-sound"
 
 export default function Result({
   data: { correct, message, points, myPoints, totalPlayer, rank, aheadOfMe },
 }) {
   const { dispatch } = usePlayerContext()
 
+  const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
+    volume: 0.2,
+  })
+
   useEffect(() => {
     dispatch({
       type: "UPDATE",
       payload: { points: myPoints },
     })
-  }, [])
+
+    sfxResults()
+  }, [sfxResults])
 
   return (
     <section className="anim-show relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">

@@ -2,7 +2,14 @@ import AnswerButton from "../../AnswerButton"
 import { useSocketContext } from "@/context/socket"
 import { useEffect, useRef, useState } from "react"
 import clsx from "clsx"
-import { ANSWERS_COLORS, ANSWERS_ICONS } from "@/constants"
+import {
+  ANSWERS_COLORS,
+  ANSWERS_ICONS,
+  SFX_ANSWERS_MUSIC,
+  SFX_ANSWERS_SOUND,
+  SFX_RESULTS_SOUND,
+} from "@/constants"
+import useSound from "use-sound"
 
 const calculatePercentages = (objectResponses) => {
   const keys = Object.keys(objectResponses)
@@ -35,13 +42,49 @@ export default function Answers({
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
 
+  const [sfxPop] = useSound(SFX_ANSWERS_SOUND, {
+    volume: 0.1,
+  })
+
+  const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
+    volume: 0.2,
+  })
+
+  const [playMusic, { stop: stopMusic, isPlaying }] = useSound(
+    SFX_ANSWERS_MUSIC,
+    {
+      volume: 0.2,
+    },
+  )
+
+  const handleAnswer = (answer) => {
+    socket.emit("player:selectedAnswer", answer)
+    sfxPop()
+  }
+
   useEffect(() => {
     if (!responses) {
+      playMusic()
       return
     }
 
+    stopMusic()
+    sfxResults()
+
     setPercentages(calculatePercentages(responses))
-  }, [responses])
+  }, [responses, playMusic, stopMusic])
+
+  useEffect(() => {
+    if (!isPlaying) {
+      playMusic()
+    }
+  }, [isPlaying])
+
+  useEffect(() => {
+    return () => {
+      stopMusic()
+    }
+  }, [playMusic, stopMusic])
 
   useEffect(() => {
     socket.on("game:cooldown", (sec) => {
@@ -50,13 +93,14 @@ export default function Answers({
 
     socket.on("game:playerAnswer", (count) => {
       setTotalAnswer(count)
+      sfxPop()
     })
 
     return () => {
       socket.off("game:cooldown")
       socket.off("game:playerAnswer")
     }
-  }, [])
+  }, [sfxPop])
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between">
@@ -113,7 +157,7 @@ export default function Answers({
                 "opacity-65": responses && correct !== key,
               })}
               icon={ANSWERS_ICONS[key]}
-              onClick={() => socket.emit("player:selectedAnswer", key)}
+              onClick={() => handleAnswer(key)}
             >
               {answer}
             </AnswerButton>
@@ -123,9 +167,3 @@ export default function Answers({
     </div>
   )
 }
-
-/* OLD Timer
-<div className="absolute left-8 -translate-y-1/2 top-2/4 text-white font-bold text-6xl rounded-full justify-center items-center bg-orange-400 p-8 aspect-square hidden 2xl:flex">
-  <span </div>className="drop-shadow-md">20</span>
-</div>
-*/
