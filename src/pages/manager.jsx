@@ -63,6 +63,10 @@ export default function Manager() {
         socket.emit("manager:startGame")
         break
 
+      case "SELECT_ANSWER":
+        socket.emit("manager:abortQuiz")
+        break
+
       case "SHOW_RESPONSES":
         socket.emit("manager:showLeaderboard")
         break

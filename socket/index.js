@@ -40,6 +40,8 @@ io.on("connection", (socket) => {
     Player.selectedAnswer(gameState, io, socket, answerKey),
   )
 
+  socket.on("manager:abortQuiz", () => Manager.abortQuiz(gameState, io, socket))
+
   socket.on("manager:nextQuestion", () =>
     Manager.nextQuestion(gameState, io, socket),
   )
