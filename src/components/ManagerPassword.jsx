@@ -16,6 +16,12 @@ export default function ManagerPassword() {
     socket.emit("manager:createRoom", password)
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleCreate()
+    }
+  }
+
   useEffect(() => {
     socket.on("game:errorMessage", (message) => {
       toast.error(message)
@@ -37,7 +43,9 @@ export default function ManagerPassword() {
 
       <Form>
         <Input
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Manager password"
         />
         <Button onClick={() => handleCreate()}>Submit</Button>
