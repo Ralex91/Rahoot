@@ -1,7 +1,7 @@
 import { GAME_STATE_INIT } from "../quizz.config.js"
 import { startRound } from "../utils/round.js"
 import generateRoomId from "../utils/generateRoomId.js"
-import { cooldown, sleep } from "../utils/cooldown.js"
+import { abortCooldown, cooldown, sleep } from "../utils/cooldown.js"
 import deepClone from "../utils/deepClone.js"
 
 const Manager = {
@@ -75,6 +75,18 @@ const Manager = {
 
     game.currentQuestion++
     startRound(game, io, socket)
+  },
+
+  abortQuiz: (game, io, socket) => {
+    if (!game.started) {
+      return
+    }
+
+    if (socket.id !== game.manager) {
+      return
+    }
+
+    abortCooldown(game, io, game.room)
   },
 
   showLoaderboard: (game, io, socket) => {

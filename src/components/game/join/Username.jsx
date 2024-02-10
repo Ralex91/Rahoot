@@ -16,6 +16,12 @@ export default function Username() {
     socket.emit("player:join", { username: username, room: player.room })
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleJoin()
+    }
+  }
+
   useEffect(() => {
     socket.on("game:successJoin", () => {
       dispatch({
@@ -35,6 +41,7 @@ export default function Username() {
     <Form>
       <Input
         onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Usernname here"
       />
       <Button onClick={() => handleJoin()}>Submit</Button>

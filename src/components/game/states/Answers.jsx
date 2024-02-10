@@ -10,6 +10,7 @@ import {
   SFX_RESULTS_SOUND,
 } from "@/constants"
 import useSound from "use-sound"
+import { usePlayerContext } from "@/context/player"
 
 const calculatePercentages = (objectResponses) => {
   const keys = Object.keys(objectResponses)
@@ -37,6 +38,7 @@ export default function Answers({
   data: { question, answers, image, time, responses, correct },
 }) {
   const { socket } = useSocketContext()
+  const { player } = usePlayerContext()
 
   const [percentages, setPercentages] = useState([])
   const [cooldown, setCooldown] = useState(time)
@@ -58,6 +60,10 @@ export default function Answers({
   )
 
   const handleAnswer = (answer) => {
+    if (!player) {
+      return
+    }
+
     socket.emit("player:selectedAnswer", answer)
     sfxPop()
   }

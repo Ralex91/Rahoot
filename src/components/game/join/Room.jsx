@@ -13,6 +13,12 @@ export default function Room() {
     socket.emit("player:checkRoom", roomId)
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleLogin()
+    }
+  }
+
   useEffect(() => {
     socket.on("game:successRoom", (roomId) => {
       dispatch({ type: "JOIN", payload: roomId })
@@ -27,6 +33,7 @@ export default function Room() {
     <Form>
       <Input
         onChange={(e) => setRoomId(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="PIN Code here"
       />
       <Button onClick={() => handleLogin()}>Submit</Button>
