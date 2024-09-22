@@ -1,5 +1,5 @@
 import { Server } from "socket.io"
-import { GAME_STATE_INIT } from "./quizz.config.js"
+import { GAME_STATE_INIT, WEBSOCKET_SERVER_PORT } from "../config.mjs"
 import Manager from "./roles/manager.js"
 import Player from "./roles/player.js"
 import { abortCooldown } from "./utils/cooldown.js"
@@ -11,10 +11,10 @@ const io = new Server({
   cors: {
     origin: "*",
   },
-  path: "/ws/",
 })
 
-io.listen(5157)
+console.log(`Server running on port ${WEBSOCKET_SERVER_PORT}`)
+io.listen(WEBSOCKET_SERVER_PORT)
 
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
@@ -59,6 +59,7 @@ io.on("connection", (socket) => {
       gameState = deepClone(GAME_STATE_INIT)
 
       abortCooldown()
+
       return
     }
 

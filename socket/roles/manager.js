@@ -1,8 +1,8 @@
-import { GAME_STATE_INIT } from "../quizz.config.js"
-import { startRound } from "../utils/round.js"
-import generateRoomId from "../utils/generateRoomId.js"
+import { GAME_STATE_INIT } from "../../config.mjs"
 import { abortCooldown, cooldown, sleep } from "../utils/cooldown.js"
 import deepClone from "../utils/deepClone.js"
+import generateRoomId from "../utils/generateRoomId.js"
+import { startRound } from "../utils/round.js"
 
 const Manager = {
   createRoom: (game, io, socket, password) => {

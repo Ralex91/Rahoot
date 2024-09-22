@@ -3,17 +3,15 @@ import Leaderboard from "@/components/game/states/Leaderboard"
 import Prepared from "@/components/game/states/Prepared"
 import Question from "@/components/game/states/Question"
 import Result from "@/components/game/states/Result"
-import Room from "./components/game/states/Room"
-import Podium from "./components/game/states/Podium"
-import Wait from "@/components/game/states/Wait"
 import Start from "@/components/game/states/Start"
+import Wait from "@/components/game/states/Wait"
+import Podium from "./components/game/states/Podium"
+import Room from "./components/game/states/Room"
 
 import Circle from "@/components/icons/Circle"
-import Triangle from "@/components/icons/Triangle"
-import Square from "@/components/icons/Square"
 import Rhombus from "@/components/icons/Rhombus"
-
-export const WEBSOCKET_URL = "http://localhost:5157"
+import Square from "@/components/icons/Square"
+import Triangle from "@/components/icons/Triangle"
 
 export const ANSWERS_COLORS = [
   "bg-red-500",

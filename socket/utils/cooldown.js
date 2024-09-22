@@ -3,7 +3,10 @@ let cooldownResolve
 
 export const abortCooldown = () => {
   clearInterval(cooldownTimeout)
-  cooldownResolve()
+
+  if (cooldownResolve) {
+    cooldownResolve()
+  }
 }
 
 export const cooldown = (ms, io, room) => {

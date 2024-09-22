@@ -1,10 +1,8 @@
+import { createContext, useContext } from "react"
 import { io } from "socket.io-client"
-import { createContext, useContext, useState } from "react"
-import { WEBSOCKET_URL } from "@/constants"
+import { WEBSOCKET_PUBLIC_URL } from "../../config.mjs"
 
-export const socket = io(WEBSOCKET_URL, {
-  path: "/ws/",
-  //addTrailingSlash: false,
+export const socket = io(WEBSOCKET_PUBLIC_URL, {
   transports: ["websocket"],
 })
 
@@ -18,7 +16,6 @@ export const SocketContextProvider = ({ children }) => {
 
 export function useSocketContext() {
   const context = useContext(SocketContext)
-  const [isConnected, setIsConnected] = useState(false)
 
   return { socket: context }
 }
