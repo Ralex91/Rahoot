@@ -42,7 +42,7 @@ export default function Username() {
       <Input
         onChange={(e) => setUsername(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Usernname here"
+        placeholder="Username here"
       />
       <Button onClick={() => handleJoin()}>Submit</Button>
     </Form>
