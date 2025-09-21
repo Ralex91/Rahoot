@@ -38,7 +38,6 @@ const Manager = {
     io.to(player.id).emit("game:kick")
     io.to(game.manager).emit("manager:playerKicked", player.id)
 
-    // Emit updated total players to all clients in the room
     io.to(game.room).emit("game:totalPlayers", game.players.length)
   },
 

@@ -85,7 +85,7 @@ const Player = {
       data: { text: "Waiting for the players to answer" },
     })
     socket.to(game.room).emit("game:playerAnswer", game.playersAnswer.length)
-    // Also emit total players to keep the UI updated
+
     io.to(game.room).emit("game:totalPlayers", game.players.length)
 
     if (game.playersAnswer.length === game.players.length) {
