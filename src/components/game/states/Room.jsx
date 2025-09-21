@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 export default function Room({ data: { text, inviteCode } }) {
   const { socket } = useSocketContext()
   const [playerList, setPlayerList] = useState([])
+  const [totalPlayers, setTotalPlayers] = useState(0)
 
   useEffect(() => {
     socket.on("manager:newPlayer", (player) => {
@@ -18,10 +19,15 @@ export default function Room({ data: { text, inviteCode } }) {
       setPlayerList(playerList.filter((p) => p.id !== playerId))
     })
 
+    socket.on("game:totalPlayers", (total) => {
+      setTotalPlayers(total)
+    })
+
     return () => {
       socket.off("manager:newPlayer")
       socket.off("manager:removePlayer")
       socket.off("manager:playerKicked")
+      socket.off("game:totalPlayers")
     }
   }, [playerList])
 
@@ -34,6 +40,12 @@ export default function Room({ data: { text, inviteCode } }) {
       <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg">
         {text}
       </h2>
+
+      <div className="mb-6 flex items-center justify-center rounded-full bg-black/40 px-6 py-3">
+        <span className="text-2xl font-bold text-white drop-shadow-md">
+          Players Joined: {totalPlayers}
+        </span>
+      </div>
 
       <div className="flex flex-wrap gap-3">
         {playerList.map((player) => (

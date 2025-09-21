@@ -56,6 +56,9 @@ const Player = {
 
     game.players.push(playerData)
 
+    // Emit total players to all players in the room
+    io.to(player.room).emit("game:totalPlayers", game.players.length)
+
     socket.emit("game:successJoin")
   },
 
@@ -82,6 +85,8 @@ const Player = {
       data: { text: "Waiting for the players to answer" },
     })
     socket.to(game.room).emit("game:playerAnswer", game.playersAnswer.length)
+
+    io.to(game.room).emit("game:totalPlayers", game.players.length)
 
     if (game.playersAnswer.length === game.players.length) {
       abortCooldown()

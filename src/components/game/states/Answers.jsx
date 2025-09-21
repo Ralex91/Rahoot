@@ -43,6 +43,7 @@ export default function Answers({
   const [percentages, setPercentages] = useState([])
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
+  const [totalPlayer, setTotalPlayer] = useState(0)
 
   const [sfxPop] = useSound(SFX_ANSWERS_SOUND, {
     volume: 0.1,
@@ -102,9 +103,14 @@ export default function Answers({
       sfxPop()
     })
 
+    socket.on("game:totalPlayers", (total) => {
+      setTotalPlayer(total)
+    })
+
     return () => {
       socket.off("game:cooldown")
       socket.off("game:playerAnswer")
+      socket.off("game:totalPlayers")
     }
   }, [sfxPop])
 
@@ -150,7 +156,7 @@ export default function Answers({
             </div>
             <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
               <span className="translate-y-1 text-sm">Answers</span>
-              <span>{totalAnswer}</span>
+              <span>{totalAnswer}/{totalPlayer}</span>
             </div>
           </div>
         )}
