@@ -10,6 +10,8 @@ module.exports = {
       colors: {
         primary: "#ff9900",
         secondary: "#1a140b",
+        brand: "#00679A",
+        outline: "#AED7EA"
       },
     },
   },

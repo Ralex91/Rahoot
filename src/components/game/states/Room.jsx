@@ -39,7 +39,7 @@ export default function Room({ data: { text, inviteCode } }) {
         {playerList.map((player) => (
           <div
             key={player.id}
-            className="shadow-inset rounded-md bg-primary px-4 py-3 font-bold text-white"
+            className="rounded-md bg-white px-4 py-3 font-bold text-brand border-2 border-[#AED7EA]"
             onClick={() => socket.emit("manager:kickPlayer", player.id)}
           >
             <span className="cursor-pointer text-xl drop-shadow-md hover:line-through">

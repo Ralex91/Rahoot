@@ -10,7 +10,7 @@ import { createElement, useEffect, useState } from "react"
 export default function Manager() {
   const { socket } = useSocketContext()
 
-  const [nextText, setNextText] = useState("Start")
+  const [nextText, setNextText] = useState("Lancer")
   const [state, setState] = useState({
     ...GAME_STATES,
     status: {
@@ -56,7 +56,7 @@ export default function Manager() {
   }
 
   const handleSkip = () => {
-    setNextText("Skip")
+    setNextText("Passer")
 
     switch (state.status.name) {
       case "SHOW_ROOM":

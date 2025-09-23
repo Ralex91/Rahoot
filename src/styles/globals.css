@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .btn-shadow {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
+  box-shadow: #AED7EA 0px -4px inset;
 }
 
 .btn-shadow span {
@@ -12,7 +12,7 @@
 }
 
 .btn-shadow:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px -2px inset;
+  box-shadow: #AED7EA 0px -2px inset;
 }
 
 .btn-shadow:hover span {

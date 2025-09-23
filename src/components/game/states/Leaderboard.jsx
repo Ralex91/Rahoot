@@ -8,7 +8,7 @@ export default function Leaderboard({ data: { leaderboard } }) {
         {leaderboard.map(({ username, points }, key) => (
           <div
             key={key}
-            className="flex w-full justify-between rounded-md bg-primary p-3 text-2xl font-bold text-white"
+            className="flex w-full justify-between rounded-md bg-white border-2 border-outline p-3 text-2xl font-bold text-brand"
           >
             <span className="drop-shadow-md">{username}</span>
             <span className="drop-shadow-md">{points}</span>

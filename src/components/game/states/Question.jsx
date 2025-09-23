@@ -21,7 +21,7 @@ export default function Question({ data: { question, image, cooldown } }) {
         )}
       </div>
       <div
-        className="mb-20 h-4 self-start justify-self-end rounded-full bg-primary"
+        className="mb-20 h-4 self-start justify-self-end rounded-full bg-outline"
         style={{ animation: `progressBar ${cooldown}s linear forwards` }}
       ></div>
     </section>

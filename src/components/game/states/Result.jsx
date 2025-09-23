@@ -33,9 +33,10 @@ export default function Result({
       <h2 className="mt-1 text-4xl font-bold text-white drop-shadow-lg">
         {message}
       </h2>
-      <p className="mt-1 text-xl font-bold text-white drop-shadow-lg">
-        {`You are top ${rank}` + (aheadOfMe ? ", behind " + aheadOfMe : "")}
-      </p>
+        <p className="mt-1 text-xl font-bold text-white drop-shadow-lg">
+          {`Vous êtes ${rank}${rank === 1 ? "er" : "ème"}` }
+          {aheadOfMe ? `, derrière ${aheadOfMe}` : ""}
+        </p>
       {correct && (
         <span className="mt-2 rounded bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
           +{points}

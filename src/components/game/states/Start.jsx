@@ -40,13 +40,13 @@ export default function Start({ data: { time, subject } }) {
         <>
           <div
             className={clsx(
-              `anim-show aspect-square h-32 bg-primary transition-all md:h-60`,
+              `anim-show aspect-square h-32 bg-white border-4 border-[#AED7EA] rounded-lg transition-all md:h-60`,
             )}
             style={{
               transform: `rotate(${45 * (time - cooldown)}deg)`,
             }}
           ></div>
-          <span className="absolute text-6xl font-bold text-white drop-shadow-md md:text-8xl">
+          <span className="absolute text-6xl font-bold text-brand md:text-8xl">
             {cooldown}
           </span>
         </>

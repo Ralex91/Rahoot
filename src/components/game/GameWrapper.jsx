@@ -37,7 +37,7 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
 
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-between">
-      <div className="fixed left-0 top-0 -z-10 h-full w-full bg-orange-600 opacity-70">
+      <div className="fixed left-0 top-0 -z-10 h-full w-full bg-black/100">
         <Image
           className="pointer-events-none h-full w-full object-cover opacity-60"
           src={background}
@@ -47,14 +47,14 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
 
       <div className="flex w-full justify-between p-4">
         {questionState && (
-          <div className="shadow-inset flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
-            {`${questionState.current} / ${questionState.total}`}
-          </div>
+          <div className="btn-shadow flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-brand">
+        {`${questionState.current} / ${questionState.total}`}
+      </div>
         )}
 
         {manager && (
           <Button
-            className="self-end bg-white px-4 !text-black"
+            className="self-end bg-white px-4 font-bold text-brand"
             onClick={() => onNext()}
           >
             {textNext}
