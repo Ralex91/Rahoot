@@ -108,11 +108,11 @@ export default function Podium({ data: { subject, top } }) {
               >
                 {top[1].username}
               </p>
-              <div className="flex h-full w-full flex-col items-center gap-4 rounded-t-md bg-primary pt-6 text-center shadow-2xl">
+              <div className="flex h-full w-full flex-col items-center gap-4 rounded-t-md bg-white pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-zinc-400 bg-zinc-500 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">2</span>
                 </p>
-                <p className="text-2xl font-bold text-white drop-shadow-lg">
+                <p className="text-2xl font-bold text-brand">
                   {top[1].points}
                 </p>
               </div>
@@ -138,11 +138,11 @@ export default function Podium({ data: { subject, top } }) {
             >
               {top[0].username}
             </p>
-            <div className="flex h-full w-full flex-col items-center gap-4 rounded-t-md bg-primary pt-6 text-center shadow-2xl">
+            <div className="flex h-full w-full flex-col items-center gap-4 rounded-t-md bg-white pt-6 text-center shadow-2xl">
               <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-400 bg-amber-300 text-3xl font-bold text-white drop-shadow-lg">
                 <span className="drop-shadow-md">1</span>
               </p>
-              <p className="text-2xl font-bold text-white drop-shadow-lg">
+              <p className="text-2xl font-bold text-brand">
                 {top[0].points}
               </p>
             </div>
@@ -167,12 +167,12 @@ export default function Podium({ data: { subject, top } }) {
               >
                 {top[2].username}
               </p>
-              <div className="flex h-full w-full flex-col items-center gap-4 rounded-t-md bg-primary pt-6 text-center shadow-2xl">
+              <div className="flex h-full w-full flex-col items-center gap-4 rounded-t-md bg-white pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">3</span>
                 </p>
 
-                <p className="text-2xl font-bold text-white drop-shadow-lg">
+                <p className="text-2xl font-bold text-brand">
                   {top[2].points}
                 </p>
               </div>

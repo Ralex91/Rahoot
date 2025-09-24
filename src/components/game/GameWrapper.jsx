@@ -67,7 +67,7 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
       {!manager && (
         <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
           <p className="text-gray-800">{!!player && player.username}</p>
-          <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
+          <div className="rounded-md bg-white border-2 border-outline px-3 py-1 text-lg font-bold text-brand">
             {!!player && player.points}
           </div>
         </div>

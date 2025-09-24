@@ -97,6 +97,7 @@ export const startRound = async (game, io, socket) => {
       correct: game.questions[game.currentQuestion].solution,
       answers: game.questions[game.currentQuestion].answers,
       image: game.questions[game.currentQuestion].image,
+      explanation: question.explanation,
     },
   })
 

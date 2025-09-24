@@ -11,6 +11,7 @@ import {
 } from "@/constants"
 import useSound from "use-sound"
 import { usePlayerContext } from "@/context/player"
+import CheckIcon from "@/components/icons/Check";
 
 const calculatePercentages = (objectResponses) => {
   const keys = Object.keys(objectResponses)
@@ -35,7 +36,7 @@ const calculatePercentages = (objectResponses) => {
 }
 
 export default function Answers({
-  data: { question, answers, image, time, responses, correct },
+  data: { question, answers, image, time, responses, correct, explanation },
 }) {
   const { socket } = useSocketContext()
   const { player } = usePlayerContext()
@@ -132,13 +133,24 @@ export default function Answers({
                 )}
                 style={{ height: percentages[key] }}
               >
-                <span className="w-full bg-black/10 text-center text-lg font-bold text-white drop-shadow-md">
-                  {responses[key] || 0}
-                </span>
+                <div className="w-full bg-black/10 text-lg font-bold text-white drop-shadow-md
+                flex items-center justify-center gap-2">
+                  {responses && key === correct && (
+                    <CheckIcon className="h-4 w-4 text-white" />
+                  )}
+                  <span>{responses[key] ?? 0}</span>
+                </div>
+
               </div>
             ))}
           </div>
         )}
+        {responses && explanation && (
+          <div className="mt-6 max-w-5xl px-4 py-3 text-center font-bold text-white text-[24px]">
+            {explanation}
+          </div>
+        )}
+
       </div>
 
       <div>
@@ -165,7 +177,12 @@ export default function Answers({
               icon={ANSWERS_ICONS[key]}
               onClick={() => handleAnswer(key)}
             >
-              {answer}
+              {/* Force text to take up all space so the check goes right */}
+              <span className="flex-1">{answer}</span>
+
+              {responses && key === correct && (
+                <CheckIcon className="ml-auto h-6 w-6 text-white" />
+              )}
             </AnswerButton>
           ))}
         </div>

@@ -16,6 +16,8 @@ const QUIZZ_CONFIG = {
       solution: 1,
       cooldown: 5,
       time: 15,
+      explanation:
+        "Adobe a été fondée par **John Warnock** et **Charles Geschke** en 1982, autour du langage PostScript.",
     },
     {
       question: "What is Adobe's most famous software?",
@@ -25,67 +27,8 @@ const QUIZZ_CONFIG = {
       solution: 3,
       cooldown: 5,
       time: 15,
-    },
-    {
-      question: "When was Adobe created?",
-      answers: ["2000", "1982", "2003", "1987"],
-      solution: 1,
-      cooldown: 5,
-      time: 15,
-    },
-    {
-      question: "Where is headquertes located?",
-      answers: [
-        "San Jose, California",
-        "Bookworm, Cascui",
-        "DowTown, Texas",
-        "Tokyo, Japan",
-      ],
-      solution: 0,
-      cooldown: 5,
-      time: 15,
-    },
-    {
-      question: "How many employees at Adobe?",
-      answers: [
-        "15,423 employees",
-        "30,803 employees",
-        "25,988 employees",
-        "5,073 employees",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=500&auto=webp",
-      solution: 2,
-      cooldown: 5,
-      time: 15,
-    },
-    {
-      question: "Who is the Current CEO?",
-      answers: [
-        "Jhon Warnock",
-        "Victor Newway",
-        "Mark Java",
-        "Shantanu Narayen",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1435348773030-a1d74f568bc2?q=80&w=500&auto=webp",
-      solution: 3,
-      cooldown: 5,
-      time: 15,
-    },
-    {
-      question: "Adobe's core business is focused on?",
-      answers: [
-        "Creative Software",
-        "Video Game",
-        "Logistics software",
-        "Other",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1582736317407-371893d9e146?q=80&w=500&auto=webp",
-      solution: 0,
-      cooldown: 5,
-      time: 15,
+      explanation:
+        "Photoshop (1988) est devenu un standard mondial pour la retouche et la création d’images.",
     },
   ],
 }

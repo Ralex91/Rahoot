@@ -44,7 +44,7 @@ export default function Username() {
         onKeyDown={handleKeyDown}
         placeholder="Username here"
       />
-      <Button onClick={() => handleJoin()}>Submit</Button>
+      <Button onClick={() => handleJoin()}>Envoyer</Button>
     </Form>
   )
 }
