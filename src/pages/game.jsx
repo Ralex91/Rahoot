@@ -38,7 +38,7 @@ export default function Game() {
       dispatch({ type: "LOGOUT" })
       setState(GAME_STATES)
 
-      toast("The game has been reset by the host")
+      toast("La partie a été réinitialisée par l'hôte.")
     })
 
     return () => {

@@ -79,7 +79,7 @@ const Player = {
 
     socket.emit("game:status", {
       name: "WAIT",
-      data: { text: "Waiting for the players to answer" },
+      data: { text: "En attendant la réponse des joueurs" },
     })
     socket.to(game.room).emit("game:playerAnswer", game.playersAnswer.length)
 
