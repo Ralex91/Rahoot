@@ -1,10 +1,10 @@
-import Image from "next/image"
-import Button from "@/components/Button"
 import background from "@/assets/background.webp"
+import Button from "@/components/Button"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
-import { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 export default function GameWrapper({ children, textNext, onNext, manager }) {
   const { socket } = useSocketContext()
@@ -66,9 +66,9 @@ export default function GameWrapper({ children, textNext, onNext, manager }) {
 
       {!manager && (
         <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
-          <p className="text-gray-800">{!!player && player.username}</p>
+          <p className="text-gray-800">{Boolean(player) && player.username}</p>
           <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
-            {!!player && player.points}
+            {Boolean(player) && player.points}
           </div>
         </div>
       )}

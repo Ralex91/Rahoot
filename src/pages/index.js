@@ -1,19 +1,14 @@
-import Image from "next/image"
-import { Montserrat } from "next/font/google"
-import Form from "@/components/Form"
-import Button from "@/components/Button"
-import Input from "@/components/Input"
 import logo from "@/assets/logo.svg"
-import { useEffect, useState } from "react"
-import Loader from "@/components/Loader"
-import { usePlayerContext } from "@/context/player"
 import Room from "@/components/game/join/Room"
 import Username from "@/components/game/join/Username"
+import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
+import Image from "next/image"
+import { useEffect } from "react"
 import toast from "react-hot-toast"
 
 export default function Home() {
-  const { player, dispatch } = usePlayerContext()
+  const { player } = usePlayerContext()
   const { socket } = useSocketContext()
 
   useEffect(() => {
@@ -24,7 +19,7 @@ export default function Home() {
     return () => {
       socket.off("game:errorMessage")
     }
-  }, [])
+  }, [socket])
 
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center">

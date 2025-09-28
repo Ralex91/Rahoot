@@ -1,12 +1,12 @@
-import { usePlayerContext } from "@/context/player"
-import Form from "@/components/Form"
 import Button from "@/components/Button"
+import Form from "@/components/Form"
 import Input from "@/components/Input"
-import { useEffect, useState } from "react"
+import { usePlayerContext } from "@/context/player"
 import { socket } from "@/context/socket"
+import { useEffect, useState } from "react"
 
 export default function Room() {
-  const { player, dispatch } = usePlayerContext()
+  const { dispatch } = usePlayerContext()
   const [roomId, setRoomId] = useState("")
 
   const handleLogin = () => {

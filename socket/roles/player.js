@@ -8,11 +8,13 @@ const Player = {
       await inviteCodeValidator.validate(roomId)
     } catch (error) {
       socket.emit("game:errorMessage", error.errors[0])
+
       return
     }
 
     if (!game.room || roomId !== game.room) {
       socket.emit("game:errorMessage", "Room not found")
+
       return
     }
 
@@ -24,21 +26,25 @@ const Player = {
       await usernameValidator.validate(player.username)
     } catch (error) {
       socket.emit("game:errorMessage", error.errors[0])
+
       return
     }
 
     if (!game.room || player.room !== game.room) {
       socket.emit("game:errorMessage", "Room not found")
+
       return
     }
 
     if (game.players.find((p) => p.username === player.username)) {
       socket.emit("game:errorMessage", "Username already exists")
+
       return
     }
 
     if (game.started) {
       socket.emit("game:errorMessage", "Game already started")
+
       return
     }
 
@@ -46,7 +52,7 @@ const Player = {
 
     socket.join(player.room)
 
-    let playerData = {
+    const playerData = {
       username: player.username,
       room: player.room,
       id: socket.id,
@@ -64,6 +70,7 @@ const Player = {
 
   selectedAnswer: (game, io, socket, answerKey) => {
     const player = game.players.find((player) => player.id === socket.id)
+
     const question = game.questions[game.currentQuestion]
 
     if (!player) {

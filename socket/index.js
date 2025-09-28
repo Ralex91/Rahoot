@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`user disconnected ${socket.id}`)
+
     if (gameState.manager === socket.id) {
       console.log("Reset game")
       io.to(gameState.room).emit("game:reset")

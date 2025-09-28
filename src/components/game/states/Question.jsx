@@ -1,5 +1,5 @@
 import { SFX_SHOW_SOUND } from "@/constants"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import useSound from "use-sound"
 
 export default function Question({ data: { question, image, cooldown } }) {
@@ -16,8 +16,12 @@ export default function Question({ data: { question, image, cooldown } }) {
           {question}
         </h2>
 
-        {!!image && (
-          <img src={image} className="h-48 max-h-60 w-auto rounded-md" />
+        {Boolean(image) && (
+          <img
+            alt={question}
+            src={image}
+            className="h-48 max-h-60 w-auto rounded-md"
+          />
         )}
       </div>
       <div

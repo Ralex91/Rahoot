@@ -1,10 +1,7 @@
-import Button from "@/components/Button"
 import GameWrapper from "@/components/game/GameWrapper"
 import ManagerPassword from "@/components/ManagerPassword"
 import { GAME_STATES, GAME_STATE_COMPONENTS_MANAGER } from "@/constants"
-import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
-import { useRouter } from "next/router"
 import { createElement, useEffect, useState } from "react"
 
 export default function Manager() {
@@ -23,7 +20,7 @@ export default function Manager() {
     socket.on("game:status", (status) => {
       setState({
         ...state,
-        status: status,
+        status,
         question: {
           ...state.question,
           current: status.question,
@@ -39,7 +36,7 @@ export default function Manager() {
           ...state.status,
           data: {
             ...state.status.data,
-            inviteCode: inviteCode,
+            inviteCode,
           },
         },
       })
@@ -51,28 +48,28 @@ export default function Manager() {
     }
   }, [state])
 
-  const handleCreate = () => {
-    socket.emit("manager:createRoom")
-  }
-
   const handleSkip = () => {
     setNextText("Skip")
 
     switch (state.status.name) {
       case "SHOW_ROOM":
         socket.emit("manager:startGame")
+
         break
 
       case "SELECT_ANSWER":
         socket.emit("manager:abortQuiz")
+
         break
 
       case "SHOW_RESPONSES":
         socket.emit("manager:showLeaderboard")
+
         break
 
       case "SHOW_LEADERBOARD":
         socket.emit("manager:nextQuestion")
+
         break
     }
   }

@@ -1,6 +1,7 @@
 export default function Pentagon({ className, fill, stroke }) {
   return (
     <svg
+      className={className}
       fill={fill}
       height="800px"
       width="800px"
