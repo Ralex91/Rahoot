@@ -24,7 +24,7 @@ export default function Game() {
     socket.on("game:status", (status) => {
       setState({
         ...state,
-        status: status,
+        status,
         question: {
           ...state.question,
           current: status.question,

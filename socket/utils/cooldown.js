@@ -1,5 +1,5 @@
-let cooldownTimeout
-let cooldownResolve
+let cooldownTimeout = null
+let cooldownResolve = null
 
 export const abortCooldown = () => {
   clearInterval(cooldownTimeout)
@@ -20,10 +20,11 @@ export const cooldown = (ms, io, room) => {
         clearInterval(cooldownTimeout)
         resolve()
       }
+
       io.to(room).emit("game:cooldown", count)
       count -= 1
     }, 1000)
   })
 }
 
-export const sleep = (sec) => new Promise((r) => setTimeout(r, sec * 1000))
+export const sleep = (sec) => new Promise((r) => void setTimeout(r, sec * 1000))

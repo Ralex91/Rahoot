@@ -1,4 +1,3 @@
-import Loader from "@/components/Loader"
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,
@@ -34,19 +33,27 @@ export default function Podium({ data: { subject, top } }) {
 
   useEffect(() => {
     console.log(apparition)
+
     switch (apparition) {
       case 4:
         sfxRoolStop()
         sfxFirst()
+
         break
+
       case 3:
         sfxRool()
+
         break
+
       case 2:
         sfxSecond()
+
         break
+
       case 1:
         sfxtThree()
+
         break
     }
   }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool])
@@ -54,17 +61,21 @@ export default function Podium({ data: { subject, top } }) {
   useEffect(() => {
     if (top.length < 3) {
       setApparition(4)
+
       return
     }
 
     const interval = setInterval(() => {
       if (apparition > 4) {
         clearInterval(interval)
+
         return
       }
+
       setApparition((value) => value + 1)
     }, 2000)
 
+    // eslint-disable-next-line consistent-return
     return () => clearInterval(interval)
   }, [apparition])
 

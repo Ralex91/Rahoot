@@ -1,7 +1,3 @@
-import AnswerButton from "../../AnswerButton"
-import { useSocketContext } from "@/context/socket"
-import { useEffect, useRef, useState } from "react"
-import clsx from "clsx"
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
@@ -9,8 +5,12 @@ import {
   SFX_ANSWERS_SOUND,
   SFX_RESULTS_SOUND,
 } from "@/constants"
-import useSound from "use-sound"
 import { usePlayerContext } from "@/context/player"
+import { useSocketContext } from "@/context/socket"
+import clsx from "clsx"
+import { useEffect, useState } from "react"
+import useSound from "use-sound"
+import AnswerButton from "../../AnswerButton"
 
 const calculatePercentages = (objectResponses) => {
   const keys = Object.keys(objectResponses)
@@ -25,10 +25,10 @@ const calculatePercentages = (objectResponses) => {
     0,
   )
 
-  let result = {}
+  const result = {}
 
-  keys.map((key) => {
-    result[key] = ((objectResponses[key] / totalSum) * 100).toFixed() + "%"
+  keys.forEach((key) => {
+    result[key] = `${((objectResponses[key] / totalSum) * 100).toFixed()}%`
   })
 
   return result
@@ -72,6 +72,7 @@ export default function Answers({
   useEffect(() => {
     if (!responses) {
       playMusic()
+
       return
     }
 
@@ -87,11 +88,12 @@ export default function Answers({
     }
   }, [isPlaying])
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       stopMusic()
-    }
-  }, [playMusic, stopMusic])
+    },
+    [playMusic, stopMusic],
+  )
 
   useEffect(() => {
     socket.on("game:cooldown", (sec) => {
@@ -121,8 +123,12 @@ export default function Answers({
           {question}
         </h2>
 
-        {!!image && !responses && (
-          <img src={image} className="h-48 max-h-60 w-auto rounded-md" />
+        {Boolean(image) && !responses && (
+          <img
+            alt={question}
+            src={image}
+            className="h-48 max-h-60 w-auto rounded-md"
+          />
         )}
 
         {responses && (
@@ -156,7 +162,9 @@ export default function Answers({
             </div>
             <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
               <span className="translate-y-1 text-sm">Answers</span>
-              <span>{totalAnswer}/{totalPlayer}</span>
+              <span>
+                {totalAnswer}/{totalPlayer}
+              </span>
             </div>
           </div>
         )}

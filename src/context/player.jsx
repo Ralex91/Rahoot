@@ -6,6 +6,7 @@ export function playerReducer(state, action) {
   switch (action.type) {
     case "JOIN":
       return { player: { ...state.player, room: action.payload } }
+
     case "LOGIN":
       return {
         player: {
@@ -14,10 +15,13 @@ export function playerReducer(state, action) {
           points: 0,
         },
       }
+
     case "UPDATE":
       return { player: { ...state.player, ...action.payload } }
+
     case "LOGOUT":
       return { player: null }
+
     default:
       return state
   }

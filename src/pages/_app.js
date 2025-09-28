@@ -3,7 +3,7 @@ import { PlayerContextProvider } from "@/context/player"
 import { SocketContextProvider } from "@/context/socket"
 import "@/styles/globals.css"
 import clsx from "clsx"
-import { Montserrat, Plaster } from "next/font/google"
+import { Montserrat } from "next/font/google"
 import Head from "next/head"
 
 const montserrat = Montserrat({ subsets: ["latin"] })

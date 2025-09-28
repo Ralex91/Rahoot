@@ -9,7 +9,8 @@
     "socket": "node ./socket/index.js",
     "all": "npm run build && concurrently --kill-others \"npm run start\" \"npm run socket\"",
     "all-dev": "concurrently --kill-others \"npm run dev\" \"npm run socket\"",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "next:lint": "next lint"
   },
   "dependencies": {
     "clsx": "^2.1.0",
@@ -26,10 +27,10 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0",
+    "eslint": "^9.36.0",
+    "eslint-config-next": "^15.5.4",
     "postcss": "^8",
-    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.3.0"
   }
 }

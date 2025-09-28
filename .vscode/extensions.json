@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "meganrogge.template-string-converter",
+    "vincaslt.highlight-matching-tag",
+    "formulahendry.auto-rename-tag",
+    "naumovs.color-highlight"
+  ]
+}

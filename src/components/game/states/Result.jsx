@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import useSound from "use-sound"
 
 export default function Result({
-  data: { correct, message, points, myPoints, totalPlayer, rank, aheadOfMe },
+  data: { correct, message, points, myPoints, rank, aheadOfMe },
 }) {
   const { dispatch } = usePlayerContext()
 
@@ -34,7 +34,7 @@ export default function Result({
         {message}
       </h2>
       <p className="mt-1 text-xl font-bold text-white drop-shadow-lg">
-        {`You are top ${rank}` + (aheadOfMe ? ", behind " + aheadOfMe : "")}
+        {`You are top ${rank}${aheadOfMe ? `, behind ${aheadOfMe}` : ""}`}
       </p>
       {correct && (
         <span className="mt-2 rounded bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
