@@ -4,22 +4,33 @@ import Username from "@/components/game/join/Username"
 import { usePlayerContext } from "@/context/player"
 import { useSocketContext } from "@/context/socket"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
 export default function Home() {
-  const { player } = usePlayerContext()
+  const { player, dispatch } = usePlayerContext()
   const { socket } = useSocketContext()
+  const router = useRouter()
 
   useEffect(() => {
     socket.on("game:errorMessage", (message) => {
       toast.error(message)
     })
+//rejoining
+    const onRejoinSuccess = ({ username, room }) => {
+      dispatch({ type: "JOIN", payload: room })
+      dispatch({ type: "LOGIN", payload: username })
+      router.replace("/game")
+    }
+
+    socket.on("game:rejoinSuccess", onRejoinSuccess)
 
     return () => {
       socket.off("game:errorMessage")
+      socket.off("game:rejoinSuccess", onRejoinSuccess)
     }
-  }, [socket])
+  }, [])
 
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center">

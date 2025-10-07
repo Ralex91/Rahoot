@@ -4,6 +4,11 @@ import Manager from "./roles/manager.js"
 import Player from "./roles/player.js"
 import { abortCooldown } from "./utils/cooldown.js"
 import deepClone from "./utils/deepClone.js"
+//extra module import
+import {
+  saveDisconnectedPlayer,
+  sweepExpiredDisconnectedPlayers
+} from "./utils/disconnectedStore.js"
 
 let gameState = deepClone(GAME_STATE_INIT)
 
@@ -16,6 +21,11 @@ const io = new Server({
 console.log(`Server running on port ${WEBSOCKET_SERVER_PORT}`)
 io.listen(WEBSOCKET_SERVER_PORT)
 
+//sweep expired disconnected players every minute
+setInterval(() => {
+  sweepExpiredDisconnectedPlayers()
+}, 60 * 1000)
+
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
 
@@ -25,6 +35,11 @@ io.on("connection", (socket) => {
 
   socket.on("player:join", (player) =>
     Player.join(gameState, io, socket, player),
+  )
+
+  //main websocketlogic for rejoining
+  socket.on("player:rejoin", ({ sessionToken }) => 
+    Player.rejoin(gameState, io, socket, { sessionToken }),
   )
 
   socket.on("manager:createRoom", (password) =>
@@ -52,7 +67,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`user disconnected ${socket.id}`)
-
     if (gameState.manager === socket.id) {
       console.log("Reset game")
       io.to(gameState.room).emit("game:reset")
@@ -67,8 +81,18 @@ io.on("connection", (socket) => {
     const player = gameState.players.find((p) => p.id === socket.id)
 
     if (player) {
-      gameState.players = gameState.players.filter((p) => p.id !== socket.id)
-      socket.to(gameState.manager).emit("manager:removePlayer", player.id)
+      //instead of immediate removal, move to disconnected store with 5 min TTL
+      const sessionToken = player.sessionToken
+      if (sessionToken) {
+        saveDisconnectedPlayer(sessionToken, {
+          playerId: player.id,
+          username: player.username,
+          roomId: gameState.room,
+          points: player.points,
+          expiresAt: Date.now() + 5 * 60 * 1000,
+        })
+      }
+      //keep player in list so counts remain stable
     }
   })
 })

@@ -12,8 +12,13 @@ export default function Username() {
   const router = useRouter()
   const [username, setUsername] = useState("")
 
+//here we save the sessionToken in browser storage of player. if it exists, then the player can easily rejoin.
   const handleJoin = () => {
-    socket.emit("player:join", { username, room: player.room })
+    let sessionToken
+    try {
+      sessionToken = localStorage.getItem("rahoot_sessionToken")
+    } catch {}
+    socket.emit("player:join", { username: username, room: player.room, sessionToken })
   }
 
   const handleKeyDown = (event) => {
@@ -23,17 +28,26 @@ export default function Username() {
   }
 
   useEffect(() => {
-    socket.on("game:successJoin", () => {
-      dispatch({
-        type: "LOGIN",
-        payload: username,
-      })
-
+    const onSuccessJoin = ({ sessionToken }) => { //using sessionToken
+      try {
+        localStorage.setItem("rahoot_sessionToken", sessionToken)
+      } catch {}
+      dispatch({ type: "LOGIN", payload: username })
       router.replace("/game")
-    })
+    }
+
+    const onRejoinSuccess = ({ username: uname, room }) => { //using username
+      dispatch({ type: "JOIN", payload: room })
+      dispatch({ type: "LOGIN", payload: uname })
+      router.replace("/game")
+    }
+
+    socket.on("game:successJoin", onSuccessJoin)
+    socket.on("game:rejoinSuccess", onRejoinSuccess)
 
     return () => {
-      socket.off("game:successJoin")
+      socket.off("game:successJoin", onSuccessJoin)
+      socket.off("game:rejoinSuccess", onRejoinSuccess)
     }
   }, [username])
 
