@@ -1,0 +1,13 @@
+{
+  "name": "@rahoot/common",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "socket.io": "^4.8.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

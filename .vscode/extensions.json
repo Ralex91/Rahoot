@@ -2,6 +2,8 @@
   "recommendations": [
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
+    "usernamehw.errorlens",
+    "YoavBls.pretty-ts-errors",
     "bradlc.vscode-tailwindcss",
     "meganrogge.template-string-converter",
     "vincaslt.highlight-matching-tag",

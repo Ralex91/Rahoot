@@ -1,0 +1,44 @@
+"use client"
+
+import Button from "@rahoot/web/components/Button"
+import Form from "@rahoot/web/components/Form"
+import Input from "@rahoot/web/components/Input"
+import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
+import { usePlayerStore } from "@rahoot/web/stores/player"
+
+import { useRouter } from "next/navigation"
+import { KeyboardEvent, useState } from "react"
+
+export default function Username() {
+  const { socket } = useSocket()
+  const { player, login } = usePlayerStore()
+  const router = useRouter()
+  const [username, setUsername] = useState("")
+
+  const handleLogin = () => {
+    socket?.emit("player:login", { gameId: player?.gameId, data: { username } })
+  }
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleLogin()
+    }
+  }
+
+  useEvent("game:successJoin", (gameId) => {
+    login(username)
+
+    router.replace(`/game/${gameId}`)
+  })
+
+  return (
+    <Form>
+      <Input
+        onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Username here"
+      />
+      <Button onClick={handleLogin}>Submit</Button>
+    </Form>
+  )
+}
