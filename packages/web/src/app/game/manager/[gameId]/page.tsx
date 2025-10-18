@@ -11,16 +11,20 @@ import Responses from "@rahoot/web/components/game/states/Responses"
 import Room from "@rahoot/web/components/game/states/Room"
 import Start from "@rahoot/web/components/game/states/Start"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
-import { useManagerGameStore } from "@rahoot/web/stores/game"
+import { useManagerStore } from "@rahoot/web/stores/manager"
+import { useQuestionStore } from "@rahoot/web/stores/question"
 import { GAME_STATE_COMPONENTS_MANAGER } from "@rahoot/web/utils/constants"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function ManagerGame() {
-  const { socket } = useSocket()
+  const router = useRouter()
+  const { gameId: gameIdParam }: { gameId?: string } = useParams()
+  const { socket, isConnected } = useSocket()
   const [nextText, setNextText] = useState("Start")
-  const { status, setStatus } = useManagerGameStore()
-  const { gameId }: { gameId?: string } = useParams()
+  const { gameId, status, setGameId, setStatus, setPlayers } = useManagerStore()
+  const { setQuestionStates } = useQuestionStore()
 
   useEvent("game:status", ({ name, data }) => {
     if (name in GAME_STATE_COMPONENTS_MANAGER) {
@@ -28,11 +32,40 @@ export default function ManagerGame() {
     }
   })
 
+  useEvent("connect", () => {
+    if (gameIdParam) {
+      socket?.emit("manager:reconnect", { gameId: gameIdParam })
+    }
+  })
+
+  useEvent(
+    "manager:successReconnect",
+    ({ gameId, status, players, currentQuestion }) => {
+      setGameId(gameId)
+      setStatus(status.name, status.data)
+      setPlayers(players)
+      setQuestionStates(currentQuestion)
+    },
+  )
+
+  useEvent("game:reset", () => {
+    router.replace("/manager")
+    toast("Game is not available anymore")
+  })
+
   useEffect(() => {
-    if (status.name === "SHOW_START") {
+    if (status.name === Status.SHOW_START) {
       setNextText("Start")
     }
   }, [status.name])
+
+  if (!isConnected) {
+    return null
+  }
+
+  if (!gameId) {
+    return null
+  }
 
   const handleSkip = () => {
     setNextText("Skip")

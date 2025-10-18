@@ -1,5 +1,5 @@
 import { Server as ServerIO, Socket as SocketIO } from "socket.io"
-import { Player, QuizzWithId } from "."
+import { GameUpdateQuestion, Player, QuizzWithId } from "."
 import { Status, StatusDataMap } from "./status"
 
 export type Server = ServerIO<ClientToServerEvents, ServerToClientEvents>
@@ -21,6 +21,8 @@ export type MessageGameId = {
 }
 
 export interface ServerToClientEvents {
+  connect: () => void
+
   // Game events
   "game:status": (data: { name: Status; data: StatusDataMap[Status] }) => void
   "game:successRoom": (data: string) => void
@@ -33,9 +35,23 @@ export interface ServerToClientEvents {
   "game:reset": () => void
   "game:updateQuestion": (data: { current: number; total: number }) => void
   "game:playerAnswer": (count: number) => void
+
+  // Player events
+  "player:successReconnect": (data: {
+    gameId: string
+    status: { name: Status; data: StatusDataMap[Status] }
+    player: { username: string; points: number }
+    currentQuestion: GameUpdateQuestion
+  }) => void
   "player:updateLeaderboard": (data: { leaderboard: Player[] }) => void
 
   // Manager events
+  "manager:successReconnect": (data: {
+    gameId: string
+    status: { name: Status; data: StatusDataMap[Status] }
+    players: Player[]
+    currentQuestion: GameUpdateQuestion
+  }) => void
   "manager:quizzList": (quizzList: QuizzWithId[]) => void
   "manager:gameCreated": (data: { gameId: string; inviteCode: string }) => void
   "manager:statusUpdate": (data: {
@@ -52,6 +68,7 @@ export interface ClientToServerEvents {
   // Manager actions
   "game:create": (quizzId: string) => void
   "manager:auth": (password: string) => void
+  "manager:reconnect": (message: { gameId: string }) => void
   "manager:kickPlayer": (
     message: MessageWithoutStatus<{ playerId: string }>
   ) => void
@@ -63,6 +80,7 @@ export interface ClientToServerEvents {
   // Player actions
   "player:join": (inviteCode: string) => void
   "player:login": (message: MessageWithoutStatus<{ username: string }>) => void
+  "player:reconnect": (message: { gameId: string }) => void
   "player:selectedAnswer": (
     message: MessageWithoutStatus<{ answerKey: number }>
   ) => void

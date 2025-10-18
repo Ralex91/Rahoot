@@ -1,5 +1,6 @@
 export type Player = {
   id: string
+  clientId: string
   username: string
   points: number
 }

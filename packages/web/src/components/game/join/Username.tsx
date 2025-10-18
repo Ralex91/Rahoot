@@ -11,12 +11,16 @@ import { KeyboardEvent, useState } from "react"
 
 export default function Username() {
   const { socket } = useSocket()
-  const { player, login } = usePlayerStore()
+  const { gameId, login } = usePlayerStore()
   const router = useRouter()
   const [username, setUsername] = useState("")
 
   const handleLogin = () => {
-    socket?.emit("player:login", { gameId: player?.gameId, data: { username } })
+    if (!gameId) {
+      return
+    }
+
+    socket?.emit("player:login", { gameId, data: { username } })
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {

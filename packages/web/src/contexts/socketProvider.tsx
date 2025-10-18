@@ -1,5 +1,6 @@
 /* eslint-disable no-empty-function */
 "use client"
+
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -13,12 +14,14 @@ import React, {
   useState,
 } from "react"
 import { io, Socket } from "socket.io-client"
+import { v7 as uuid } from "uuid"
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
 interface SocketContextValue {
   socket: TypedSocket | null
   isConnected: boolean
+  clientId: string
   connect: () => void
   disconnect: () => void
   reconnect: () => void
@@ -27,6 +30,7 @@ interface SocketContextValue {
 const SocketContext = createContext<SocketContextValue>({
   socket: null,
   isConnected: false,
+  clientId: "",
   connect: () => {},
   disconnect: () => {},
   reconnect: () => {},
@@ -38,11 +42,33 @@ const getSocketServer = async () => {
   return res.url
 }
 
+const getClientId = (): string => {
+  try {
+    const stored = localStorage.getItem("client_id")
+
+    if (stored) {
+      return stored
+    }
+
+    const newId = uuid()
+    localStorage.setItem("client_id", newId)
+
+    return newId
+  } catch {
+    return uuid()
+  }
+}
+
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<TypedSocket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
+  const [clientId] = useState<string>(() => getClientId())
 
   useEffect(() => {
+    if (socket) {
+      return
+    }
+
     let s: TypedSocket | null = null
 
     const initSocket = async () => {
@@ -52,6 +78,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         s = io(socketUrl, {
           transports: ["websocket"],
           autoConnect: false,
+          auth: {
+            clientId,
+          },
         })
 
         setSocket(s)
@@ -61,7 +90,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         })
 
         s.on("disconnect", () => {
-          console.log("Socket disconnected")
           setIsConnected(false)
         })
 
@@ -75,28 +103,26 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     initSocket()
 
+    // eslint-disable-next-line consistent-return
     return () => {
       s?.disconnect()
     }
-  }, [])
+  }, [clientId])
 
   const connect = useCallback(() => {
     if (socket && !socket.connected) {
-      console.log("🔌 Manual connect")
       socket.connect()
     }
   }, [socket])
 
   const disconnect = useCallback(() => {
     if (socket && socket.connected) {
-      console.log("🧹 Manual disconnect")
       socket.disconnect()
     }
   }, [socket])
 
   const reconnect = useCallback(() => {
     if (socket) {
-      console.log("♻️ Manual reconnect")
       socket.disconnect()
       socket.connect()
     }
@@ -107,6 +133,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         socket,
         isConnected,
+        clientId,
         connect,
         disconnect,
         reconnect,

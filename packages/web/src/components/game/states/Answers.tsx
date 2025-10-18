@@ -33,9 +33,10 @@ export default function Answers({
     volume: 0.1,
   })
 
-  const [playMusic] = useSound(SFX_ANSWERS_MUSIC, {
+  const [playMusic, { stop: stopMusic }] = useSound(SFX_ANSWERS_MUSIC, {
     volume: 0.2,
     interrupt: true,
+    loop: true,
   })
 
   const handleAnswer = (answerKey: number) => () => {
@@ -53,9 +54,12 @@ export default function Answers({
   }
 
   useEffect(() => {
-    console.log("play music")
     playMusic()
-  }, [])
+
+    return () => {
+      stopMusic()
+    }
+  }, [playMusic])
 
   useEvent("game:cooldown", (sec) => {
     setCooldown(sec)

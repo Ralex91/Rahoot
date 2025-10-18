@@ -4,12 +4,12 @@ import { QuizzWithId } from "@rahoot/common/types/game"
 import ManagerPassword from "@rahoot/web/components/game/create/ManagerPassword"
 import SelectQuizz from "@rahoot/web/components/game/create/SelectQuizz"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
-import { useManagerGameStore } from "@rahoot/web/stores/game"
+import { useManagerStore } from "@rahoot/web/stores/manager"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function Manager() {
-  const { setStatus } = useManagerGameStore()
+  const { setGameId, setStatus } = useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
 
@@ -22,6 +22,7 @@ export default function Manager() {
   })
 
   useEvent("manager:gameCreated", ({ gameId, inviteCode }) => {
+    setGameId(gameId)
     setStatus("SHOW_ROOM", { text: "Waiting for the players", inviteCode })
     router.push(`/game/manager/${gameId}`)
   })
@@ -32,7 +33,6 @@ export default function Manager() {
   const handleCreate = (quizzId: string) => {
     console.log(quizzId)
     socket?.emit("game:create", quizzId)
-    console.log("create room")
   }
 
   if (!isAuth) {

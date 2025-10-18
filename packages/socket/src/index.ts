@@ -1,7 +1,12 @@
-import { Server, Socket } from "@rahoot/common/types/game/socket"
+import { Server } from "@rahoot/common/types/game/socket"
 import env from "@rahoot/socket/env"
 import Config from "@rahoot/socket/services/config"
 import Game from "@rahoot/socket/services/game"
+import {
+  findManagerGameByClientId,
+  findPlayerGameByClientId,
+  withGame,
+} from "@rahoot/socket/utils/game"
 import { inviteCodeValidator } from "@rahoot/socket/utils/validator"
 import { Server as ServerIO } from "socket.io"
 
@@ -14,34 +19,36 @@ const port = env.SOCKER_PORT || 3001
 console.log(`Socket server running on port ${port}`)
 io.listen(Number(port))
 
-function withGame<T>(
-  gameId: string | undefined,
-  socket: Socket,
-  games: Game[],
-  handler: (game: Game) => T
-): T | void {
-  let game = null
-
-  if (gameId) {
-    game = games.find((g) => g.gameId === gameId)
-  } else {
-    game = games.find(
-      (g) =>
-        g.players.find((p) => p.id === socket.id) || g.managerId === socket.id
-    )
-  }
-
-  if (!game) {
-    socket.emit("game:errorMessage", "Game not found")
-    return
-  }
-
-  return handler(game)
-}
-
 io.on("connection", (socket) => {
   console.log(`A user connected ${socket.id}`)
   console.log(socket.handshake.auth)
+
+  socket.on("player:reconnect", () => {
+    const game = findPlayerGameByClientId(socket.handshake.auth.clientId, games)
+
+    if (game) {
+      game.reconnect(socket)
+
+      return
+    }
+
+    socket.emit("game:reset")
+  })
+
+  socket.on("manager:reconnect", () => {
+    const game = findManagerGameByClientId(
+      socket.handshake.auth.clientId,
+      games
+    )
+
+    if (game) {
+      game.reconnect(socket)
+
+      return
+    }
+
+    socket.emit("game:reset")
+  })
 
   socket.on("manager:auth", (password) => {
     try {
@@ -121,14 +128,14 @@ io.on("connection", (socket) => {
   )
 
   socket.on("manager:showLeaderboard", ({ gameId }) =>
-    withGame(gameId, socket, games, (game) => game.showLeaderboard(socket))
+    withGame(gameId, socket, games, (game) => game.showLeaderboard())
   )
 
   socket.on("disconnect", () => {
     console.log(`user disconnected ${socket.id}`)
-    const managerGame = games.find((g) => g.managerId === socket.id)
+    const managerGame = games.find((g) => g.manager.id === socket.id)
 
-    if (managerGame) {
+    if (managerGame && !managerGame.started) {
       console.log("Reset game (manager disconnected)")
 
       managerGame.abortCooldown()
@@ -141,19 +148,21 @@ io.on("connection", (socket) => {
 
     const game = games.find((g) => g.players.some((p) => p.id === socket.id))
 
-    if (game) {
-      const player = game.players.find((p) => p.id === socket.id)
-
-      if (player) {
-        game.players = game.players.filter((p) => p.id !== socket.id)
-
-        io.to(game.managerId).emit("manager:removePlayer", player.id)
-        io.to(game.gameId).emit("game:totalPlayers", game.players.length)
-
-        console.log(
-          `Removed player ${player.username} from game ${game.gameId}`
-        )
-      }
+    if (!game || game.started) {
+      return
     }
+
+    const player = game.players.find((p) => p.id === socket.id)
+
+    if (!player) {
+      return
+    }
+
+    game.players = game.players.filter((p) => p.id !== socket.id)
+
+    io.to(game.manager.id).emit("manager:removePlayer", player.id)
+    io.to(game.gameId).emit("game:totalPlayers", game.players.length)
+
+    console.log(`Removed player ${player.username} from game ${game.gameId}`)
   })
 })

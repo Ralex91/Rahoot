@@ -1,13 +1,13 @@
 "use client"
 
-import { GameUpdateQuestion } from "@rahoot/common/types/game"
 import background from "@rahoot/web/assets/background.webp"
 import Button from "@rahoot/web/components/Button"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
+import { useQuestionStore } from "@rahoot/web/stores/question"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren, useEffect } from "react"
 
 type Props = PropsWithChildren & {
   textNext?: string
@@ -23,9 +23,8 @@ export default function GameWrapper({
 }: Props) {
   const { isConnected, connect } = useSocket()
   const { player, logout } = usePlayerStore()
+  const { questionStates, setQuestionStates } = useQuestionStore()
   const router = useRouter()
-
-  const [questionState, setQuestionState] = useState<GameUpdateQuestion>()
 
   useEffect(() => {
     if (!isConnected) {
@@ -39,7 +38,7 @@ export default function GameWrapper({
   })
 
   useEvent("game:updateQuestion", ({ current, total }) => {
-    setQuestionState({
+    setQuestionStates({
       current,
       total,
     })
@@ -56,9 +55,9 @@ export default function GameWrapper({
       </div>
 
       <div className="flex w-full justify-between p-4">
-        {questionState && (
+        {questionStates && (
           <div className="shadow-inset flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
-            {`${questionState.current} / ${questionState.total}`}
+            {`${questionStates.current} / ${questionStates.total}`}
           </div>
         )}
 

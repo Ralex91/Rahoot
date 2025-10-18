@@ -1,32 +1,54 @@
 /* eslint-disable no-unused-vars */
+import { StatusDataMap } from "@rahoot/common/types/game/status"
+import { createStatus, Status } from "@rahoot/web/utils/createStatus"
 import { create } from "zustand"
 
 type PlayerState = {
-  gameId?: string
   username?: string
   points?: number
 }
 
-type PlayerStore = {
+type PlayerStore<T> = {
+  gameId: string | null
   player: PlayerState | null
+  status: Status<T>
+
+  setGameId: (gameId: string | null) => void
+
+  setPlayer: (state: PlayerState) => void
   login: (gameId: string) => void
   join: (username: string) => void
   updatePoints: (points: number) => void
   logout: () => void
+
+  setStatus: <K extends keyof T>(name: K, data: T[K]) => void
+  resetStatus: () => void
 }
 
-export const usePlayerStore = create<PlayerStore>((set) => ({
-  player: null,
+const initialStatus = createStatus<StatusDataMap, "WAIT">("WAIT", {
+  text: "Waiting for the players",
+})
 
+export const usePlayerStore = create<PlayerStore<StatusDataMap>>((set) => ({
+  gameId: null,
+  player: null,
+  status: initialStatus,
+  currentQuestion: null,
+
+  setGameId: (gameId) => set({ gameId }),
+
+  setPlayer: (player: PlayerState) => set({ player }),
   login: (username) =>
     set((state) => ({
       player: { ...state.player, username },
     })),
 
-  join: (gameId) =>
+  join: (gameId) => {
     set((state) => ({
-      player: { ...state.player, gameId, points: 0 },
-    })),
+      gameId,
+      player: { ...state.player, points: 0 },
+    }))
+  },
 
   updatePoints: (points) =>
     set((state) => ({
@@ -34,4 +56,7 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
     })),
 
   logout: () => set({ player: null }),
+
+  setStatus: (name, data) => set({ status: createStatus(name, data) }),
+  resetStatus: () => set({ status: initialStatus }),
 }))
