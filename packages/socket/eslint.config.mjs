@@ -1,45 +1,31 @@
 import js from "@eslint/js"
-import nextPlugin from "@next/eslint-plugin-next"
-import reactPlugin from "eslint-plugin-react"
-import reactHooksPlugin from "eslint-plugin-react-hooks"
 import { defineConfig } from "eslint/config"
 import globals from "globals"
 import tseslint from "typescript-eslint"
 
 export default defineConfig([
   {
-    ignores: ["**/node_modules/**", "**/.next/**"],
+    ignores: ["**/node_modules/**", "**/dist/**"],
   },
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.ts"],
     languageOptions: {
       ...js.configs.recommended.languageOptions,
       parser: tseslint.parser,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
-        ecmaFeatures: { jsx: true },
       },
       globals: {
-        ...globals.browser,
         ...globals.node,
       },
     },
     plugins: {
       "@typescript-eslint": tseslint.plugin,
-      react: reactPlugin,
-      "react-hooks": reactHooksPlugin,
-      "@next/next": nextPlugin,
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
     },
     rules: {
       ...js.configs.recommended.rules,
       ...tseslint.configs.recommendedTypeChecked[0].rules,
-      ...reactPlugin.configs.recommended.rules,
 
       "array-callback-return": [
         "error",
@@ -217,15 +203,6 @@ export default defineConfig([
       ],
       "space-before-blocks": "error",
       semi: ["error", "never"],
-
-      // React + Hooks + Next.js
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "off",
-      "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
-      "react/react-in-jsx-scope": "off",
-      "react/prop-types": "off",
-      "react/jsx-uses-vars": "error",
-      "react/jsx-uses-react": "off",
     },
   },
 ])

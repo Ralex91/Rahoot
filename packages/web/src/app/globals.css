@@ -5,6 +5,11 @@
   --color-secondary: #1a140b;
 }
 
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
 .btn-shadow {
   box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
 }

@@ -9,7 +9,7 @@ import Room from "@rahoot/web/components/game/states/Room"
 import Start from "@rahoot/web/components/game/states/Start"
 import Wait from "@rahoot/web/components/game/states/Wait"
 
-import { Status } from "@rahoot/common/types/game/status"
+import { STATUS } from "@rahoot/common/types/game/status"
 import Circle from "@rahoot/web/components/icons/Circle"
 import Rhombus from "@rahoot/web/components/icons/Rhombus"
 import Square from "@rahoot/web/components/icons/Square"
@@ -26,7 +26,7 @@ export const ANSWERS_ICONS = [Triangle, Rhombus, Circle, Square]
 
 export const GAME_STATES = {
   status: {
-    name: Status.WAIT,
+    name: STATUS.WAIT,
     data: { text: "Waiting for the players" },
   },
   question: {
@@ -36,20 +36,20 @@ export const GAME_STATES = {
 }
 
 export const GAME_STATE_COMPONENTS = {
-  [Status.SELECT_ANSWER]: Answers,
-  [Status.SHOW_QUESTION]: Question,
-  [Status.WAIT]: Wait,
-  [Status.SHOW_START]: Start,
-  [Status.SHOW_RESULT]: Result,
-  [Status.SHOW_PREPARED]: Prepared,
+  [STATUS.SELECT_ANSWER]: Answers,
+  [STATUS.SHOW_QUESTION]: Question,
+  [STATUS.WAIT]: Wait,
+  [STATUS.SHOW_START]: Start,
+  [STATUS.SHOW_RESULT]: Result,
+  [STATUS.SHOW_PREPARED]: Prepared,
 }
 
 export const GAME_STATE_COMPONENTS_MANAGER = {
   ...GAME_STATE_COMPONENTS,
-  [Status.SHOW_ROOM]: Room,
-  [Status.SHOW_RESPONSES]: Responses,
-  [Status.SHOW_LEADERBOARD]: Leaderboard,
-  [Status.FINISHED]: Podium,
+  [STATUS.SHOW_ROOM]: Room,
+  [STATUS.SHOW_RESPONSES]: Responses,
+  [STATUS.SHOW_LEADERBOARD]: Leaderboard,
+  [STATUS.FINISHED]: Podium,
 }
 
 export const SFX_ANSWERS_MUSIC = "/sounds/answersMusic.mp3"
@@ -61,3 +61,16 @@ export const SFX_PODIUM_THREE = "/sounds/three.mp3"
 export const SFX_PODIUM_SECOND = "/sounds/second.mp3"
 export const SFX_PODIUM_FIRST = "/sounds/first.mp3"
 export const SFX_SNEAR_ROOL = "/sounds/snearRoll.mp3"
+
+export const MANAGER_SKIP_BTN = {
+  [STATUS.SHOW_ROOM]: "Start Game",
+  [STATUS.SHOW_START]: null,
+  [STATUS.SHOW_PREPARED]: null,
+  [STATUS.SHOW_QUESTION]: null,
+  [STATUS.SELECT_ANSWER]: "Skip",
+  [STATUS.SHOW_RESULT]: null,
+  [STATUS.SHOW_RESPONSES]: "Next",
+  [STATUS.SHOW_LEADERBOARD]: "Next",
+  [STATUS.FINISHED]: null,
+  [STATUS.WAIT]: null,
+}

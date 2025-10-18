@@ -1,29 +1,28 @@
 import { Socket } from "@rahoot/common/types/game/socket"
 import Game from "@rahoot/socket/services/game"
+import Registry from "@rahoot/socket/services/registry"
 
-export const withGame = <T>(
+export const withGame = (
   gameId: string | undefined,
   socket: Socket,
-  games: Game[],
-  handler: (game: Game) => T
-): T | void => {
-  let game = null
-
-  if (gameId) {
-    game = games.find((g) => g.gameId === gameId)
-  } else {
-    game = games.find(
-      (g) =>
-        g.players.find((p) => p.id === socket.id) || g.manager.id === socket.id
-    )
-  }
-
-  if (!game) {
+  callback: (_game: Game) => void
+): void => {
+  if (!gameId) {
     socket.emit("game:errorMessage", "Game not found")
+
     return
   }
 
-  return handler(game)
+  const registry = Registry.getInstance()
+  const game = registry.getGameById(gameId)
+
+  if (!game) {
+    socket.emit("game:errorMessage", "Game not found")
+
+    return
+  }
+
+  callback(game)
 }
 
 export const createInviteCode = (length = 6) => {
@@ -49,26 +48,4 @@ export const timeToPoint = (startTime: number, secondes: number): number => {
   points = Math.max(0, points)
 
   return points
-}
-
-export const findPlayerGameByClientId = (clientId: string, games: Game[]) => {
-  const playerGame = games.find((g) =>
-    g.players.find((p) => p.clientId === clientId)
-  )
-
-  if (playerGame) {
-    return playerGame
-  }
-
-  return null
-}
-
-export const findManagerGameByClientId = (clientId: string, games: Game[]) => {
-  const managerGame = games.find((g) => g.manager.clientId === clientId)
-
-  if (managerGame) {
-    return managerGame
-  }
-
-  return null
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { Status } from "@rahoot/common/types/game/status"
+import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/components/game/GameWrapper"
 import Answers from "@rahoot/web/components/game/states/Answers"
 import Prepared from "@rahoot/web/components/game/states/Prepared"
@@ -17,10 +17,9 @@ import toast from "react-hot-toast"
 
 export default function Game() {
   const router = useRouter()
-  const { socket, isConnected } = useSocket()
+  const { socket } = useSocket()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
-  const { status, setPlayer, logout, setGameId, setStatus, resetStatus } =
-    usePlayerStore()
+  const { status, setPlayer, setGameId, setStatus, reset } = usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
 
   useEvent("connect", () => {
@@ -45,16 +44,16 @@ export default function Game() {
     }
   })
 
-  useEvent("game:reset", () => {
+  useEvent("game:kick", () => {
     router.replace("/")
-    resetStatus()
-    logout()
-    toast("The game has been reset by the host")
+    reset()
   })
 
-  if (!isConnected) {
-    return null
-  }
+  useEvent("game:reset", () => {
+    router.replace("/")
+    reset()
+    toast("The game has been reset by the host")
+  })
 
   if (!gameIdParam) {
     return null
@@ -63,36 +62,36 @@ export default function Game() {
   let component = null
 
   switch (status.name) {
-    case Status.WAIT:
+    case STATUS.WAIT:
       component = <Wait data={status.data} />
 
       break
 
-    case Status.SHOW_START:
+    case STATUS.SHOW_START:
       component = <Start data={status.data} />
 
       break
 
-    case Status.SHOW_PREPARED:
+    case STATUS.SHOW_PREPARED:
       component = <Prepared data={status.data} />
 
       break
 
-    case Status.SHOW_QUESTION:
+    case STATUS.SHOW_QUESTION:
       component = <Question data={status.data} />
 
       break
 
-    case Status.SHOW_RESULT:
+    case STATUS.SHOW_RESULT:
       component = <Result data={status.data} />
 
       break
 
-    case Status.SELECT_ANSWER:
+    case STATUS.SELECT_ANSWER:
       component = <Answers data={status.data} />
 
       break
   }
 
-  return <GameWrapper>{component}</GameWrapper>
+  return <GameWrapper statusName={status.name}>{component}</GameWrapper>
 }

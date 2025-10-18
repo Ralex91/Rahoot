@@ -1,18 +1,19 @@
-import { Player } from ".";
+import { Player } from "."
 
-export enum Status {
-  SHOW_ROOM = "SHOW_ROOM",
-  SHOW_START = "SHOW_START",
-  SHOW_PREPARED = "SHOW_PREPARED",
-  SHOW_QUESTION = "SHOW_QUESTION",
-  SELECT_ANSWER = "SELECT_ANSWER",
-  SHOW_RESULT = "SHOW_RESULT",
-  SHOW_RESPONSES = "SHOW_RESPONSES",
-  SHOW_LEADERBOARD = "SHOW_LEADERBOARD",
-  FINISHED = "FINISHED",
-  WAIT = "WAIT",
-}
+export const STATUS = {
+  SHOW_ROOM: "SHOW_ROOM",
+  SHOW_START: "SHOW_START",
+  SHOW_PREPARED: "SHOW_PREPARED",
+  SHOW_QUESTION: "SHOW_QUESTION",
+  SELECT_ANSWER: "SELECT_ANSWER",
+  SHOW_RESULT: "SHOW_RESULT",
+  SHOW_RESPONSES: "SHOW_RESPONSES",
+  SHOW_LEADERBOARD: "SHOW_LEADERBOARD",
+  FINISHED: "FINISHED",
+  WAIT: "WAIT",
+} as const
 
+export type Status = (typeof STATUS)[keyof typeof STATUS]
 
 export type CommonStatusDataMap = {
   SHOW_START: { time: number; subject: string }
@@ -49,10 +50,6 @@ type ManagerExtraStatus = {
   SHOW_LEADERBOARD: { leaderboard: Player[] }
 }
 
-type PlayerExtraStatus = {
-  WAIT: { text: string }
-}
-
-export type PlayerStatusDataMap = CommonStatusDataMap & PlayerExtraStatus
+export type PlayerStatusDataMap = CommonStatusDataMap
 export type ManagerStatusDataMap = CommonStatusDataMap & ManagerExtraStatus
 export type StatusDataMap = PlayerStatusDataMap & ManagerStatusDataMap

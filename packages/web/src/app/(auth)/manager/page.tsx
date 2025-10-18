@@ -31,7 +31,6 @@ export default function Manager() {
     socket?.emit("manager:auth", password)
   }
   const handleCreate = (quizzId: string) => {
-    console.log(quizzId)
     socket?.emit("game:create", quizzId)
   }
 

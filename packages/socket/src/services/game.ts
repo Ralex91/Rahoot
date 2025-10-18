@@ -1,6 +1,6 @@
 import { Answer, Player, Quizz } from "@rahoot/common/types/game"
 import { Server, Socket } from "@rahoot/common/types/game/socket"
-import { Status, StatusDataMap } from "@rahoot/common/types/game/status"
+import { Status, STATUS, StatusDataMap } from "@rahoot/common/types/game/status"
 import { createInviteCode, timeToPoint } from "@rahoot/socket/utils/game"
 import sleep from "@rahoot/socket/utils/sleep"
 import { v4 as uuid } from "uuid"
@@ -114,7 +114,7 @@ class Game {
     const playerData = {
       id: socket.id,
       clientId: socket.handshake.auth.clientId,
-      username: username,
+      username,
       points: 0,
     }
 
@@ -148,7 +148,7 @@ class Game {
   }
 
   reconnect(socket: Socket) {
-    const clientId = socket.handshake.auth.clientId
+    const { clientId } = socket.handshake.auth
     const isManager = this.manager.clientId === clientId
 
     if (!isManager) {
@@ -175,7 +175,7 @@ class Game {
 
       const status = this.managerStatus ||
         this.lastBroadcastStatus || {
-          name: Status.WAIT,
+          name: STATUS.WAIT,
           data: { text: "Waiting for players" },
         }
 
@@ -188,7 +188,7 @@ class Game {
 
       console.log(`Manager reconnected to game ${this.inviteCode}`)
 
-      return
+      return true
     }
 
     const player = this.players.find((p) => p.clientId === clientId)!
@@ -197,7 +197,7 @@ class Game {
 
     const status = this.playerStatus.get(oldSocketId) ||
       this.lastBroadcastStatus || {
-        name: Status.WAIT,
+        name: STATUS.WAIT,
         data: { text: "Waiting for players" },
       }
 
@@ -223,9 +223,9 @@ class Game {
     return true
   }
 
-  async startCooldown(seconds: number) {
+  startCooldown(seconds: number): Promise<void> {
     if (this.cooldown.active) {
-      return
+      return Promise.resolve()
     }
 
     this.cooldown.active = true
@@ -237,6 +237,7 @@ class Game {
           this.cooldown.active = false
           clearInterval(cooldownTimeout)
           resolve()
+
           return
         }
 
@@ -246,10 +247,8 @@ class Game {
     })
   }
 
-  async abortCooldown() {
-    if (this.cooldown.active) {
-      this.cooldown.active = false
-    }
+  abortCooldown() {
+    this.cooldown.active &&= false
   }
 
   async start(socket: Socket) {
@@ -263,7 +262,7 @@ class Game {
 
     this.started = true
 
-    this.broadcastStatus(Status.SHOW_START, {
+    this.broadcastStatus(STATUS.SHOW_START, {
       time: 3,
       subject: this.quizz.subject,
     })
@@ -290,7 +289,7 @@ class Game {
       total: this.quizz.questions.length,
     })
 
-    this.broadcastStatus(Status.SHOW_PREPARED, {
+    this.broadcastStatus(STATUS.SHOW_PREPARED, {
       totalAnswers: question.answers.length,
       questionNumber: this.round.currentQuestion + 1,
     })
@@ -301,7 +300,7 @@ class Game {
       return
     }
 
-    this.broadcastStatus(Status.SHOW_QUESTION, {
+    this.broadcastStatus(STATUS.SHOW_QUESTION, {
       question: question.question,
       image: question.image,
       cooldown: question.cooldown,
@@ -315,7 +314,7 @@ class Game {
 
     this.round.startTime = Date.now()
 
-    this.broadcastStatus(Status.SELECT_ANSWER, {
+    this.broadcastStatus(STATUS.SELECT_ANSWER, {
       question: question.question,
       answers: question.answers,
       image: question.image,
@@ -332,10 +331,11 @@ class Game {
     await this.showResults(question)
   }
 
-  async showResults(question: any) {
+  showResults(question: any) {
     const totalType = this.round.playersAnswers.reduce(
       (acc: Record<number, number>, { answerId }) => {
         acc[answerId] = (acc[answerId] || 0) + 1
+
         return acc
       },
       {}
@@ -366,7 +366,7 @@ class Game {
       const rank = index + 1
       const aheadPlayer = sortedPlayers[index - 1]
 
-      this.sendStatus(player.id, Status.SHOW_RESULT, {
+      this.sendStatus(player.id, STATUS.SHOW_RESULT, {
         correct: player.lastCorrect,
         message: player.lastCorrect ? "Nice!" : "Too bad",
         points: player.lastPoints,
@@ -376,7 +376,7 @@ class Game {
       })
     })
 
-    this.sendStatus(this.manager.id, Status.SHOW_RESPONSES, {
+    this.sendStatus(this.manager.id, STATUS.SHOW_RESPONSES, {
       question: question.question,
       responses: totalType,
       correct: question.solution,
@@ -387,7 +387,7 @@ class Game {
     this.round.playersAnswers = []
   }
 
-  async selectAnswer(socket: Socket, answerId: number) {
+  selectAnswer(socket: Socket, answerId: number) {
     const player = this.players.find((player) => player.id === socket.id)
     const question = this.quizz.questions[this.round.currentQuestion]
 
@@ -405,7 +405,7 @@ class Game {
       points: timeToPoint(this.round.startTime, question.time),
     })
 
-    this.sendStatus(socket.id, Status.WAIT, {
+    this.sendStatus(socket.id, STATUS.WAIT, {
       text: "Waiting for the players to answer",
     })
 
@@ -458,7 +458,7 @@ class Game {
     if (isLastRound) {
       this.started = false
 
-      this.broadcastStatus(Status.FINISHED, {
+      this.broadcastStatus(STATUS.FINISHED, {
         subject: this.quizz.subject,
         top: sortedPlayers.slice(0, 3),
       })
@@ -466,7 +466,7 @@ class Game {
       return
     }
 
-    this.sendStatus(this.manager.id, Status.SHOW_LEADERBOARD, {
+    this.sendStatus(this.manager.id, STATUS.SHOW_LEADERBOARD, {
       leaderboard: sortedPlayers.slice(0, 5),
     })
   }

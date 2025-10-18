@@ -24,65 +24,65 @@ export interface ServerToClientEvents {
   connect: () => void
 
   // Game events
-  "game:status": (data: { name: Status; data: StatusDataMap[Status] }) => void
-  "game:successRoom": (data: string) => void
-  "game:successJoin": (gameId: string) => void
-  "game:totalPlayers": (count: number) => void
-  "game:errorMessage": (message: string) => void
+  "game:status": (_data: { name: Status; data: StatusDataMap[Status] }) => void
+  "game:successRoom": (_data: string) => void
+  "game:successJoin": (_gameId: string) => void
+  "game:totalPlayers": (_count: number) => void
+  "game:errorMessage": (_message: string) => void
   "game:startCooldown": () => void
-  "game:cooldown": (count: number) => void
+  "game:cooldown": (_count: number) => void
   "game:kick": () => void
   "game:reset": () => void
-  "game:updateQuestion": (data: { current: number; total: number }) => void
-  "game:playerAnswer": (count: number) => void
+  "game:updateQuestion": (_data: { current: number; total: number }) => void
+  "game:playerAnswer": (_count: number) => void
 
   // Player events
-  "player:successReconnect": (data: {
+  "player:successReconnect": (_data: {
     gameId: string
     status: { name: Status; data: StatusDataMap[Status] }
     player: { username: string; points: number }
     currentQuestion: GameUpdateQuestion
   }) => void
-  "player:updateLeaderboard": (data: { leaderboard: Player[] }) => void
+  "player:updateLeaderboard": (_data: { leaderboard: Player[] }) => void
 
   // Manager events
-  "manager:successReconnect": (data: {
+  "manager:successReconnect": (_data: {
     gameId: string
     status: { name: Status; data: StatusDataMap[Status] }
     players: Player[]
     currentQuestion: GameUpdateQuestion
   }) => void
-  "manager:quizzList": (quizzList: QuizzWithId[]) => void
-  "manager:gameCreated": (data: { gameId: string; inviteCode: string }) => void
-  "manager:statusUpdate": (data: {
+  "manager:quizzList": (_quizzList: QuizzWithId[]) => void
+  "manager:gameCreated": (_data: { gameId: string; inviteCode: string }) => void
+  "manager:statusUpdate": (_data: {
     status: Status
     data: StatusDataMap[Status]
   }) => void
-  "manager:newPlayer": (player: Player) => void
-  "manager:removePlayer": (playerId: string) => void
-  "manager:errorMessage": (message: string) => void
-  "manager:playerKicked": (playerId: string) => void
+  "manager:newPlayer": (_player: Player) => void
+  "manager:removePlayer": (_playerId: string) => void
+  "manager:errorMessage": (_message: string) => void
+  "manager:playerKicked": (_playerId: string) => void
 }
 
 export interface ClientToServerEvents {
   // Manager actions
-  "game:create": (quizzId: string) => void
-  "manager:auth": (password: string) => void
-  "manager:reconnect": (message: { gameId: string }) => void
+  "game:create": (_quizzId: string) => void
+  "manager:auth": (_password: string) => void
+  "manager:reconnect": (_message: { gameId: string }) => void
   "manager:kickPlayer": (
-    message: MessageWithoutStatus<{ playerId: string }>
+    _message: MessageWithoutStatus<{ playerId: string }>
   ) => void
-  "manager:startGame": (message: MessageGameId) => void
-  "manager:abortQuiz": (message: MessageGameId) => void
-  "manager:nextQuestion": (message: MessageGameId) => void
-  "manager:showLeaderboard": (message: MessageGameId) => void
+  "manager:startGame": (_message: MessageGameId) => void
+  "manager:abortQuiz": (_message: MessageGameId) => void
+  "manager:nextQuestion": (_message: MessageGameId) => void
+  "manager:showLeaderboard": (_message: MessageGameId) => void
 
   // Player actions
-  "player:join": (inviteCode: string) => void
-  "player:login": (message: MessageWithoutStatus<{ username: string }>) => void
-  "player:reconnect": (message: { gameId: string }) => void
+  "player:join": (_inviteCode: string) => void
+  "player:login": (_message: MessageWithoutStatus<{ username: string }>) => void
+  "player:reconnect": (_message: { gameId: string }) => void
   "player:selectedAnswer": (
-    message: MessageWithoutStatus<{ answerKey: number }>
+    _message: MessageWithoutStatus<{ answerKey: number }>
   ) => void
 
   // Common

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "node esbuild.config.js",
-    "start": "node dist/index.cjs"
+    "start": "node dist/index.cjs",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +14,18 @@
   "dependencies": {
     "@rahoot/common": "workspace:*",
     "@t3-oss/env-core": "^0.13.8",
+    "dayjs": "^1.11.18",
     "socket.io": "^4.8.1",
     "uuid": "^13.0.0",
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@types/node": "^24.8.1",
     "esbuild": "^0.25.10",
-    "tsx": "^4.20.6"
+    "eslint": "^9",
+    "globals": "^16.4.0",
+    "tsx": "^4.20.6",
+    "typescript-eslint": "^8.46.1"
   }
 }

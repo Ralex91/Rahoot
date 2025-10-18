@@ -27,6 +27,9 @@ RUN pnpm install --frozen-lockfile
 
 # Build Next.js app with standalone output for smaller runtime image
 WORKDIR /app/packages/web
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN pnpm build
 
 # Build socket server if needed (TypeScript or similar)
@@ -55,6 +58,9 @@ COPY --from=builder /app/packages/web/public ./packages/web/public
 
 # Copy the socket server build
 COPY --from=builder /app/packages/socket/dist ./packages/socket/dist
+
+# Copy the game default config
+COPY --from=builder /app/config ./config
 
 # Expose the web and socket ports
 EXPOSE 3000 5505

@@ -2,11 +2,19 @@ import { QuizzWithId } from "@rahoot/common/types/game"
 import fs from "fs"
 import { resolve } from "path"
 
-const getPath = (path: string) => resolve(process.cwd(), "../../config", path)
+const getPath = (path: string = "") =>
+  resolve(process.cwd(), "../../config", path)
 
 class Config {
   static init() {
+    const isConfigFolderExists = fs.existsSync(getPath())
+
+    if (!isConfigFolderExists) {
+      fs.mkdirSync(getPath())
+    }
+
     const isGameConfigExists = fs.existsSync(getPath("game.json"))
+
     if (!isGameConfigExists) {
       fs.writeFileSync(
         getPath("game.json"),
@@ -22,6 +30,7 @@ class Config {
     }
 
     const isQuizzExists = fs.existsSync(getPath("quizz"))
+
     if (!isQuizzExists) {
       fs.mkdirSync(getPath("quizz"))
 
@@ -65,20 +74,25 @@ class Config {
 
   static game() {
     const isExists = fs.existsSync(getPath("game.json"))
+
     if (!isExists) {
       throw new Error("Game config not found")
     }
 
     try {
       const config = fs.readFileSync(getPath("game.json"), "utf-8")
+
       return JSON.parse(config)
     } catch (error) {
       console.error("Failed to read game config:", error)
     }
+
+    return {}
   }
 
   static quizz() {
     const isExists = fs.existsSync(getPath("quizz"))
+
     if (!isExists) {
       return []
     }
@@ -99,9 +113,11 @@ class Config {
           ...config,
         }
       })
+
       return quizz || []
     } catch (error) {
       console.error("Failed to read quizz config:", error)
+
       return []
     }
   }

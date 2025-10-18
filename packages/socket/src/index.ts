@@ -1,30 +1,28 @@
 import { Server } from "@rahoot/common/types/game/socket"
+import { inviteCodeValidator } from "@rahoot/common/validators/auth"
 import env from "@rahoot/socket/env"
 import Config from "@rahoot/socket/services/config"
 import Game from "@rahoot/socket/services/game"
-import {
-  findManagerGameByClientId,
-  findPlayerGameByClientId,
-  withGame,
-} from "@rahoot/socket/utils/game"
-import { inviteCodeValidator } from "@rahoot/socket/utils/validator"
+import Registry from "@rahoot/socket/services/registry"
+import { withGame } from "@rahoot/socket/utils/game"
 import { Server as ServerIO } from "socket.io"
 
 const io: Server = new ServerIO()
 Config.init()
 
-let games: Game[] = []
+const registry = Registry.getInstance()
 const port = env.SOCKER_PORT || 3001
 
 console.log(`Socket server running on port ${port}`)
 io.listen(Number(port))
 
 io.on("connection", (socket) => {
-  console.log(`A user connected ${socket.id}`)
-  console.log(socket.handshake.auth)
+  console.log(
+    `A user connected: socketId: ${socket.id}, clientId: ${socket.handshake.auth.clientId}`
+  )
 
   socket.on("player:reconnect", () => {
-    const game = findPlayerGameByClientId(socket.handshake.auth.clientId, games)
+    const game = registry.getPlayerGame(socket.handshake.auth.clientId)
 
     if (game) {
       game.reconnect(socket)
@@ -36,13 +34,11 @@ io.on("connection", (socket) => {
   })
 
   socket.on("manager:reconnect", () => {
-    const game = findManagerGameByClientId(
-      socket.handshake.auth.clientId,
-      games
-    )
+    const game = registry.getManagerGame(socket.handshake.auth.clientId)
 
     if (game) {
       game.reconnect(socket)
+      registry.reactivateGame(game.gameId)
 
       return
     }
@@ -56,6 +52,7 @@ io.on("connection", (socket) => {
 
       if (password !== config.managerPassword) {
         socket.emit("manager:errorMessage", "Invalid password")
+
         return
       }
 
@@ -72,23 +69,24 @@ io.on("connection", (socket) => {
 
     if (!quizz) {
       socket.emit("game:errorMessage", "Quizz not found")
+
       return
     }
 
     const game = new Game(io, socket, quizz)
-
-    games.push(game)
+    registry.addGame(game)
   })
 
-  socket.on("player:join", async (inviteCode) => {
+  socket.on("player:join", (inviteCode) => {
     const result = inviteCodeValidator.safeParse(inviteCode)
 
     if (result.error) {
       socket.emit("game:errorMessage", result.error.issues[0].message)
+
       return
     }
 
-    const game = games.find((g) => g.inviteCode === inviteCode)
+    const game = registry.getGameByInviteCode(inviteCode)
 
     if (!game) {
       socket.emit("game:errorMessage", "Game not found")
@@ -100,53 +98,54 @@ io.on("connection", (socket) => {
   })
 
   socket.on("player:login", ({ gameId, data }) =>
-    withGame(gameId, socket, games, (game) => game.join(socket, data.username))
+    withGame(gameId, socket, (game) => game.join(socket, data.username))
   )
 
   socket.on("manager:kickPlayer", ({ gameId, data }) =>
-    withGame(gameId, socket, games, (game) =>
-      game.kickPlayer(socket, data.playerId)
-    )
+    withGame(gameId, socket, (game) => game.kickPlayer(socket, data.playerId))
   )
 
   socket.on("manager:startGame", ({ gameId }) =>
-    withGame(gameId, socket, games, (game) => game.start(socket))
+    withGame(gameId, socket, (game) => game.start(socket))
   )
 
   socket.on("player:selectedAnswer", ({ gameId, data }) =>
-    withGame(gameId, socket, games, (game) =>
+    withGame(gameId, socket, (game) =>
       game.selectAnswer(socket, data.answerKey)
     )
   )
 
   socket.on("manager:abortQuiz", ({ gameId }) =>
-    withGame(gameId, socket, games, (game) => game.abortRound(socket))
+    withGame(gameId, socket, (game) => game.abortRound(socket))
   )
 
   socket.on("manager:nextQuestion", ({ gameId }) =>
-    withGame(gameId, socket, games, (game) => game.nextRound(socket))
+    withGame(gameId, socket, (game) => game.nextRound(socket))
   )
 
   socket.on("manager:showLeaderboard", ({ gameId }) =>
-    withGame(gameId, socket, games, (game) => game.showLeaderboard())
+    withGame(gameId, socket, (game) => game.showLeaderboard())
   )
 
   socket.on("disconnect", () => {
     console.log(`user disconnected ${socket.id}`)
-    const managerGame = games.find((g) => g.manager.id === socket.id)
 
-    if (managerGame && !managerGame.started) {
-      console.log("Reset game (manager disconnected)")
+    const managerGame = registry.getGameByManagerSocketId(socket.id)
 
-      managerGame.abortCooldown()
-      io.to(managerGame.gameId).emit("game:reset")
+    if (managerGame) {
+      registry.markGameAsEmpty(managerGame)
 
-      games = games.filter((g) => g.gameId !== managerGame.gameId)
+      if (!managerGame.started) {
+        console.log("Reset game (manager disconnected)")
+        managerGame.abortCooldown()
+        io.to(managerGame.gameId).emit("game:reset")
+        registry.removeGame(managerGame.gameId)
 
-      return
+        return
+      }
     }
 
-    const game = games.find((g) => g.players.some((p) => p.id === socket.id))
+    const game = registry.getGameByPlayerSocketId(socket.id)
 
     if (!game || game.started) {
       return
@@ -165,4 +164,14 @@ io.on("connection", (socket) => {
 
     console.log(`Removed player ${player.username} from game ${game.gameId}`)
   })
+})
+
+process.on("SIGINT", () => {
+  Registry.getInstance().cleanup()
+  process.exit(0)
+})
+
+process.on("SIGTERM", () => {
+  Registry.getInstance().cleanup()
+  process.exit(0)
 })
