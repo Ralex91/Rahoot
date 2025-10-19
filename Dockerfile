@@ -67,6 +67,7 @@ EXPOSE 3000 5505
 
 # Environment variables
 ENV NODE_ENV=production
+ENV CONFIG_PATH=/app/config
 
 # Start both services (Next.js web app + Socket server)
 CMD ["sh", "-c", "node packages/web/server.js & node packages/socket/dist/index.cjs"]

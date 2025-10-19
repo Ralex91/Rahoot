@@ -2,8 +2,12 @@ import { QuizzWithId } from "@rahoot/common/types/game"
 import fs from "fs"
 import { resolve } from "path"
 
+const inContainerPath = process.env.CONFIG_PATH
+
 const getPath = (path: string = "") =>
-  resolve(process.cwd(), "../../config", path)
+  inContainerPath
+    ? resolve(inContainerPath, path)
+    : resolve(process.cwd(), "../../config", path)
 
 class Config {
   static init() {

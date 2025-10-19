@@ -7,11 +7,15 @@ import Registry from "@rahoot/socket/services/registry"
 import { withGame } from "@rahoot/socket/utils/game"
 import { Server as ServerIO } from "socket.io"
 
-const io: Server = new ServerIO()
+const io: Server = new ServerIO({
+  cors: {
+    origin: [env.WEB_ORIGIN],
+  },
+})
 Config.init()
 
 const registry = Registry.getInstance()
-const port = env.SOCKER_PORT || 3001
+const port = 3001
 
 console.log(`Socket server running on port ${port}`)
 io.listen(Number(port))
