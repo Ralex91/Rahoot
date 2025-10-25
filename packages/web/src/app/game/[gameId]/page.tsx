@@ -15,7 +15,7 @@ import { GAME_STATE_COMPONENTS } from "@rahoot/web/utils/constants"
 import { useParams, useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
-export default function Game() {
+const Game = () => {
   const router = useRouter()
   const { socket } = useSocket()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
@@ -95,3 +95,5 @@ export default function Game() {
 
   return <GameWrapper statusName={status.name}>{component}</GameWrapper>
 }
+
+export default Game

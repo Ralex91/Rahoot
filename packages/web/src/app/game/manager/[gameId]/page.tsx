@@ -17,7 +17,7 @@ import { GAME_STATE_COMPONENTS_MANAGER } from "@rahoot/web/utils/constants"
 import { useParams, useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
-export default function ManagerGame() {
+const ManagerGame = () => {
   const router = useRouter()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
   const { socket } = useSocket()
@@ -131,3 +131,5 @@ export default function ManagerGame() {
     </GameWrapper>
   )
 }
+
+export default ManagerGame

@@ -11,7 +11,7 @@ type Props = {
   data: CommonStatusDataMap["SHOW_START"]
 }
 
-export default function Start({ data: { time, subject } }: Props) {
+const Start = ({ data: { time, subject } }: Props) => {
   const [showTitle, setShowTitle] = useState(true)
   const [cooldown, setCooldown] = useState(time)
 
@@ -53,3 +53,5 @@ export default function Start({ data: { time, subject } }: Props) {
     </section>
   )
 }
+
+export default Start

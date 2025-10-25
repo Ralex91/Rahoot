@@ -9,7 +9,7 @@ import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useRouter } from "next/navigation"
 import { KeyboardEvent, useState } from "react"
 
-export default function Username() {
+const Username = () => {
   const { socket } = useSocket()
   const { gameId, login } = usePlayerStore()
   const router = useRouter()
@@ -46,3 +46,5 @@ export default function Username() {
     </Form>
   )
 }
+
+export default Username

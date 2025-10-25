@@ -17,7 +17,7 @@ type Props = {
   data: ManagerStatusDataMap["FINISHED"]
 }
 
-export default function Podium({ data: { subject, top } }: Props) {
+const Podium = ({ data: { subject, top } }: Props) => {
   const [apparition, setApparition] = useState(0)
 
   const { width, height } = useScreenSize()
@@ -112,7 +112,7 @@ export default function Podium({ data: { subject, top } }: Props) {
             <div
               className={clsx(
                 "z-20 flex h-[50%] w-full translate-y-full flex-col items-center justify-center gap-3 opacity-0 transition-all",
-                { "!translate-y-0 opacity-100": apparition >= 2 },
+                { "translate-y-0! opacity-100": apparition >= 2 },
               )}
             >
               <p
@@ -140,7 +140,7 @@ export default function Podium({ data: { subject, top } }: Props) {
             className={clsx(
               "z-30 flex h-[60%] w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all",
               {
-                "!translate-y-0 opacity-100": apparition >= 3,
+                "translate-y-0! opacity-100": apparition >= 3,
               },
               {
                 "md:min-w-64": top.length < 2,
@@ -170,7 +170,7 @@ export default function Podium({ data: { subject, top } }: Props) {
               className={clsx(
                 "z-10 flex h-[40%] w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all",
                 {
-                  "!translate-y-0 opacity-100": apparition >= 1,
+                  "translate-y-0! opacity-100": apparition >= 1,
                 },
               )}
             >
@@ -200,3 +200,5 @@ export default function Podium({ data: { subject, top } }: Props) {
     </>
   )
 }
+
+export default Podium

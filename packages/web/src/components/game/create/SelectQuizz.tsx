@@ -11,7 +11,7 @@ type Props = {
   onSelect: (_id: string) => void
 }
 
-export default function SelectQuizz({ quizzList, onSelect }: Props) {
+const SelectQuizz = ({ quizzList, onSelect }: Props) => {
   const [selected, setSelected] = useState<string | null>(null)
 
   const handleSelect = (id: string) => () => {
@@ -62,3 +62,5 @@ export default function SelectQuizz({ quizzList, onSelect }: Props) {
     </div>
   )
 }
+
+export default SelectQuizz

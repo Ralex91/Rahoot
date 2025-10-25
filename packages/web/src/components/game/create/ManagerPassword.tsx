@@ -9,7 +9,7 @@ type Props = {
   onSubmit: (_password: string) => void
 }
 
-export default function ManagerPassword({ onSubmit }: Props) {
+const ManagerPassword = ({ onSubmit }: Props) => {
   const [password, setPassword] = useState("")
 
   const handleSubmit = () => {
@@ -38,3 +38,5 @@ export default function ManagerPassword({ onSubmit }: Props) {
     </Form>
   )
 }
+
+export default ManagerPassword

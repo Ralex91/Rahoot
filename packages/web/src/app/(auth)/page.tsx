@@ -7,7 +7,7 @@ import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
-export default function Home() {
+const Home = () => {
   const { isConnected, connect } = useSocket()
   const { player } = usePlayerStore()
 
@@ -27,3 +27,5 @@ export default function Home() {
 
   return <Room />
 }
+
+export default Home

@@ -12,9 +12,9 @@ type Props = {
   data: CommonStatusDataMap["SHOW_RESULT"]
 }
 
-export default function Result({
+const Result = ({
   data: { correct, message, points, myPoints, rank, aheadOfMe },
-}: Props) {
+}: Props) => {
   const player = usePlayerStore()
 
   const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
@@ -48,3 +48,5 @@ export default function Result({
     </section>
   )
 }
+
+export default Result

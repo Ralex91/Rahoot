@@ -8,7 +8,7 @@ import { useManagerStore } from "@rahoot/web/stores/manager"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-export default function Manager() {
+const Manager = () => {
   const { setGameId, setStatus } = useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
@@ -40,3 +40,5 @@ export default function Manager() {
 
   return <SelectQuizz quizzList={quizzList} onSelect={handleCreate} />
 }
+
+export default Manager

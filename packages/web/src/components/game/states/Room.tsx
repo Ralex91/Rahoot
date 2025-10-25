@@ -10,7 +10,7 @@ type Props = {
   data: ManagerStatusDataMap["SHOW_ROOM"]
 }
 
-export default function Room({ data: { text, inviteCode } }: Props) {
+const Room = ({ data: { text, inviteCode } }: Props) => {
   const { socket } = useSocket()
   const { players } = useManagerStore()
   const [playerList, setPlayerList] = useState<Player[]>(players)
@@ -70,3 +70,5 @@ export default function Room({ data: { text, inviteCode } }: Props) {
     </section>
   )
 }
+
+export default Room

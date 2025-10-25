@@ -15,15 +15,15 @@ export const metadata: Metadata = {
   icons: "/icon.svg",
 }
 
-export default function RootLayout({ children }: PropsWithChildren) {
-  return (
-    <html lang="en" suppressHydrationWarning={true} data-lt-installed="true">
-      <body className={`${montserrat.variable} bg-secondary antialiased`}>
-        <SocketProvider>
-          <main className="text-base-[8px] flex flex-col">{children}</main>
-          <Toaster />
-        </SocketProvider>
-      </body>
-    </html>
-  )
-}
+const RootLayout = ({ children }: PropsWithChildren) => (
+  <html lang="en" suppressHydrationWarning={true} data-lt-installed="true">
+    <body className={`${montserrat.variable} bg-secondary antialiased`}>
+      <SocketProvider>
+        <main className="text-base-[8px] flex flex-col">{children}</main>
+        <Toaster />
+      </SocketProvider>
+    </body>
+  </html>
+)
+
+export default RootLayout

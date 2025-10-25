@@ -3,13 +3,13 @@
 import { Status } from "@rahoot/common/types/game/status"
 import background from "@rahoot/web/assets/background.webp"
 import Button from "@rahoot/web/components/Button"
+import Loader from "@rahoot/web/components/Loader"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useQuestionStore } from "@rahoot/web/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/utils/constants"
 import Image from "next/image"
 import { PropsWithChildren } from "react"
-import Loader from "../Loader"
 
 type Props = PropsWithChildren & {
   statusName: Status
@@ -17,12 +17,7 @@ type Props = PropsWithChildren & {
   manager?: boolean
 }
 
-export default function GameWrapper({
-  children,
-  statusName,
-  onNext,
-  manager,
-}: Props) {
+const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
@@ -61,7 +56,7 @@ export default function GameWrapper({
 
             {manager && next && (
               <Button
-                className="self-end bg-white px-4 !text-black"
+                className="self-end bg-white px-4 text-black!"
                 onClick={onNext}
               >
                 {next}
@@ -84,3 +79,5 @@ export default function GameWrapper({
     </section>
   )
 }
+
+export default GameWrapper

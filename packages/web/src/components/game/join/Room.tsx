@@ -5,7 +5,7 @@ import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
 import { KeyboardEvent, useState } from "react"
 
-export default function Room() {
+const Room = () => {
   const { socket } = useSocket()
   const { join } = usePlayerStore()
   const [invitation, setInvitation] = useState("")
@@ -35,3 +35,5 @@ export default function Room() {
     </Form>
   )
 }
+
+export default Room

@@ -6,22 +6,22 @@ type Props = PropsWithChildren &
     icon: ElementType
   }
 
-export default function AnswerButton({
+const AnswerButton = ({
   className,
   icon: Icon,
   children,
   ...otherProps
-}: Props) {
-  return (
-    <button
-      className={clsx(
-        "shadow-inset flex items-center gap-3 rounded px-4 py-6 text-left",
-        className,
-      )}
-      {...otherProps}
-    >
-      <Icon className="h-6 w-6" />
-      <span className="drop-shadow-md">{children}</span>
-    </button>
-  )
-}
+}: Props) => (
+  <button
+    className={clsx(
+      "shadow-inset flex items-center gap-3 rounded px-4 py-6 text-left",
+      className,
+    )}
+    {...otherProps}
+  >
+    <Icon className="h-6 w-6" />
+    <span className="drop-shadow-md">{children}</span>
+  </button>
+)
+
+export default AnswerButton

@@ -9,9 +9,7 @@ type Props = {
   data: CommonStatusDataMap["SHOW_QUESTION"]
 }
 
-export default function Question({
-  data: { question, image, cooldown },
-}: Props) {
+const Question = ({ data: { question, image, cooldown } }: Props) => {
   const [sfxShow] = useSound(SFX_SHOW_SOUND, { volume: 0.5 })
 
   useEffect(() => {
@@ -40,3 +38,5 @@ export default function Question({
     </section>
   )
 }
+
+export default Question

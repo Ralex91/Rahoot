@@ -19,9 +19,9 @@ type Props = {
   data: CommonStatusDataMap["SELECT_ANSWER"]
 }
 
-export default function Answers({
+const Answers = ({
   data: { question, answers, image, time, totalPlayer },
-}: Props) {
+}: Props) => {
   const { gameId }: { gameId?: string } = useParams()
   const { socket } = useSocket()
   const { player } = usePlayerStore()
@@ -116,3 +116,5 @@ export default function Answers({
     </div>
   )
 }
+
+export default Answers
