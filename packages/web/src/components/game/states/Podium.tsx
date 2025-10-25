@@ -39,8 +39,6 @@ export default function Podium({ data: { subject, top } }: Props) {
   })
 
   useEffect(() => {
-    console.log(apparition)
-
     switch (apparition) {
       case 4:
         sfxRoolStop()

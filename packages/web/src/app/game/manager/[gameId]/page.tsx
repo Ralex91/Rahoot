@@ -40,7 +40,6 @@ export default function ManagerGame() {
   useEvent(
     "manager:successReconnect",
     ({ gameId, status, players, currentQuestion }) => {
-      console.log("manager:successReconnect", gameId)
       setGameId(gameId)
       setStatus(status.name, status.data)
       setPlayers(players)
