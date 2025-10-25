@@ -1,9 +1,12 @@
 import { Answer, Player, Quizz } from "@rahoot/common/types/game"
 import { Server, Socket } from "@rahoot/common/types/game/socket"
 import { Status, STATUS, StatusDataMap } from "@rahoot/common/types/game/status"
+import Registry from "@rahoot/socket/services/registry"
 import { createInviteCode, timeToPoint } from "@rahoot/socket/utils/game"
 import sleep from "@rahoot/socket/utils/sleep"
 import { v4 as uuid } from "uuid"
+
+const registry = Registry.getInstance()
 
 class Game {
   io: Server
@@ -12,6 +15,7 @@ class Game {
   manager: {
     id: string
     clientId: string
+    connected: boolean
   }
   inviteCode: string
   started: boolean
@@ -46,6 +50,7 @@ class Game {
     this.manager = {
       id: "",
       clientId: "",
+      connected: false,
     }
     this.inviteCode = ""
     this.started = false
@@ -72,6 +77,7 @@ class Game {
     this.manager = {
       id: socket.id,
       clientId: socket.handshake.auth.clientId,
+      connected: true,
     }
     this.quizz = quizz
 
@@ -109,11 +115,22 @@ class Game {
   }
 
   join(socket: Socket, username: string) {
+    const isAlreadyConnected = this.players.find(
+      (p) => p.clientId === socket.handshake.auth.clientId
+    )
+
+    if (isAlreadyConnected) {
+      socket.emit("game:errorMessage", "Player already connected")
+
+      return
+    }
+
     socket.join(this.gameId)
 
     const playerData = {
       id: socket.id,
       clientId: socket.handshake.auth.clientId,
+      connected: true,
       username,
       points: 0,
     }
@@ -151,49 +168,64 @@ class Game {
     const { clientId } = socket.handshake.auth
     const isManager = this.manager.clientId === clientId
 
-    if (!isManager) {
-      const player = this.players.find((p) => p.clientId === clientId)
+    if (isManager) {
+      this.reconnectManager(socket)
+    } else {
+      this.reconnectPlayer(socket)
+    }
+  }
 
-      if (!player) {
-        return false
-      }
+  private reconnectManager(socket: Socket) {
+    if (this.manager.connected) {
+      socket.emit("game:reset", "Manager already connected")
+
+      return
     }
 
     socket.join(this.gameId)
+    this.manager.id = socket.id
+    this.manager.connected = true
 
-    const commonData = {
+    const status = this.managerStatus ||
+      this.lastBroadcastStatus || {
+        name: STATUS.WAIT,
+        data: { text: "Waiting for players" },
+      }
+
+    socket.emit("manager:successReconnect", {
       gameId: this.gameId,
-      started: this.started,
       currentQuestion: {
         current: this.round.currentQuestion,
         total: this.quizz.questions.length,
       },
+      status,
+      players: this.players,
+    })
+    socket.emit("game:totalPlayers", this.players.length)
+
+    registry.reactivateGame(this.gameId)
+    console.log(`Manager reconnected to game ${this.inviteCode}`)
+  }
+
+  private reconnectPlayer(socket: Socket) {
+    const { clientId } = socket.handshake.auth
+    const player = this.players.find((p) => p.clientId === clientId)
+
+    if (!player) {
+      return
     }
 
-    if (isManager) {
-      this.manager.id = socket.id
+    if (player.connected) {
+      socket.emit("game:reset", "Player already connected")
 
-      const status = this.managerStatus ||
-        this.lastBroadcastStatus || {
-          name: STATUS.WAIT,
-          data: { text: "Waiting for players" },
-        }
-
-      socket.emit("manager:successReconnect", {
-        ...commonData,
-        status,
-        players: this.players,
-      })
-      socket.emit("game:totalPlayers", this.players.length)
-
-      console.log(`Manager reconnected to game ${this.inviteCode}`)
-
-      return true
+      return
     }
 
-    const player = this.players.find((p) => p.clientId === clientId)!
+    socket.join(this.gameId)
+
     const oldSocketId = player.id
     player.id = socket.id
+    player.connected = true
 
     const status = this.playerStatus.get(oldSocketId) ||
       this.lastBroadcastStatus || {
@@ -208,7 +240,11 @@ class Game {
     }
 
     socket.emit("player:successReconnect", {
-      ...commonData,
+      gameId: this.gameId,
+      currentQuestion: {
+        current: this.round.currentQuestion,
+        total: this.quizz.questions.length,
+      },
       status,
       player: {
         username: player.username,
@@ -219,8 +255,6 @@ class Game {
     console.log(
       `Player ${player.username} reconnected to game ${this.inviteCode}`
     )
-
-    return true
   }
 
   startCooldown(seconds: number): Promise<void> {

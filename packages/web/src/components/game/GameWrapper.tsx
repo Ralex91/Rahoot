@@ -12,7 +12,7 @@ import Image from "next/image"
 import { PropsWithChildren } from "react"
 
 type Props = PropsWithChildren & {
-  statusName: Status
+  statusName: Status | undefined
   onNext?: () => void
   manager?: boolean
 }
@@ -21,7 +21,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
-  const next = MANAGER_SKIP_BTN[statusName] || null
+  const next = statusName ? MANAGER_SKIP_BTN[statusName] : null
 
   useEvent("game:updateQuestion", ({ current, total }) => {
     setQuestionStates({

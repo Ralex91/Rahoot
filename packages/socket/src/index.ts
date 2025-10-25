@@ -25,8 +25,8 @@ io.on("connection", (socket) => {
     `A user connected: socketId: ${socket.id}, clientId: ${socket.handshake.auth.clientId}`
   )
 
-  socket.on("player:reconnect", () => {
-    const game = registry.getPlayerGame(socket.handshake.auth.clientId)
+  socket.on("player:reconnect", ({ gameId }) => {
+    const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId)
 
     if (game) {
       game.reconnect(socket)
@@ -34,20 +34,19 @@ io.on("connection", (socket) => {
       return
     }
 
-    socket.emit("game:reset")
+    socket.emit("game:reset", "Game not found")
   })
 
-  socket.on("manager:reconnect", () => {
-    const game = registry.getManagerGame(socket.handshake.auth.clientId)
+  socket.on("manager:reconnect", ({ gameId }) => {
+    const game = registry.getManagerGame(gameId, socket.handshake.auth.clientId)
 
     if (game) {
       game.reconnect(socket)
-      registry.reactivateGame(game.gameId)
 
       return
     }
 
-    socket.emit("game:reset")
+    socket.emit("game:reset", "Game expired")
   })
 
   socket.on("manager:auth", (password) => {
@@ -132,17 +131,18 @@ io.on("connection", (socket) => {
   )
 
   socket.on("disconnect", () => {
-    console.log(`user disconnected ${socket.id}`)
+    console.log(`A user disconnected : ${socket.id}`)
 
     const managerGame = registry.getGameByManagerSocketId(socket.id)
 
     if (managerGame) {
+      managerGame.manager.connected = false
       registry.markGameAsEmpty(managerGame)
 
       if (!managerGame.started) {
         console.log("Reset game (manager disconnected)")
         managerGame.abortCooldown()
-        io.to(managerGame.gameId).emit("game:reset")
+        io.to(managerGame.gameId).emit("game:reset", "Manager disconnected")
         registry.removeGame(managerGame.gameId)
 
         return
@@ -151,7 +151,7 @@ io.on("connection", (socket) => {
 
     const game = registry.getGameByPlayerSocketId(socket.id)
 
-    if (!game || game.started) {
+    if (!game) {
       return
     }
 
@@ -161,12 +161,19 @@ io.on("connection", (socket) => {
       return
     }
 
-    game.players = game.players.filter((p) => p.id !== socket.id)
+    if (!game.started) {
+      game.players = game.players.filter((p) => p.id !== socket.id)
 
-    io.to(game.manager.id).emit("manager:removePlayer", player.id)
+      io.to(game.manager.id).emit("manager:removePlayer", player.id)
+      io.to(game.gameId).emit("game:totalPlayers", game.players.length)
+
+      console.log(`Removed player ${player.username} from game ${game.gameId}`)
+
+      return
+    }
+
+    player.connected = false
     io.to(game.gameId).emit("game:totalPlayers", game.players.length)
-
-    console.log(`Removed player ${player.username} from game ${game.gameId}`)
   })
 })
 

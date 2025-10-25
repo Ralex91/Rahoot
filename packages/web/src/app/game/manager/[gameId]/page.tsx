@@ -47,10 +47,11 @@ const ManagerGame = () => {
     },
   )
 
-  useEvent("game:reset", () => {
+  useEvent("game:reset", (message) => {
     router.replace("/manager")
     reset()
-    toast("Game is not available anymore")
+    setQuestionStates(null)
+    toast.error(message)
   })
 
   const handleSkip = () => {
@@ -58,7 +59,7 @@ const ManagerGame = () => {
       return
     }
 
-    switch (status.name) {
+    switch (status?.name) {
       case STATUS.SHOW_ROOM:
         socket?.emit("manager:startGame", { gameId })
 
@@ -83,7 +84,7 @@ const ManagerGame = () => {
 
   let component = null
 
-  switch (status.name) {
+  switch (status?.name) {
     case STATUS.SHOW_ROOM:
       component = <Room data={status.data} />
 
@@ -126,7 +127,7 @@ const ManagerGame = () => {
   }
 
   return (
-    <GameWrapper statusName={status.name} onNext={handleSkip} manager>
+    <GameWrapper statusName={status?.name} onNext={handleSkip} manager>
       {component}
     </GameWrapper>
   )

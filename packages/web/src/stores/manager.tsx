@@ -5,7 +5,7 @@ import { create } from "zustand"
 
 type ManagerStore<T> = {
   gameId: string | null
-  status: Status<T>
+  status: Status<T> | null
   players: Player[]
 
   setGameId: (_gameId: string | null) => void
@@ -16,13 +16,9 @@ type ManagerStore<T> = {
   reset: () => void
 }
 
-const initialStatus = createStatus<StatusDataMap, "SHOW_ROOM">("SHOW_ROOM", {
-  text: "Waiting for the players",
-})
-
 const initialState = {
   gameId: null,
-  status: initialStatus,
+  status: null,
   players: [],
 }
 
@@ -32,7 +28,7 @@ export const useManagerStore = create<ManagerStore<StatusDataMap>>((set) => ({
   setGameId: (gameId) => set({ gameId }),
 
   setStatus: (name, data) => set({ status: createStatus(name, data) }),
-  resetStatus: () => set({ status: initialStatus }),
+  resetStatus: () => set({ status: null }),
 
   setPlayers: (players) => set({ players }),
 

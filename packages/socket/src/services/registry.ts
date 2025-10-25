@@ -37,14 +37,17 @@ class Registry {
     return this.games.find((g) => g.inviteCode === inviteCode)
   }
 
-  getPlayerGame(clientId: string): Game | undefined {
-    return this.games.find((g) =>
-      g.players.some((p) => p.clientId === clientId)
+  getPlayerGame(gameId: string, clientId: string): Game | undefined {
+    return this.games.find(
+      (g) =>
+        g.gameId === gameId && g.players.some((p) => p.clientId === clientId)
     )
   }
 
-  getManagerGame(clientId: string): Game | undefined {
-    return this.games.find((g) => g.manager.clientId === clientId)
+  getManagerGame(gmageId: string, clientId: string): Game | undefined {
+    return this.games.find(
+      (g) => g.gameId === gmageId && g.manager.clientId === clientId
+    )
   }
 
   getGameByManagerSocketId(socketId: string): Game | undefined {

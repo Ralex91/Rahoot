@@ -49,10 +49,11 @@ const Game = () => {
     reset()
   })
 
-  useEvent("game:reset", () => {
+  useEvent("game:reset", (message) => {
     router.replace("/")
     reset()
-    toast("The game has been reset by the host")
+    setQuestionStates(null)
+    toast.error(message)
   })
 
   if (!gameIdParam) {
@@ -61,7 +62,7 @@ const Game = () => {
 
   let component = null
 
-  switch (status.name) {
+  switch (status?.name) {
     case STATUS.WAIT:
       component = <Wait data={status.data} />
 
@@ -93,7 +94,7 @@ const Game = () => {
       break
   }
 
-  return <GameWrapper statusName={status.name}>{component}</GameWrapper>
+  return <GameWrapper statusName={status?.name}>{component}</GameWrapper>
 }
 
 export default Game

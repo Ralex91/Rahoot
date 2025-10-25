@@ -10,7 +10,7 @@ type PlayerState = {
 type PlayerStore<T> = {
   gameId: string | null
   player: PlayerState | null
-  status: Status<T>
+  status: Status<T> | null
 
   setGameId: (_gameId: string | null) => void
 
@@ -24,14 +24,10 @@ type PlayerStore<T> = {
   reset: () => void
 }
 
-const initialStatus = createStatus<StatusDataMap, "WAIT">("WAIT", {
-  text: "Waiting for the players",
-})
-
 const initialState = {
   gameId: null,
   player: null,
-  status: initialStatus,
+  status: null,
 }
 
 export const usePlayerStore = create<PlayerStore<StatusDataMap>>((set) => ({

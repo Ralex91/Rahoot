@@ -32,7 +32,7 @@ export interface ServerToClientEvents {
   "game:startCooldown": () => void
   "game:cooldown": (_count: number) => void
   "game:kick": () => void
-  "game:reset": () => void
+  "game:reset": (_message: string) => void
   "game:updateQuestion": (_data: { current: number; total: number }) => void
   "game:playerAnswer": (_count: number) => void
 
