@@ -1,7 +1,7 @@
 "use client"
 
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import useScreenSize from "@rahoot/web/hook/useScreenSize"
+import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,

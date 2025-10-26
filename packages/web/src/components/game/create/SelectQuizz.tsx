@@ -1,10 +1,8 @@
-import { Quizz } from "@rahoot/common/types/game"
+import { QuizzWithId } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
 import clsx from "clsx"
 import { useState } from "react"
 import toast from "react-hot-toast"
-
-type QuizzWithId = Quizz & { id: string }
 
 type Props = {
   quizzList: QuizzWithId[]
