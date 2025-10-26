@@ -81,7 +81,7 @@ const Answers = ({
           <img
             alt={question}
             src={image}
-            className="h-48 max-h-60 w-auto rounded-md"
+            className="m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md"
           />
         )}
       </div>
