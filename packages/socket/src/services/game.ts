@@ -331,6 +331,7 @@ class Game {
       total: this.quizz.questions.length,
     })
 
+    this.managerStatus = null
     this.broadcastStatus(STATUS.SHOW_PREPARED, {
       totalAnswers: question.answers.length,
       questionNumber: this.round.currentQuestion + 1,
@@ -370,7 +371,7 @@ class Game {
       return
     }
 
-    await this.showResults(question)
+    this.showResults(question)
   }
 
   showResults(question: any) {
