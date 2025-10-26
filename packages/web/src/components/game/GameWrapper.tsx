@@ -8,8 +8,9 @@ import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useQuestionStore } from "@rahoot/web/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/utils/constants"
+import clsx from "clsx"
 import Image from "next/image"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 
 type Props = PropsWithChildren & {
   statusName: Status | undefined
@@ -21,6 +22,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
+  const [isDisabled, setIsDisabled] = useState(false)
   const next = statusName ? MANAGER_SKIP_BTN[statusName] : null
 
   useEvent("game:updateQuestion", ({ current, total }) => {
@@ -29,6 +31,15 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
       total,
     })
   })
+
+  useEffect(() => {
+    setIsDisabled(false)
+  }, [statusName])
+
+  const handleNext = () => {
+    setIsDisabled(true)
+    onNext?.()
+  }
 
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-between">
@@ -56,8 +67,10 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
 
             {manager && next && (
               <Button
-                className="self-end bg-white px-4 text-black!"
-                onClick={onNext}
+                className={clsx("self-end bg-white px-4 text-black!", {
+                  "pointer-events-none": isDisabled,
+                })}
+                onClick={handleNext}
               >
                 {next}
               </Button>

@@ -203,7 +203,7 @@ class Game {
     socket.emit("manager:successReconnect", {
       gameId: this.gameId,
       currentQuestion: {
-        current: this.round.currentQuestion,
+        current: this.round.currentQuestion + 1,
         total: this.quizz.questions.length,
       },
       status,
@@ -250,7 +250,7 @@ class Game {
     socket.emit("player:successReconnect", {
       gameId: this.gameId,
       currentQuestion: {
-        current: this.round.currentQuestion,
+        current: this.round.currentQuestion + 1,
         total: this.quizz.questions.length,
       },
       status,
