@@ -44,11 +44,6 @@ const Game = () => {
     }
   })
 
-  useEvent("game:kick", () => {
-    router.replace("/")
-    reset()
-  })
-
   useEvent("game:reset", (message) => {
     router.replace("/")
     reset()

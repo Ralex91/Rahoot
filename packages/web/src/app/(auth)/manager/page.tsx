@@ -1,6 +1,7 @@
 "use client"
 
 import { QuizzWithId } from "@rahoot/common/types/game"
+import { STATUS } from "@rahoot/common/types/game/status"
 import ManagerPassword from "@rahoot/web/components/game/create/ManagerPassword"
 import SelectQuizz from "@rahoot/web/components/game/create/SelectQuizz"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
@@ -23,7 +24,7 @@ const Manager = () => {
 
   useEvent("manager:gameCreated", ({ gameId, inviteCode }) => {
     setGameId(gameId)
-    setStatus("SHOW_ROOM", { text: "Waiting for the players", inviteCode })
+    setStatus(STATUS.SHOW_ROOM, { text: "Waiting for the players", inviteCode })
     router.push(`/game/manager/${gameId}`)
   })
 

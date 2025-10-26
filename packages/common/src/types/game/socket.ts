@@ -31,7 +31,6 @@ export interface ServerToClientEvents {
   "game:errorMessage": (_message: string) => void
   "game:startCooldown": () => void
   "game:cooldown": (_count: number) => void
-  "game:kick": () => void
   "game:reset": (_message: string) => void
   "game:updateQuestion": (_data: { current: number; total: number }) => void
   "game:playerAnswer": (_count: number) => void
@@ -69,9 +68,7 @@ export interface ClientToServerEvents {
   "game:create": (_quizzId: string) => void
   "manager:auth": (_password: string) => void
   "manager:reconnect": (_message: { gameId: string }) => void
-  "manager:kickPlayer": (
-    _message: MessageWithoutStatus<{ playerId: string }>
-  ) => void
+  "manager:kickPlayer": (_message: { gameId: string; playerId: string }) => void
   "manager:startGame": (_message: MessageGameId) => void
   "manager:abortQuiz": (_message: MessageGameId) => void
   "manager:nextQuestion": (_message: MessageGameId) => void

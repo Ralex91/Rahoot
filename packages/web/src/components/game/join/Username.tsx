@@ -1,5 +1,6 @@
 "use client"
 
+import { STATUS } from "@rahoot/common/types/game/status"
 import Button from "@rahoot/web/components/Button"
 import Form from "@rahoot/web/components/Form"
 import Input from "@rahoot/web/components/Input"
@@ -11,7 +12,7 @@ import { KeyboardEvent, useState } from "react"
 
 const Username = () => {
   const { socket } = useSocket()
-  const { gameId, login } = usePlayerStore()
+  const { gameId, login, setStatus } = usePlayerStore()
   const router = useRouter()
   const [username, setUsername] = useState("")
 
@@ -30,6 +31,7 @@ const Username = () => {
   }
 
   useEvent("game:successJoin", (gameId) => {
+    setStatus(STATUS.WAIT, { text: "Waiting for the players" })
     login(username)
 
     router.replace(`/game/${gameId}`)

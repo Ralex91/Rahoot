@@ -158,7 +158,9 @@ class Game {
     this.playerStatus.delete(playerId)
 
     this.io.in(playerId).socketsLeave(this.gameId)
-    this.io.to(player.id).emit("game:kick")
+    this.io
+      .to(player.id)
+      .emit("game:reset", "You have been kicked by the manager")
     this.io.to(this.manager.id).emit("manager:playerKicked", player.id)
 
     this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)

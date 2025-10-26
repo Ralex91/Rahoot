@@ -104,8 +104,8 @@ io.on("connection", (socket) => {
     withGame(gameId, socket, (game) => game.join(socket, data.username))
   )
 
-  socket.on("manager:kickPlayer", ({ gameId, data }) =>
-    withGame(gameId, socket, (game) => game.kickPlayer(socket, data.playerId))
+  socket.on("manager:kickPlayer", ({ gameId, playerId }) =>
+    withGame(gameId, socket, (game) => game.kickPlayer(socket, playerId))
   )
 
   socket.on("manager:startGame", ({ gameId }) =>

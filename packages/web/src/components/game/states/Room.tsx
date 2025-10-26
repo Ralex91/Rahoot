@@ -11,6 +11,7 @@ type Props = {
 }
 
 const Room = ({ data: { text, inviteCode } }: Props) => {
+  const { gameId } = useManagerStore()
   const { socket } = useSocket()
   const { players } = useManagerStore()
   const [playerList, setPlayerList] = useState<Player[]>(players)
@@ -33,8 +34,13 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   })
 
   const handleKick = (playerId: string) => () => {
+    if (!gameId) {
+      return
+    }
+
     socket?.emit("manager:kickPlayer", {
-      data: { playerId },
+      gameId,
+      playerId,
     })
   }
 
