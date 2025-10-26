@@ -25,6 +25,7 @@ class Game {
   managerStatus: { name: Status; data: StatusDataMap[Status] } | null = null
   playerStatus: Map<string, { name: Status; data: StatusDataMap[Status] }> =
     new Map()
+  leaderboard: Player[]
 
   quizz: Quizz
   players: Player[]
@@ -58,6 +59,7 @@ class Game {
     this.lastBroadcastStatus = null
     this.managerStatus = null
     this.playerStatus = new Map()
+    this.leaderboard = []
 
     this.players = []
 
@@ -490,20 +492,24 @@ class Game {
       this.round.currentQuestion + 1 === this.quizz.questions.length
 
     const sortedPlayers = this.players.sort((a, b) => b.points - a.points)
+    const oldLeaderboard =
+      this.leaderboard.length === 0 ? sortedPlayers : this.leaderboard
+    this.leaderboard = this.players.sort((a, b) => b.points - a.points)
 
     if (isLastRound) {
       this.started = false
 
       this.broadcastStatus(STATUS.FINISHED, {
         subject: this.quizz.subject,
-        top: sortedPlayers.slice(0, 3),
+        top: this.leaderboard.slice(0, 3),
       })
 
       return
     }
 
     this.sendStatus(this.manager.id, STATUS.SHOW_LEADERBOARD, {
-      leaderboard: sortedPlayers.slice(0, 5),
+      oldLeaderboard: oldLeaderboard.slice(0, 5),
+      leaderboard: this.leaderboard.slice(0, 5),
     })
   }
 }

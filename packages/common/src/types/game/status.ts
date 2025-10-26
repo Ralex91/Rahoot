@@ -47,7 +47,7 @@ type ManagerExtraStatus = {
     answers: string[]
     image?: string
   }
-  SHOW_LEADERBOARD: { leaderboard: Player[] }
+  SHOW_LEADERBOARD: { oldLeaderboard: Player[]; leaderboard: Player[] }
 }
 
 export type PlayerStatusDataMap = CommonStatusDataMap
