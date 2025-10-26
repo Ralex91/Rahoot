@@ -25,7 +25,9 @@ class Game {
   managerStatus: { name: Status; data: StatusDataMap[Status] } | null = null
   playerStatus: Map<string, { name: Status; data: StatusDataMap[Status] }> =
     new Map()
+
   leaderboard: Player[]
+  tempOldLeaderboard: Player[] | null
 
   quizz: Quizz
   players: Player[]
@@ -59,7 +61,9 @@ class Game {
     this.lastBroadcastStatus = null
     this.managerStatus = null
     this.playerStatus = new Map()
+
     this.leaderboard = []
+    this.tempOldLeaderboard = null
 
     this.players = []
 
@@ -370,6 +374,11 @@ class Game {
   }
 
   showResults(question: any) {
+    const oldLeaderboard =
+      this.leaderboard.length === 0
+        ? this.players.map((p) => ({ ...p }))
+        : this.leaderboard.map((p) => ({ ...p }))
+
     const totalType = this.round.playersAnswers.reduce(
       (acc: Record<number, number>, { answerId }) => {
         acc[answerId] = (acc[answerId] || 0) + 1
@@ -422,9 +431,11 @@ class Game {
       image: question.image,
     })
 
+    this.leaderboard = sortedPlayers
+    this.tempOldLeaderboard = oldLeaderboard
+
     this.round.playersAnswers = []
   }
-
   selectAnswer(socket: Socket, answerId: number) {
     const player = this.players.find((player) => player.id === socket.id)
     const question = this.quizz.questions[this.round.currentQuestion]
@@ -491,11 +502,6 @@ class Game {
     const isLastRound =
       this.round.currentQuestion + 1 === this.quizz.questions.length
 
-    const sortedPlayers = this.players.sort((a, b) => b.points - a.points)
-    const oldLeaderboard =
-      this.leaderboard.length === 0 ? sortedPlayers : this.leaderboard
-    this.leaderboard = this.players.sort((a, b) => b.points - a.points)
-
     if (isLastRound) {
       this.started = false
 
@@ -507,10 +513,16 @@ class Game {
       return
     }
 
+    const oldLeaderboard = this.tempOldLeaderboard
+      ? this.tempOldLeaderboard
+      : this.leaderboard
+
     this.sendStatus(this.manager.id, STATUS.SHOW_LEADERBOARD, {
       oldLeaderboard: oldLeaderboard.slice(0, 5),
       leaderboard: this.leaderboard.slice(0, 5),
     })
+
+    this.tempOldLeaderboard = null
   }
 }
 
