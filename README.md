@@ -13,6 +13,12 @@ Rahoot is a straightforward and open-source clone of the Kahoot! platform, allow
 
 > ⚠️ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
 
+<p align="center">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager Dashboard">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question Screen">
+</p>
+
 ## ⚙️ Prerequisites
 
 Choose one of the following deployment methods:
@@ -33,7 +39,6 @@ Choose your deployment method:
 ### 🐳 Using Docker (Recommended)
 
 Using Docker Compose (recommended):
-
 You can find the docker compose configuration in the repository:
 [docker-compose.yml](/compose.yml)
 
@@ -52,6 +57,15 @@ docker run -d \
   -e SOCKET_URL=http://localhost:3001 \
   ralex91/rahoot:latest
 ```
+
+**Configuration Volume:**
+The `-v ./config:/app/config` option mounts a local `config` folder to persist your game settings and quizzes. This allows you to:
+
+- Edit your configuration files directly on your host machine
+- Keep your settings when updating the container
+- Easily backup your quizzes and game configuration
+
+The folder will be created automatically on first run with an example quiz to get you started.
 
 The application will be available at:
 
