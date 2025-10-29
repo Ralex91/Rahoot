@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ff9900;
+  --color-secondary: #1a140b;
+}
+
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
+.btn-shadow {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
+}
+
+.btn-shadow span {
+  display: block;
+  transform: translateY(-2px);
+}
+
+.btn-shadow:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px -2px inset;
+}
+
+.btn-shadow:hover span {
+  transform: translateY(0);
+}
+
+.btn-shadow:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.text-outline {
+  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-inset {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
+}
+
+.spotlight {
+  position: absolute;
+  height: 200%;
+  width: 200%;
+  z-index: 100;
+  background-image: radial-gradient(
+    circle,
+    transparent 180px,
+    rgba(0, 0, 0, 0.6) 200px
+  );
+  opacity: 0;
+  left: -50%;
+  top: -50%;
+  transition: all 0.5s;
+  animation: spotlightAnim 2.5s ease-in;
+}
+
+@keyframes spotlightAnim {
+  0% {
+    left: -20%;
+    top: -20%;
+  }
+  30% {
+    opacity: 100;
+    top: -80%;
+    left: -80%;
+  }
+  60% {
+    top: -50%;
+    left: -20%;
+  }
+  80% {
+    top: -50%;
+    left: -50%;
+  }
+  98% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.anim-show {
+  animation: show 0.5s ease-out;
+}
+
+.anim-timer {
+  animation: timer 1s ease-out infinite;
+}
+
+.anim-quizz {
+  animation: quizz 0.8s linear;
+  transform: perspective(1200px) rotateY(-15deg) rotateX(15deg)
+    translateZ(100px);
+  box-shadow: 10px 10px 0 rgba(20, 24, 29, 1);
+}
+
+.anim-quizz .button {
+  box-shadow: rgba(0, 0, 0, 0.25) -4px -4px inset;
+  animation: quizzButton 0.8s ease-out;
+}
+
+.anim-balanced {
+  animation: balanced 0.8s linear infinite;
+}
+
+@keyframes balanced {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg) translateY(-10px);
+  }
+  50% {
+    transform: rotate(0deg) translateY(0px);
+  }
+  75% {
+    transform: rotate(10deg) translateY(-10px);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes show {
+  0% {
+    transform: scale(0);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  60% {
+    transform: scale(0.8);
+  }
+  80% {
+    transform: scale(1);
+  }
+}
+
+@keyframes progressBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes timer {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.4) rotate(-6deg);
+  }
+  60% {
+    transform: scale(0.8) rotate(6deg);
+  }
+  80% {
+    transform: scale(1);
+  }
+}
+
+@keyframes quizz {
+  0% {
+    transform: scale(0) perspective(1200px) rotateY(-60deg) rotateX(60deg)
+      translateZ(100px);
+  }
+  60% {
+    transform: scale(1) perspective(1200px) rotateY(-15deg) rotateX(15deg)
+      translateZ(100px);
+  }
+  80% {
+    transform: scale(0.8) perspective(1200px) rotateY(-15deg) rotateX(15deg)
+      translateZ(100px);
+  }
+  100% {
+    transform: scale(1) perspective(1200px) rotateY(-15deg) rotateX(15deg)
+      translateZ(100px);
+  }
+}
+
+@keyframes quizzButton {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noEmit": true,
+    "noErrorTruncation": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@rahoot/common/*": ["./packages/common/src/*"],
+      "@rahoot/socket/*": ["./packages/socket/src/*"],
+      "@rahoot/web/*": ["./packages/web/src/*"]
+    },
+    "strict": true,
+    "strictNullChecks": true
+  }
+}

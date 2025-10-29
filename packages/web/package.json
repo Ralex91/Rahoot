@@ -1,0 +1,46 @@
+{
+  "name": "@rahoot/web",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@rahoot/common": "workspace:*",
+    "@rahoot/socket": "workspace:*",
+    "@t3-oss/env-nextjs": "^0.13.8",
+    "clsx": "^2.1.1",
+    "ky": "^1.13.0",
+    "motion": "^12.23.24",
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-confetti": "^6.4.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "socket.io-client": "^4.8.1",
+    "use-sound": "^5.0.0",
+    "uuid": "^13.0.0",
+    "yup": "^1.7.1",
+    "zod": "^4.1.12",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.16",
+    "@types/node": "^20.19.23",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "eslint": "^9.38.0",
+    "eslint-config-next": "15.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^6.1.1",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "tailwindcss": "^4.1.16",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2"
+  }
+}

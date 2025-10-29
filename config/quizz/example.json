@@ -1,0 +1,28 @@
+{
+  "subject": "Example Quizz",
+  "questions": [
+    {
+      "question": "What is good answer ?",
+      "answers": ["No", "Good answer", "No", "No"],
+      "solution": 1,
+      "cooldown": 5,
+      "time": 15
+    },
+    {
+      "question": "What is good answer with image ?",
+      "answers": ["No", "No", "No", "Good answer"],
+      "image": "https://placehold.co/600x400.png",
+      "solution": 3,
+      "cooldown": 5,
+      "time": 20
+    },
+    {
+      "question": "What is good answer with two answers ?",
+      "answers": ["Good answer", "No"],
+      "image": "https://placehold.co/600x400.png",
+      "solution": 0,
+      "cooldown": 5,
+      "time": 20
+    }
+  ]
+}

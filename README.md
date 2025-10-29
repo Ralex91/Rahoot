@@ -1,7 +1,10 @@
 <p align="center">
   <img width="450" height="120" align="center" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/logo.svg">
   <br>
-  <img align="center" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Rahoot/edit/main/README.md&countColor=%2337d67a">
+  <div align="center">
+    <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Rahoot/edit/main/README.md&countColor=%2337d67a">
+    <img src="https://img.shields.io/docker/pulls/ralex91/rahoot?style=for-the-badge&logo=docker&color=2496ED" alt="Docker Pulls">
+  </div>
 </p>
 
 ## 🧩 What is this project?
@@ -10,95 +13,160 @@ Rahoot is a straightforward and open-source clone of the Kahoot! platform, allow
 
 > ⚠️ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
 
+<p align="center">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager Dashboard">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question Screen">
+</p>
+
 ## ⚙️ Prerequisites
 
-- Node.js version 20 or higher
+Choose one of the following deployment methods:
+
+### Without Docker
+
+- Node.js : version 20 or higher
+- PNPM : Learn more about [here](https://pnpm.io/)
+
+### With Docker
+
+- Docker and Docker Compose
 
 ## 📖 Getting Started
 
-1.  #### Clone the GitHub repository of your project.
-    ```bash
-    git clone https://github.com/Ralex91/Rahoot.git
-    cd ./Rahoot
-    ```
-2.  #### Install the dependencies using your preferred package manager
+Choose your deployment method:
 
-    ```bash
-    npm install
-    ```
+### 🐳 Using Docker (Recommended)
 
-    <br>
-    <hr>
-
-## 📦 Running the Application in Production Mode:
-
-1. #### Check websocket connfiguration in [config.mjs](config.mjs)
-
-   If you want the client to connect directly to the websocket server, edit the [config.mjs](config.mjs) file and change the localhost to your public IP address.
-
-   ```js
-   export const WEBSOCKET_PUBLIC_URL = "http://1.2.3.4:3100/"
-   export const WEBSOCKET_SERVER_PORT = 3100
-
-   // Rest of the config ...
-   ```
-
-2. #### Start the application
-
-   ```bash
-   npm run all
-   ```
-
-## ⚙️ Running the Application in Development Mode:
+Using Docker Compose (recommended):
+You can find the docker compose configuration in the repository:
+[docker-compose.yml](/compose.yml)
 
 ```bash
-npm run all-dev
+docker compose up -d
 ```
 
-## 🔧 Configuration
+Or using Docker directly:
 
-Configuration can be found in [config.mjs](config.mjs)
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -p 3001:3001 \
+  -v ./config:/app/config \
+  -e WEB_ORIGIN=http://localhost:3000 \
+  -e SOCKET_URL=http://localhost:3001 \
+  ralex91/rahoot:latest
+```
 
-```js
-const QUIZZ_CONFIG = {
-  password: "PASSWORD", // Manager password
-  subject: "Adobe", // Subject of the quiz
-  questions: [
-    { // Example question
-      question: "What is good answer ?", // Question
-      answers: [ // Possible answers
-        "No",
-        "Yes",
-        "No",
-        "No",
-      ],
-      image:
-        "https://images.unsplash.com/....", // Image URL (optional)
-      solution: 1, // Index of the correct answer (index starts at 0)
-      cooldown: 5, // Show question cooldown in seconds
-      time: 15, // Time to answer in seconds
-    },
-    ...
-  ],
+**Configuration Volume:**
+The `-v ./config:/app/config` option mounts a local `config` folder to persist your game settings and quizzes. This allows you to:
+
+- Edit your configuration files directly on your host machine
+- Keep your settings when updating the container
+- Easily backup your quizzes and game configuration
+
+The folder will be created automatically on first run with an example quiz to get you started.
+
+The application will be available at:
+
+- Web Interface: http://localhost:3000
+- WebSocket Server: ws://localhost:3001
+
+### 🛠️ Without Docker
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Ralex91/Rahoot.git
+cd ./Rahoot
+```
+
+2. Install dependencies:
+
+```bash
+pnpm install
+```
+
+3. Change the environment variables in the `.env` file
+
+4. Build and start the application:
+
+```bash
+# Development mode
+pnpm run dev
+
+# Production mode
+pnpm run build
+pnpm start
+```
+
+## ⚙️ Configuration
+
+The configuration is split into two main parts:
+
+### 1. Game Configuration (`config/game.json`)
+
+Main game settings:
+
+```json
+{
+  "managerPassword": "PASSWORD",
+  "music": true
 }
 ```
 
-## 🤔 How to use
+Options:
 
-- Go to [https://localhost:3000/manager](https://localhost:3000/manager) enter manager password.
+- `managerPassword`: The master password for accessing the manager interface
+- `music`: Enable/disable game music
 
-- Share link [https://localhost:3000/](https://localhost:3000/) and code on manager screen with your friends and get ready to play.
+### 2. Quiz Configuration (`config/quizz/*.json`)
 
-- Once everyone is ready, start the game with button on the top left of the screen of manager.
+Create your quiz files in the `config/quizz/` directory. You can have multiple quiz files and select which one to use when starting a game.
+
+Example quiz configuration (`config/quizz/example.json`):
+
+```json
+{
+  "subject": "Example Quiz",
+  "questions": [
+    {
+      "question": "What is the correct answer?",
+      "answers": ["No", "Yes", "No", "No"],
+      "image": "https://images.unsplash.com/....",
+      "solution": 1,
+      "cooldown": 5,
+      "time": 15
+    }
+  ]
+}
+```
+
+Quiz Options:
+
+- `subject`: Title/topic of the quiz
+- `questions`: Array of question objects containing:
+  - `question`: The question text
+  - `answers`: Array of possible answers (2-4 options)
+  - `image`: Optional URL for question image
+  - `solution`: Index of correct answer (0-based)
+  - `cooldown`: Time in seconds before showing the question
+  - `time`: Time in seconds allowed to answer
+
+## 🎮 How to Play
+
+1. Access the manager interface at http://localhost:3000/manager
+2. Enter the manager password (defined in quiz config)
+3. Share the game URL (http://localhost:3000) and room code with participants
+4. Wait for players to join
+5. Click the start button to begin the game
 
 ## 📝 Contributing
 
-- Create a fork
+1. Fork the repository
+2. Create a new branch (e.g., `feat/my-feature`)
+3. Make your changes
+4. Create a pull request
+5. Wait for review and merge
 
-- Create work branch (Example: githubUsername/featureName).
-
-- Commit and push your changes in the work branch.
-
-- Open a pull request.
-
-- Your pull request would be merged and changes will be reflected in the main repository.
+For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).

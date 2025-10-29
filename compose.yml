@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  rahoot:
+    image: ralex91/rahoot:latest
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - ./config:/app/config # Path to your game config
+    environment:
+      - WEB_ORIGIN=http://localhost:3000
+      - SOCKET_URL=http://localhost:3001
