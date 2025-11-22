@@ -1,0 +1,24 @@
+services:
+  # --- Web Application (Port 3000) ---
+  - type: web
+    name: rahoot-web
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: "pnpm install && pnpm run build"
+    startCommand: "pnpm start"
+    envVars:
+      - key: PORT
+        value: 3000
+
+  # --- WebSocket Server (Port 3001) ---
+  - type: web
+    name: rahoot-websocket
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: "pnpm install"
+    startCommand: "pnpm start"
+    envVars:
+      - key: PORT
+        value: 3001

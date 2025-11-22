@@ -1,5 +1,6 @@
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import { AnimatePresence, motion, useSpring, useTransform } from "motion/react"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 
 type Props = {
@@ -49,7 +50,7 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
       </h2>
       <div className="flex w-full flex-col gap-2">
         <AnimatePresence mode="popLayout">
-          {displayedLeaderboard.map(({ id, username, points }) => (
+          {displayedLeaderboard.map(({ id, username, points, emoji }) => (
             <motion.div
               key={id}
               layout
@@ -72,7 +73,18 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
               }}
               className="bg-primary flex w-full justify-between rounded-md p-3 text-2xl font-bold text-white"
             >
-              <span className="drop-shadow-md">{username}</span>
+              <div className="flex items-center gap-3">
+                {emoji && (
+                  <Image
+                    src={`/${emoji}.svg`}
+                    alt="emoji"
+                    width={40}
+                    height={40}
+                    className="h-10 w-10"
+                  />
+                )}
+                <span className="drop-shadow-md">{username}</span>
+              </div>
               {isAnimating ? (
                 <AnimatedPoints
                   from={oldLeaderboard.find((u) => u.id === id)?.points || 0}

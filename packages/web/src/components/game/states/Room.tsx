@@ -4,6 +4,8 @@ import { Player } from "@rahoot/common/types/game"
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
+import Image from "next/image"
+import { QRCodeSVG } from "qrcode.react"
 import { useState } from "react"
 
 type Props = {
@@ -44,10 +46,23 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
     })
   }
 
+  const joinUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/join/${inviteCode}`
+
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
-      <div className="mb-10 rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
-        {inviteCode}
+      <div className="mb-8 flex items-center gap-8">
+        <div className="rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
+          {inviteCode}
+        </div>
+        
+        <div className="rounded-lg bg-white p-4 shadow-lg">
+          <QRCodeSVG 
+            value={joinUrl} 
+            size={180}
+            level="H"
+            includeMargin={true}
+          />
+        </div>
       </div>
 
       <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg">
@@ -64,9 +79,18 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
         {playerList.map((player) => (
           <div
             key={player.id}
-            className="shadow-inset bg-primary rounded-md px-4 py-3 font-bold text-white"
+            className="shadow-inset bg-primary flex items-center gap-2 rounded-md px-4 py-3 font-bold text-white"
             onClick={handleKick(player.id)}
           >
+            {player.emoji && (
+              <Image
+                src={`/${player.emoji}.svg`}
+                alt="emoji"
+                width={40}
+                height={40}
+                className="h-10 w-10"
+              />
+            )}
             <span className="cursor-pointer text-xl drop-shadow-md hover:line-through">
               {player.username}
             </span>

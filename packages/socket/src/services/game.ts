@@ -120,7 +120,7 @@ class Game {
     this.io.to(target).emit("game:status", statusData)
   }
 
-  join(socket: Socket, username: string) {
+  join(socket: Socket, username: string, emoji?: string) {
     const isAlreadyConnected = this.players.find(
       (p) => p.clientId === socket.handshake.auth.clientId
     )
@@ -139,6 +139,7 @@ class Game {
       connected: true,
       username,
       points: 0,
+      emoji,
     }
 
     this.players.push(playerData)

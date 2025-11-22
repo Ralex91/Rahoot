@@ -2,6 +2,7 @@
 
 import { STATUS } from "@rahoot/common/types/game/status"
 import Button from "@rahoot/web/components/Button"
+import EmojiPicker from "@rahoot/web/components/EmojiPicker"
 import Form from "@rahoot/web/components/Form"
 import Input from "@rahoot/web/components/Input"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
@@ -15,13 +16,14 @@ const Username = () => {
   const { gameId, login, setStatus } = usePlayerStore()
   const router = useRouter()
   const [username, setUsername] = useState("")
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null)
 
   const handleLogin = () => {
-    if (!gameId) {
+    if (!gameId || !selectedEmoji) {
       return
     }
 
-    socket?.emit("player:login", { gameId, data: { username } })
+    socket?.emit("player:login", { gameId, data: { username, emoji: selectedEmoji } })
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -44,7 +46,10 @@ const Username = () => {
         onKeyDown={handleKeyDown}
         placeholder="Username here"
       />
-      <Button onClick={handleLogin}>Submit</Button>
+      <EmojiPicker selectedEmoji={selectedEmoji} onSelect={setSelectedEmoji} />
+      <Button onClick={handleLogin} disabled={!username || !selectedEmoji}>
+        Submit
+      </Button>
     </Form>
   )
 }

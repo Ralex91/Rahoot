@@ -21,6 +21,9 @@ const RootLayout = ({ children }: PropsWithChildren) => (
       <SocketProvider>
         <main className="text-base-[8px] flex flex-col">{children}</main>
         <Toaster />
+        <footer className="fixed bottom-2 right-2 text-xs text-white/40">
+          Emojis © OpenMoji – License: CC BY-SA 4.0
+        </footer>
       </SocketProvider>
     </body>
   </html>
