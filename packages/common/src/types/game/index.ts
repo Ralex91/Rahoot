@@ -4,6 +4,7 @@ export type Player = {
   connected: boolean
   username: string
   points: number
+  emoji?: string
 }
 
 export type Answer = {

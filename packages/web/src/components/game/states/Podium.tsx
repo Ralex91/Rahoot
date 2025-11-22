@@ -2,6 +2,7 @@
 
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
+import Image from "next/image"
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,
@@ -115,16 +116,27 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 { "translate-y-0! opacity-100": apparition >= 2 },
               )}
             >
-              <p
-                className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
-                  {
-                    "anim-balanced": apparition >= 4,
-                  },
+              <div className="flex flex-col items-center gap-2">
+                {top[1].emoji && (
+                  <Image
+                    src={`/${top[1].emoji}.svg`}
+                    alt="emoji"
+                    width={64}
+                    height={64}
+                    className="h-16 w-16"
+                  />
                 )}
-              >
-                {top[1].username}
-              </p>
+                <p
+                  className={clsx(
+                    "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                    {
+                      "anim-balanced": apparition >= 4,
+                    },
+                  )}
+                >
+                  {top[1].username}
+                </p>
+              </div>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-zinc-400 bg-zinc-500 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">2</span>
@@ -147,14 +159,25 @@ const Podium = ({ data: { subject, top } }: Props) => {
               },
             )}
           >
-            <p
-              className={clsx(
-                "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
-                { "anim-balanced opacity-100": apparition >= 4 },
+            <div className="flex flex-col items-center gap-2">
+              {top[0].emoji && (
+                <Image
+                  src={`/${top[0].emoji}.svg`}
+                  alt="emoji"
+                  width={80}
+                  height={80}
+                  className="h-20 w-20"
+                />
               )}
-            >
-              {top[0].username}
-            </p>
+              <p
+                className={clsx(
+                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
+                  { "anim-balanced opacity-100": apparition >= 4 },
+                )}
+              >
+                {top[0].username}
+              </p>
+            </div>
             <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
               <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-400 bg-amber-300 text-3xl font-bold text-white drop-shadow-lg">
                 <span className="drop-shadow-md">1</span>
@@ -174,16 +197,27 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 },
               )}
             >
-              <p
-                className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
-                  {
-                    "anim-balanced": apparition >= 4,
-                  },
+              <div className="flex flex-col items-center gap-2">
+                {top[2].emoji && (
+                  <Image
+                    src={`/${top[2].emoji}.svg`}
+                    alt="emoji"
+                    width={56}
+                    height={56}
+                    className="h-14 w-14"
+                  />
                 )}
-              >
-                {top[2].username}
-              </p>
+                <p
+                  className={clsx(
+                    "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                    {
+                      "anim-balanced": apparition >= 4,
+                    },
+                  )}
+                >
+                  {top[2].username}
+                </p>
+              </div>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">3</span>
