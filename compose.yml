@@ -7,7 +7,9 @@ services:
       - "3000:3000"
       - "3001:3001"
     volumes:
-      - ./config:/app/config # Path to your game config
+      - ./config:/app/quizz # Path to your quizz files
     environment:
-      - WEB_ORIGIN=http://localhost:3000
-      - SOCKET_URL=http://localhost:3001
+      - WEB_ORIGIN=${WEB_ORIGIN}
+      - SOCKET_URL=${SOCKET_URL}
+      - MANAGER_PASSWORD=${MANAGER_PASSWORD}
+      - MUSIC_ENABLED=${MUSIC_ENABLED}
