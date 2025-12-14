@@ -2,3 +2,5 @@
 .env
 .secrets
 release.json
+quizz/*
+!quizz/example.json

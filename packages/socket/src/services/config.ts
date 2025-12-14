@@ -7,39 +7,22 @@ const inContainerPath = process.env.CONFIG_PATH
 const getPath = (path: string = "") =>
   inContainerPath
     ? resolve(inContainerPath, path)
-    : resolve(process.cwd(), "../../config", path)
+    : resolve(process.cwd(), "../../quizz", path)
+
+type GameConfig = {
+  managerPassword: string
+  music: boolean
+}
 
 class Config {
   static init() {
-    const isConfigFolderExists = fs.existsSync(getPath())
+    const isQuizzFolderExists = fs.existsSync(getPath())
 
-    if (!isConfigFolderExists) {
+    if (!isQuizzFolderExists) {
       fs.mkdirSync(getPath())
-    }
-
-    const isGameConfigExists = fs.existsSync(getPath("game.json"))
-
-    if (!isGameConfigExists) {
-      fs.writeFileSync(
-        getPath("game.json"),
-        JSON.stringify(
-          {
-            managerPassword: "PASSWORD",
-            music: true,
-          },
-          null,
-          2
-        )
-      )
-    }
-
-    const isQuizzExists = fs.existsSync(getPath("quizz"))
-
-    if (!isQuizzExists) {
-      fs.mkdirSync(getPath("quizz"))
 
       fs.writeFileSync(
-        getPath("quizz/example.json"),
+        getPath("example.json"),
         JSON.stringify(
           {
             subject: "Example Quizz",
@@ -76,26 +59,18 @@ class Config {
     }
   }
 
-  static game() {
-    const isExists = fs.existsSync(getPath("game.json"))
+  static game(): GameConfig {
+    const managerPassword = process.env.MANAGER_PASSWORD ?? "PASSWORD"
+    const musicEnv = process.env.MUSIC_ENABLED ?? "true"
+    const music = musicEnv.toLowerCase() === "true"
 
-    if (!isExists) {
-      throw new Error("Game config not found")
+    return {
+      managerPassword,
+      music,
     }
-
-    try {
-      const config = fs.readFileSync(getPath("game.json"), "utf-8")
-
-      return JSON.parse(config)
-    } catch (error) {
-      console.error("Failed to read game config:", error)
-    }
-
-    return {}
   }
-
   static quizz() {
-    const isExists = fs.existsSync(getPath("quizz"))
+    const isExists = fs.existsSync(getPath())
 
     if (!isExists) {
       return []
@@ -103,11 +78,11 @@ class Config {
 
     try {
       const files = fs
-        .readdirSync(getPath("quizz"))
+        .readdirSync(getPath())
         .filter((file) => file.endsWith(".json"))
 
       const quizz: QuizzWithId[] = files.map((file) => {
-        const data = fs.readFileSync(getPath(`quizz/${file}`), "utf-8")
+        const data = fs.readFileSync(getPath(`${file}`), "utf-8")
         const config = JSON.parse(data)
 
         const id = file.replace(".json", "")
