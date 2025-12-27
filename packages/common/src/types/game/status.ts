@@ -23,6 +23,8 @@ export type CommonStatusDataMap = {
     question: string
     answers: string[]
     image?: string
+    video?: string
+    audio?: string
     time: number
     totalPlayer: number
   }
@@ -46,6 +48,7 @@ type ManagerExtraStatus = {
     correct: number
     answers: string[]
     image?: string
+    video?: string
   }
   SHOW_LEADERBOARD: { oldLeaderboard: Player[]; leaderboard: Player[] }
 }

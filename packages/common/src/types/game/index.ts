@@ -17,6 +17,8 @@ export type Quizz = {
   questions: {
     question: string
     image?: string
+    video?: string
+    audio?: string
     answers: string[]
     solution: number
     cooldown: number
