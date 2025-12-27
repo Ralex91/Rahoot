@@ -20,7 +20,7 @@ type Props = {
 }
 
 const Answers = ({
-  data: { question, answers, image, time, totalPlayer },
+  data: { question, answers, image, audio, video, time, totalPlayer },
 }: Props) => {
   const { gameId }: { gameId?: string } = useParams()
   const { socket } = useSocket()
@@ -54,6 +54,10 @@ const Answers = ({
   }
 
   useEffect(() => {
+    if (video || audio) {
+      return
+    }
+    
     playMusic()
 
     return () => {
@@ -76,6 +80,24 @@ const Answers = ({
         <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
           {question}
         </h2>
+
+        {(Boolean(audio) && !player) && (
+          <audio
+            className="m-4 max-h-[400px] w-auto rounded-md"
+            src={audio}
+            autoPlay
+            controls
+          />
+        )}
+
+        {(Boolean(video) && !player) && (
+          <video
+            className="aspect-video bg-black m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md"
+            src={video}
+            autoPlay
+            controls
+          />
+        )}
 
         {Boolean(image) && (
           <img

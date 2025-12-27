@@ -361,6 +361,8 @@ class Game {
       question: question.question,
       answers: question.answers,
       image: question.image,
+      video: question.video,
+      audio: question.audio,
       time: question.time,
       totalPlayer: this.players.length,
     })
