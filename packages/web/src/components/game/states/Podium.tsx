@@ -95,7 +95,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
       )}
 
       {apparition >= 3 && top.length >= 3 && (
-        <div className="pointer-events-none absolute min-h-screen w-full overflow-hidden">
+        <div className="pointer-events-none absolute min-h-dvh w-full overflow-hidden">
           <div className="spotlight"></div>
         </div>
       )}
@@ -106,7 +106,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
 
         <div
           style={{ gridTemplateColumns: `repeat(${top.length}, 1fr)` }}
-          className={`grid w-full max-w-[800px] flex-1 items-end justify-center justify-self-end overflow-x-visible overflow-y-hidden`}
+          className={`grid w-full max-w-200 flex-1 items-end justify-center justify-self-end overflow-x-visible overflow-y-hidden`}
         >
           {top[1] && (
             <div
