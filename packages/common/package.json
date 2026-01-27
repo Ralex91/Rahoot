@@ -6,15 +6,15 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "socket.io": "^4.8.1",
-    "zod": "^4.1.13"
+    "socket.io": "^4.8.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@types/node": "^24.10.4",
+    "@types/node": "^25.0.10",
     "eslint": "^9.39.2",
-    "globals": "^16.5.0",
+    "globals": "^17.2.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0"
+    "typescript-eslint": "^8.54.0"
   }
 }
