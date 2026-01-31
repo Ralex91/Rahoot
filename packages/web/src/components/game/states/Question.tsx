@@ -27,7 +27,7 @@ const Question = ({ data: { question, image, cooldown } }: Props) => {
           <img
             alt={question}
             src={image}
-            className="m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md"
+            className="max-h-60 w-auto rounded-md sm:max-h-100"
           />
         )}
       </div>

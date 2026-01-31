@@ -20,6 +20,7 @@ type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
 interface SocketContextValue {
   socket: TypedSocket | null
+  webUrl: string | null
   isConnected: boolean
   clientId: string
   connect: () => void
@@ -29,6 +30,7 @@ interface SocketContextValue {
 
 const SocketContext = createContext<SocketContextValue>({
   socket: null,
+  webUrl: null,
   isConnected: false,
   clientId: "",
   connect: () => {},
@@ -36,11 +38,8 @@ const SocketContext = createContext<SocketContextValue>({
   reconnect: () => {},
 })
 
-const getSocketServer = async () => {
-  const res = await ky.get("/socket").json<{ url: string }>()
-
-  return res.url
-}
+const getSocketServer = async () =>
+  await ky.get("/env").json<{ webUrl: string; socketUrl: string }>()
 
 const getClientId = (): string => {
   try {
@@ -61,6 +60,7 @@ const getClientId = (): string => {
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<TypedSocket | null>(null)
+  const [webUrl, setWebUrl] = useState<string | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const [clientId] = useState<string>(() => getClientId())
 
@@ -73,16 +73,16 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     const initSocket = async () => {
       try {
-        const socketUrl = await getSocketServer()
+        const { webUrl, socketUrl } = await getSocketServer()
 
         s = io(socketUrl, {
-          transports: ["websocket"],
           autoConnect: false,
           auth: {
             clientId,
           },
         })
 
+        setWebUrl(webUrl)
         setSocket(s)
 
         s.on("connect", () => {
@@ -132,6 +132,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     <SocketContext.Provider
       value={{
         socket,
+        webUrl,
         isConnected,
         clientId,
         connect,
