@@ -57,9 +57,10 @@ const Answers = ({
     if (video || audio) {
       return
     }
-    
+
     playMusic()
 
+    // eslint-disable-next-line consistent-return
     return () => {
       stopMusic()
     }
@@ -81,18 +82,18 @@ const Answers = ({
           {question}
         </h2>
 
-        {(Boolean(audio) && !player) && (
+        {Boolean(audio) && !player && (
           <audio
-            className="m-4 max-h-[400px] w-auto rounded-md"
+            className="m-4 mb-2 w-auto rounded-md"
             src={audio}
             autoPlay
             controls
           />
         )}
 
-        {(Boolean(video) && !player) && (
+        {Boolean(video) && !player && (
           <video
-            className="aspect-video bg-black m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md"
+            className="m-4 mb-2 aspect-video max-h-60 w-auto rounded-md px-4 sm:max-h-100"
             src={video}
             autoPlay
             controls
@@ -103,7 +104,7 @@ const Answers = ({
           <img
             alt={question}
             src={image}
-            className="min-h-auto w-full rounded-md p-4"
+            className="mb-2 max-h-60 w-auto rounded-md px-4 sm:max-h-100"
           />
         )}
       </div>

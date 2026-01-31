@@ -1,6 +1,7 @@
 import { Answer, Player, Quizz } from "@rahoot/common/types/game"
 import { Server, Socket } from "@rahoot/common/types/game/socket"
 import { Status, STATUS, StatusDataMap } from "@rahoot/common/types/game/status"
+import { usernameValidator } from "@rahoot/common/validators/auth"
 import Registry from "@rahoot/socket/services/registry"
 import { createInviteCode, timeToPoint } from "@rahoot/socket/utils/game"
 import sleep from "@rahoot/socket/utils/sleep"
@@ -94,7 +95,7 @@ class Game {
     })
 
     console.log(
-      `New game created: ${roomInvite} subject: ${this.quizz.subject}`
+      `New game created: ${roomInvite} subject: ${this.quizz.subject}`,
     )
   }
 
@@ -107,7 +108,7 @@ class Game {
   sendStatus<T extends Status>(
     target: string,
     status: T,
-    data: StatusDataMap[T]
+    data: StatusDataMap[T],
   ) {
     const statusData = { name: status, data }
 
@@ -122,11 +123,19 @@ class Game {
 
   join(socket: Socket, username: string) {
     const isAlreadyConnected = this.players.find(
-      (p) => p.clientId === socket.handshake.auth.clientId
+      (p) => p.clientId === socket.handshake.auth.clientId,
     )
 
     if (isAlreadyConnected) {
       socket.emit("game:errorMessage", "Player already connected")
+
+      return
+    }
+
+    const result = usernameValidator.safeParse(username)
+
+    if (result.error) {
+      socket.emit("game:errorMessage", result.error.issues[0].message)
 
       return
     }
@@ -261,7 +270,7 @@ class Game {
     })
     socket.emit("game:totalPlayers", this.players.length)
     console.log(
-      `Player ${player.username} reconnected to game ${this.inviteCode}`
+      `Player ${player.username} reconnected to game ${this.inviteCode}`,
     )
   }
 
@@ -388,13 +397,13 @@ class Game {
 
         return acc
       },
-      {}
+      {},
     )
 
     const sortedPlayers = this.players
       .map((player) => {
         const playerAnswer = this.round.playersAnswers.find(
-          (a) => a.playerId === player.id
+          (a) => a.playerId === player.id,
         )
 
         const isCorrect = playerAnswer
