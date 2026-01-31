@@ -22,7 +22,7 @@ io.listen(Number(port))
 
 io.on("connection", (socket) => {
   console.log(
-    `A user connected: socketId: ${socket.id}, clientId: ${socket.handshake.auth.clientId}`
+    `A user connected: socketId: ${socket.id}, clientId: ${socket.handshake.auth.clientId}`,
   )
 
   socket.on("player:reconnect", ({ gameId }) => {
@@ -101,33 +101,33 @@ io.on("connection", (socket) => {
   })
 
   socket.on("player:login", ({ gameId, data }) =>
-    withGame(gameId, socket, (game) => game.join(socket, data.username))
+    withGame(gameId, socket, (game) => game.join(socket, data.username)),
   )
 
   socket.on("manager:kickPlayer", ({ gameId, playerId }) =>
-    withGame(gameId, socket, (game) => game.kickPlayer(socket, playerId))
+    withGame(gameId, socket, (game) => game.kickPlayer(socket, playerId)),
   )
 
   socket.on("manager:startGame", ({ gameId }) =>
-    withGame(gameId, socket, (game) => game.start(socket))
+    withGame(gameId, socket, (game) => game.start(socket)),
   )
 
   socket.on("player:selectedAnswer", ({ gameId, data }) =>
     withGame(gameId, socket, (game) =>
-      game.selectAnswer(socket, data.answerKey)
-    )
+      game.selectAnswer(socket, data.answerKey),
+    ),
   )
 
   socket.on("manager:abortQuiz", ({ gameId }) =>
-    withGame(gameId, socket, (game) => game.abortRound(socket))
+    withGame(gameId, socket, (game) => game.abortRound(socket)),
   )
 
   socket.on("manager:nextQuestion", ({ gameId }) =>
-    withGame(gameId, socket, (game) => game.nextRound(socket))
+    withGame(gameId, socket, (game) => game.nextRound(socket)),
   )
 
   socket.on("manager:showLeaderboard", ({ gameId }) =>
-    withGame(gameId, socket, (game) => game.showLeaderboard())
+    withGame(gameId, socket, (game) => game.showLeaderboard()),
   )
 
   socket.on("disconnect", () => {

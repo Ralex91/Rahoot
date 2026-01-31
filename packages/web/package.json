@@ -19,6 +19,7 @@
     "react-confetti": "^6.4.0",
     "react-dom": "19.2.4",
     "react-hot-toast": "^2.6.0",
+    "react-qr-code": "^2.0.18",
     "socket.io-client": "^4.8.3",
     "use-sound": "^5.0.0",
     "uuid": "^13.0.0",

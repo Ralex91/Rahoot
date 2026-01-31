@@ -40,6 +40,18 @@ button:not(:disabled),
   box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
 }
 
+@media (min-width: 768px) {
+  .game-pin-out {
+    clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+    padding-right: 10px !important;
+  }
+  .game-pin-in {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 9.8% 50%);
+    padding-left: 50px !important;
+    margin-left: -35px;
+  }
+}
+
 .spotlight {
   position: absolute;
   height: 200%;

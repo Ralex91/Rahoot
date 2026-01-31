@@ -3,12 +3,15 @@ import Form from "@rahoot/web/components/Form"
 import Input from "@rahoot/web/components/Input"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
-import { KeyboardEvent, useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { KeyboardEvent, useEffect, useRef, useState } from "react"
 
 const Room = () => {
-  const { socket } = useSocket()
+  const { socket, isConnected } = useSocket()
   const { join } = usePlayerStore()
   const [invitation, setInvitation] = useState("")
+  const searchParams = useSearchParams()
+  const hasJoinedRef = useRef(false)
 
   const handleJoin = () => {
     socket?.emit("player:join", invitation)
@@ -23,6 +26,17 @@ const Room = () => {
   useEvent("game:successRoom", (gameId) => {
     join(gameId)
   })
+
+  useEffect(() => {
+    const pinCode = searchParams.get("pin")
+
+    if (!isConnected || !pinCode || hasJoinedRef.current) {
+      return
+    }
+
+    socket?.emit("player:join", pinCode)
+    hasJoinedRef.current = true
+  }, [searchParams, isConnected, socket])
 
   return (
     <Form>
