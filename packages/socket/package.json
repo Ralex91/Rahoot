@@ -1,6 +1,6 @@
 {
   "name": "@rahoot/socket",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
