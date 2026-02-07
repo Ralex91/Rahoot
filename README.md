@@ -170,3 +170,7 @@ Quiz Options:
 5. Wait for review and merge
 
 For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Rahoot&type=date&legend=bottom-right)
