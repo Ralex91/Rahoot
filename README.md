@@ -42,8 +42,16 @@ Using Docker Compose (recommended):
 You can find the docker compose configuration in the repository:
 [docker-compose.yml](/compose.yml)
 
+copy the .env.example to .env.
+
 ```bash
-docker compose up -d
+  cp .env.example .env
+```
+
+start the container
+
+```bash
+  docker compose up -d
 ```
 
 Or using Docker directly:
@@ -55,14 +63,15 @@ docker run -d \
   -v ./config:/app/config \
   -e WEB_ORIGIN=http://localhost:3000 \
   -e SOCKET_URL=http://localhost:3001 \
+  -e  MANAGER_PASSWORD=PASSWORD \
+  -e MUSIC_ENABLED=false \
   ralex91/rahoot:latest
 ```
 
 **Configuration Volume:**
-The `-v ./config:/app/config` option mounts a local `config` folder to persist your game settings and quizzes. This allows you to:
+The `-v ./quizz:/app/quizz` option mounts a local `quizz` folder to persist your game settings and quizzes. This allows you to:
 
 - Edit your configuration files directly on your host machine
-- Keep your settings when updating the container
 - Easily backup your quizzes and game configuration
 
 The folder will be created automatically on first run with an example quiz to get you started.
@@ -104,27 +113,31 @@ pnpm start
 
 The configuration is split into two main parts:
 
-### 1. Game Configuration (`config/game.json`)
+### 1. Game Configuration (`.env`)
 
 Main game settings:
 
-```json
-{
-  "managerPassword": "PASSWORD",
-  "music": true
-}
+```env
+
+  WEB_ORIGIN=http://localhost:3000
+  SOCKET_URL=http://localhost:3001
+  MANAGER_PASSWORD=PASSWORD
+  MUSIC_ENABLED=false
+
 ```
 
 Options:
 
-- `managerPassword`: The master password for accessing the manager interface
-- `music`: Enable/disable game music
+- `MANAGER_PASSWORD`: The master password for accessing the manager interface
+- `MUSIC_ENABLED`: Enable/disable game music
+- `WEB_ORIGIN`: Frontend URL
+- `SOCKET_URL`: Websocket URL
 
-### 2. Quiz Configuration (`config/quizz/*.json`)
+### 2. Quiz Configuration (`quizz/*.json`)
 
 Create your quiz files in the `config/quizz/` directory. You can have multiple quiz files and select which one to use when starting a game.
 
-Example quiz configuration (`config/quizz/example.json`):
+Example quiz configuration (`quizz/example.json`):
 
 ```json
 {
@@ -156,7 +169,7 @@ Quiz Options:
 ## 🎮 How to Play
 
 1. Access the manager interface at http://localhost:3000/manager
-2. Enter the manager password (defined in quiz config)
+2. Enter the manager password (defined in env file)
 3. Share the game URL (http://localhost:3000) and room code with participants
 4. Wait for players to join
 5. Click the start button to begin the game
