@@ -1,10 +1,10 @@
 <p align="center">
-  <img height="250" align="center" src="https://github.com/b1on1kkk/UniQuizzer/raw/dev/.github/logo.svg">
+  <img width="550" height="300" align="center" src="https://github.com/b1on1kkk/UniQuizzer/raw/dev/.github/logo.svg">
 </p>
 
 ## 🧩 What is this project?
 
-Rahoot is a clone of the Kahoot based on Rahoot frontend base! Platform allowing students create funny events.
+UniQuizzer is a clone of the Kahoot based on Rahoot frontend base! Platform allowing students create funny events.
 
 ## ⚙️ Prerequisites
 
@@ -33,18 +33,6 @@ You can find the docker compose configuration in the repository:
 docker compose up -d
 ```
 
-Or using Docker directly:
-
-```bash
-docker run -d \
-  -p 3000:3000 \
-  -p 3001:3001 \
-  -v ./config:/app/config \
-  -e WEB_ORIGIN=http://localhost:3000 \
-  -e SOCKET_URL=http://localhost:3001 \
-  ralex91/rahoot:latest
-```
-
 **Configuration Volume:**
 The `-v ./config:/app/config` option mounts a local `config` folder to persist your game settings and quizzes. This allows you to:
 
@@ -64,8 +52,8 @@ The application will be available at:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Ralex91/Rahoot.git
-cd ./Rahoot
+git clone https://github.com/b1on1kkk/UniQuizzer.git
+cd ./UniQuizzer
 ```
 
 2. Install dependencies:
