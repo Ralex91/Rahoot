@@ -1,18 +1,10 @@
 <p align="center">
-  <img width="450" height="120" align="center" src="">
+  <img width="450" height="120" align="center" src="https://github.com/b1on1kkk/UniQuizzer/blob/a89265bb52f56702fce60a5c5886cb8be512787d/.github/logo.svg">
 </p>
 
 ## 🧩 What is this project?
 
-Rahoot is a straightforward and open-source clone of the Kahoot! platform, allowing users to host it on their own server for smaller events.
-
-> ⚠️ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
-
-<p align="center">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager Dashboard">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question Screen">
-</p>
+UniQuizzer is a clone of the Kahoot based on Rahoot fontend fork base. Platform allowing students to create events.
 
 ## ⚙️ Prerequisites
 
@@ -155,17 +147,3 @@ Quiz Options:
 3. Share the game URL (http://localhost:3000) and room code with participants
 4. Wait for players to join
 5. Click the start button to begin the game
-
-## 📝 Contributing
-
-1. Fork the repository
-2. Create a new branch (e.g., `feat/my-feature`)
-3. Make your changes
-4. Create a pull request
-5. Wait for review and merge
-
-For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
-
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Rahoot&type=date&legend=bottom-right)
