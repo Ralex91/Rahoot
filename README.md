@@ -1,10 +1,10 @@
 <p align="center">
-  <img width="450" height="120" align="center" src="https://github.com/b1on1kkk/UniQuizzer/blob/a89265bb52f56702fce60a5c5886cb8be512787d/.github/logo.svg">
+  <img height="250" align="center" src="https://github.com/b1on1kkk/UniQuizzer/raw/dev/.github/logo.svg">
 </p>
 
 ## 🧩 What is this project?
 
-UniQuizzer is a clone of the Kahoot based on Rahoot fontend fork base. Platform allowing students to create events.
+Rahoot is a clone of the Kahoot based on Rahoot frontend base! Platform allowing students create funny events.
 
 ## ⚙️ Prerequisites
 
