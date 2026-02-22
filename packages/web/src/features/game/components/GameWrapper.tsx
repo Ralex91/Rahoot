@@ -43,9 +43,9 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
 
   return (
     <section className="relative min-h-dvh flex">
-      <div className="fixed top-0 left-0 h-full w-full bg-orange-600 opacity-70">
+      <div className="fixed top-0 left-0 h-full w-full">
         <img
-          className="pointer-events-none h-full w-full object-cover opacity-60"
+          className="pointer-events-none h-full w-full object-cover"
           src={background}
           alt="background"
         />
