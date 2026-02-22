@@ -1,6 +1,5 @@
 {
   "name": "@rahoot/socket",
-  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -11,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@rahoot/common": "workspace:*",
-    "@t3-oss/env-core": "^0.13.10",
     "dayjs": "^1.11.19",
     "socket.io": "^4.8.3",
     "uuid": "^13.0.0",

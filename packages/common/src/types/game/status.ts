@@ -1,4 +1,4 @@
-import { Player } from "."
+import type { Player } from "@rahoot/common/types/game"
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",

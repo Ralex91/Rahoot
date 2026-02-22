@@ -1,6 +1,10 @@
+import type {
+  GameUpdateQuestion,
+  Player,
+  QuizzWithId,
+} from "@rahoot/common/types/game"
+import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
 import { Server as ServerIO, Socket as SocketIO } from "socket.io"
-import { GameUpdateQuestion, Player, QuizzWithId } from "."
-import { Status, StatusDataMap } from "./status"
 
 export type Server = ServerIO<ClientToServerEvents, ServerToClientEvents>
 export type Socket = SocketIO<ClientToServerEvents, ServerToClientEvents>
@@ -79,7 +83,7 @@ export interface ClientToServerEvents {
   "player:login": (_message: MessageWithoutStatus<{ username: string }>) => void
   "player:reconnect": (_message: { gameId: string }) => void
   "player:selectedAnswer": (
-    _message: MessageWithoutStatus<{ answerKey: number }>
+    _message: MessageWithoutStatus<{ answerKey: number }>,
   ) => void
 
   // Common

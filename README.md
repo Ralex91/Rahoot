@@ -25,7 +25,7 @@ Choose one of the following deployment methods:
 
 ### Without Docker
 
-- Node.js : version 20 or higher
+- Node.js : version 22 or higher
 - PNPM : Learn more about [here](https://pnpm.io/)
 
 ### With Docker
@@ -51,10 +51,7 @@ Or using Docker directly:
 ```bash
 docker run -d \
   -p 3000:3000 \
-  -p 3001:3001 \
   -v ./config:/app/config \
-  -e WEB_ORIGIN=http://localhost:3000 \
-  -e SOCKET_URL=http://localhost:3001 \
   ralex91/rahoot:latest
 ```
 
@@ -67,10 +64,7 @@ The `-v ./config:/app/config` option mounts a local `config` folder to persist y
 
 The folder will be created automatically on first run with an example quiz to get you started.
 
-The application will be available at:
-
-- Web Interface: http://localhost:3000
-- WebSocket Server: ws://localhost:3001
+The application will be available at http://localhost:3000
 
 ### 🛠️ Without Docker
 
@@ -87,9 +81,7 @@ cd ./Rahoot
 pnpm install
 ```
 
-3. Change the environment variables in the `.env` file
-
-4. Build and start the application:
+3. Build and start the application:
 
 ```bash
 # Development mode
@@ -110,8 +102,7 @@ Main game settings:
 
 ```json
 {
-  "managerPassword": "PASSWORD",
-  "music": true
+  "managerPassword": "PASSWORD"
 }
 ```
 
