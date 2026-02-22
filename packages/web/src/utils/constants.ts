@@ -62,6 +62,20 @@ export const SFX_PODIUM_SECOND = "/sounds/second.mp3"
 export const SFX_PODIUM_FIRST = "/sounds/first.mp3"
 export const SFX_SNEAR_ROOL = "/sounds/snearRoll.mp3"
 
+export const MANAGER_SKIP_EVENTS = {
+  [STATUS.SHOW_ROOM]: "manager:startGame",
+  [STATUS.SELECT_ANSWER]: "manager:abortQuiz",
+  [STATUS.SHOW_RESPONSES]: "manager:showLeaderboard",
+  [STATUS.SHOW_LEADERBOARD]: "manager:nextQuestion",
+} as const satisfies Partial<Record<keyof typeof GAME_STATE_COMPONENTS_MANAGER, string>>
+
+export function isKeyOf<T extends object>(
+  obj: T,
+  key: string,
+): key is keyof T & string {
+  return key in obj
+}
+
 export const MANAGER_SKIP_BTN = {
   [STATUS.SHOW_ROOM]: "Start Game",
   [STATUS.SHOW_START]: null,

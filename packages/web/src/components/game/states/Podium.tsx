@@ -17,72 +17,56 @@ type Props = {
   data: ManagerStatusDataMap["FINISHED"]
 }
 
-const Podium = ({ data: { subject, top } }: Props) => {
+const usePodiumAnimation = (topLength: number) => {
   const [apparition, setApparition] = useState(0)
 
-  const { width, height } = useScreenSize()
-
-  const [sfxtThree] = useSound(SFX_PODIUM_THREE, {
-    volume: 0.2,
-  })
-
-  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, {
-    volume: 0.2,
-  })
-
+  const [sfxtThree] = useSound(SFX_PODIUM_THREE, { volume: 0.2 })
+  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, { volume: 0.2 })
   const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
     volume: 0.2,
   })
-
-  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, {
-    volume: 0.2,
-  })
+  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, { volume: 0.2 })
 
   useEffect(() => {
-    switch (apparition) {
-      case 4:
+    const actions: Partial<Record<number, () => void>> = {
+      4: () => {
         sfxRoolStop()
         sfxFirst()
-
-        break
-
-      case 3:
-        sfxRool()
-
-        break
-
-      case 2:
-        sfxSecond()
-
-        break
-
-      case 1:
-        sfxtThree()
-
-        break
+      },
+      3: sfxRool,
+      2: sfxSecond,
+      1: sfxtThree,
     }
+
+    actions[apparition]?.()
   }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool, sfxRoolStop])
 
   useEffect(() => {
-    if (top.length < 3) {
+    if (topLength < 3) {
       setApparition(4)
 
       return
     }
 
+    if (apparition >= 4) {
+      return
+    }
+
     const interval = setInterval(() => {
-      if (apparition > 4) {
-        clearInterval(interval)
-
-        return
-      }
-
       setApparition((value) => value + 1)
     }, 2000)
 
     // eslint-disable-next-line consistent-return
     return () => clearInterval(interval)
-  }, [apparition, top.length])
+  }, [apparition, topLength])
+
+  return apparition
+}
+
+const Podium = ({ data: { subject, top } }: Props) => {
+  const apparition = usePodiumAnimation(top.length)
+
+  const { width, height } = useScreenSize()
 
   return (
     <>

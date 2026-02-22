@@ -1,19 +1,14 @@
 "use client"
 
-import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/components/game/GameWrapper"
-import Answers from "@rahoot/web/components/game/states/Answers"
-import Leaderboard from "@rahoot/web/components/game/states/Leaderboard"
-import Podium from "@rahoot/web/components/game/states/Podium"
-import Prepared from "@rahoot/web/components/game/states/Prepared"
-import Question from "@rahoot/web/components/game/states/Question"
-import Responses from "@rahoot/web/components/game/states/Responses"
-import Room from "@rahoot/web/components/game/states/Room"
-import Start from "@rahoot/web/components/game/states/Start"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
 import { useQuestionStore } from "@rahoot/web/stores/question"
-import { GAME_STATE_COMPONENTS_MANAGER } from "@rahoot/web/utils/constants"
+import {
+  GAME_STATE_COMPONENTS_MANAGER,
+  MANAGER_SKIP_EVENTS,
+  isKeyOf,
+} from "@rahoot/web/utils/constants"
 import { useParams, useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
@@ -55,80 +50,23 @@ const ManagerGame = () => {
   })
 
   const handleSkip = () => {
-    if (!gameId) {
+    if (!gameId || !status) {
       return
     }
 
-    switch (status?.name) {
-      case STATUS.SHOW_ROOM:
-        socket?.emit("manager:startGame", { gameId })
-
-        break
-
-      case STATUS.SELECT_ANSWER:
-        socket?.emit("manager:abortQuiz", { gameId })
-
-        break
-
-      case STATUS.SHOW_RESPONSES:
-        socket?.emit("manager:showLeaderboard", { gameId })
-
-        break
-
-      case STATUS.SHOW_LEADERBOARD:
-        socket?.emit("manager:nextQuestion", { gameId })
-
-        break
+    if (isKeyOf(MANAGER_SKIP_EVENTS, status.name)) {
+      socket?.emit(MANAGER_SKIP_EVENTS[status.name], { gameId })
     }
   }
 
-  let component = null
-
-  switch (status?.name) {
-    case STATUS.SHOW_ROOM:
-      component = <Room data={status.data} />
-
-      break
-
-    case STATUS.SHOW_START:
-      component = <Start data={status.data} />
-
-      break
-
-    case STATUS.SHOW_PREPARED:
-      component = <Prepared data={status.data} />
-
-      break
-
-    case STATUS.SHOW_QUESTION:
-      component = <Question data={status.data} />
-
-      break
-
-    case STATUS.SELECT_ANSWER:
-      component = <Answers data={status.data} />
-
-      break
-
-    case STATUS.SHOW_RESPONSES:
-      component = <Responses data={status.data} />
-
-      break
-
-    case STATUS.SHOW_LEADERBOARD:
-      component = <Leaderboard data={status.data} />
-
-      break
-
-    case STATUS.FINISHED:
-      component = <Podium data={status.data} />
-
-      break
-  }
+  const CurrentComponent =
+    status && isKeyOf(GAME_STATE_COMPONENTS_MANAGER, status.name)
+      ? GAME_STATE_COMPONENTS_MANAGER[status.name]
+      : null
 
   return (
     <GameWrapper statusName={status?.name} onNext={handleSkip} manager>
-      {component}
+      {CurrentComponent && <CurrentComponent data={status!.data as never} />}
     </GameWrapper>
   )
 }
