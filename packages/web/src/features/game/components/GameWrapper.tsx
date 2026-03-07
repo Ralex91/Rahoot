@@ -11,6 +11,7 @@ import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { type PropsWithChildren, useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 type Props = PropsWithChildren & {
   statusName: Status | undefined
@@ -30,6 +31,11 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
       current,
       total,
     })
+  })
+
+  useEvent("game:errorMessage", (message) => {
+    toast.error(message)
+    setIsDisabled(false)
   })
 
   useEffect(() => {
