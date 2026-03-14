@@ -25,7 +25,7 @@ Choose one of the following deployment methods:
 
 ### Without Docker
 
-- Node.js : version 20 or higher
+- Node.js : version 22 or higher
 - PNPM : Learn more about [here](https://pnpm.io/)
 
 ### With Docker
@@ -51,10 +51,7 @@ Or using Docker directly:
 ```bash
 docker run -d \
   -p 3000:3000 \
-  -p 3001:3001 \
   -v ./config:/app/config \
-  -e WEB_ORIGIN=http://localhost:3000 \
-  -e SOCKET_URL=http://localhost:3001 \
   ralex91/rahoot:latest
 ```
 
@@ -67,10 +64,7 @@ The `-v ./config:/app/config` option mounts a local `config` folder to persist y
 
 The folder will be created automatically on first run with an example quiz to get you started.
 
-The application will be available at:
-
-- Web Interface: http://localhost:3000
-- WebSocket Server: ws://localhost:3001
+The application will be available at http://localhost:3000
 
 ### 🛠️ Without Docker
 
@@ -87,9 +81,7 @@ cd ./Rahoot
 pnpm install
 ```
 
-3. Change the environment variables in the `.env` file
-
-4. Build and start the application:
+3. Build and start the application:
 
 ```bash
 # Development mode
@@ -110,15 +102,13 @@ Main game settings:
 
 ```json
 {
-  "managerPassword": "PASSWORD",
-  "music": true
+  "managerPassword": "PASSWORD"
 }
 ```
 
 Options:
 
-- `managerPassword`: The master password for accessing the manager interface
-- `music`: Enable/disable game music
+- `managerPassword`: The master password for accessing the manager interface. **Must be changed from the default `"PASSWORD"` value**, otherwise manager access is blocked.
 
 ### 2. Quiz Configuration (`config/quizz/*.json`)
 
@@ -148,7 +138,9 @@ Quiz Options:
 - `questions`: Array of question objects containing:
   - `question`: The question text
   - `answers`: Array of possible answers (2-4 options)
-  - `image`: Optional URL for question image
+  - `image`: Optional URL for an image displayed with the question
+  - `video`: Optional URL for a video displayed with the question
+  - `audio`: Optional URL for an audio played during the question
   - `solution`: Index of correct answer (0-based)
   - `cooldown`: Time in seconds before showing the question
   - `time`: Time in seconds allowed to answer
@@ -156,7 +148,7 @@ Quiz Options:
 ## 🎮 How to Play
 
 1. Access the manager interface at http://localhost:3000/manager
-2. Enter the manager password (defined in quiz config)
+2. Enter the manager password (defined in `config/game.json`)
 3. Share the game URL (http://localhost:3000) and room code with participants
 4. Wait for players to join
 5. Click the start button to begin the game

@@ -1,6 +1,5 @@
 {
   "name": "@rahoot/common",
-  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "lint": "eslint"
@@ -10,11 +9,11 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@types/node": "^25.0.10",
-    "eslint": "^9.39.2",
-    "globals": "^17.2.0",
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^25.5.0",
+    "eslint": "^9.39.4",
+    "globals": "^17.4.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0"
+    "typescript-eslint": "^8.57.0"
   }
 }

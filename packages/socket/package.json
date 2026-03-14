@@ -1,6 +1,5 @@
 {
   "name": "@rahoot/socket",
-  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -11,19 +10,18 @@
   "license": "ISC",
   "dependencies": {
     "@rahoot/common": "workspace:*",
-    "@t3-oss/env-core": "^0.13.10",
-    "dayjs": "^1.11.19",
+    "dayjs": "^1.11.20",
     "socket.io": "^4.8.3",
     "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@types/node": "^25.0.10",
-    "esbuild": "^0.27.2",
-    "eslint": "^9.39.2",
-    "globals": "^17.2.0",
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^25.5.0",
+    "esbuild": "^0.27.4",
+    "eslint": "^9.39.4",
+    "globals": "^17.4.0",
     "tsx": "^4.21.0",
-    "typescript-eslint": "^8.54.0"
+    "typescript-eslint": "^8.57.0"
   }
 }

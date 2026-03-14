@@ -311,6 +311,12 @@ class Game {
       return
     }
 
+    if (this.players.length === 0) {
+      socket.emit("game:errorMessage", "No players connected")
+
+      return
+    }
+
     this.started = true
 
     this.broadcastStatus(STATUS.SHOW_START, {

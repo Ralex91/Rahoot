@@ -25,11 +25,10 @@ class Config {
         JSON.stringify(
           {
             managerPassword: "PASSWORD",
-            music: true,
           },
           null,
-          2
-        )
+          2,
+        ),
       )
     }
 
@@ -70,8 +69,8 @@ class Config {
             ],
           },
           null,
-          2
-        )
+          2,
+        ),
       )
     }
   }
