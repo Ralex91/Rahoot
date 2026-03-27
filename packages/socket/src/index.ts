@@ -5,11 +5,59 @@ import Game from "@rahoot/socket/services/game"
 import History from "@rahoot/socket/services/history"
 import Registry from "@rahoot/socket/services/registry"
 import { withGame } from "@rahoot/socket/utils/game"
+import fs from "fs"
+import { createServer } from "http"
+import { extname } from "path"
 import { Server as ServerIO } from "socket.io"
 
 const WS_PORT = 3001
+const MAX_MEDIA_UPLOAD_BYTES = 25 * 1024 * 1024
 
-const io: Server = new ServerIO({
+const MEDIA_CONTENT_TYPES: Record<string, string> = {
+  ".aac": "audio/aac",
+  ".flac": "audio/flac",
+  ".m4a": "audio/mp4",
+  ".mp3": "audio/mpeg",
+  ".oga": "audio/ogg",
+  ".ogg": "audio/ogg",
+  ".wav": "audio/wav",
+  ".webm": "audio/webm",
+}
+
+const httpServer = createServer((req, res) => {
+  const pathname = new URL(req.url ?? "/", "http://localhost").pathname
+
+  if (pathname.startsWith("/ws")) {
+    return
+  }
+
+  if (pathname.startsWith("/media/")) {
+    const filePath = Config.resolveMediaFile(pathname.slice("/media/".length))
+
+    if (!filePath || !fs.existsSync(filePath)) {
+      res.statusCode = 404
+      res.end("Media not found")
+
+      return
+    }
+
+    res.setHeader(
+      "Content-Type",
+      MEDIA_CONTENT_TYPES[extname(filePath).toLowerCase()] ??
+        "application/octet-stream",
+    )
+    fs.createReadStream(filePath).pipe(res)
+
+    return
+  }
+
+  res.statusCode = 404
+  res.end("Not found")
+})
+
+const io: Server = new ServerIO(httpServer, {
+  maxHttpBufferSize: MAX_MEDIA_UPLOAD_BYTES,
+  serveClient: false,
   path: "/ws",
 })
 Config.init()
@@ -28,10 +76,11 @@ const ensureAuthenticatedManager = (socket: {
 const emitManagerDashboard = (socketId: string) => {
   io.to(socketId).emit("manager:quizzList", Config.quizz())
   io.to(socketId).emit("manager:historyList", History.listRuns())
+  io.to(socketId).emit("manager:settings", Config.managerSettings())
 }
 
 console.log(`Socket server running on port ${WS_PORT}`)
-io.listen(WS_PORT)
+httpServer.listen(WS_PORT)
 
 io.on("connection", (socket) => {
   console.log(
@@ -130,6 +179,44 @@ io.on("connection", (socket) => {
       socket.emit(
         "manager:errorMessage",
         error instanceof Error ? error.message : "Failed to create quiz",
+      )
+    }
+  })
+
+  socket.on("manager:updateSettings", (settings) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      const nextSettings = Config.updateSettings(settings)
+      socket.emit("manager:settingsUpdated", nextSettings)
+      emitManagerDashboard(socket.id)
+    } catch (error) {
+      console.error("Failed to update settings:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to update settings",
+      )
+    }
+  })
+
+  socket.on("manager:uploadMedia", ({ filename, content }) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      socket.emit("manager:mediaUploaded", Config.uploadMedia(filename, content))
+    } catch (error) {
+      console.error("Failed to upload media:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to upload media",
       )
     }
   })

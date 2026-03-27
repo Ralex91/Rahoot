@@ -8,6 +8,7 @@ import type { Server, Socket } from "@rahoot/common/types/game/socket"
 import { STATUS } from "@rahoot/common/types/game/status"
 import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
 import { usernameValidator } from "@rahoot/common/validators/auth"
+import Config from "@rahoot/socket/services/config"
 import History from "@rahoot/socket/services/history"
 import Registry from "@rahoot/socket/services/registry"
 import { createInviteCode, timeToPoint } from "@rahoot/socket/utils/game"
@@ -349,6 +350,7 @@ class Game {
 
   async newRound() {
     const question = this.quizz.questions[this.round.currentQuestion]
+    const defaultAudio = Config.managerSettings().defaultAudio
 
     if (!this.started) {
       return
@@ -392,7 +394,7 @@ class Game {
       answers: question.answers,
       image: question.image,
       video: question.video,
-      audio: question.audio,
+      audio: question.audio ?? defaultAudio,
       time: question.time,
       totalPlayer: this.players.length,
     })
