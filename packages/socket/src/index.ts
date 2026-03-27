@@ -103,13 +103,34 @@ io.on("connection", (socket) => {
     }
 
     try {
-      Config.createQuizz(subject)
+      const quizz = Config.createQuizz(subject)
+      socket.emit("manager:quizzCreated", quizz)
       socket.emit("manager:quizzList", Config.quizz())
     } catch (error) {
       console.error("Failed to create quizz:", error)
       socket.emit(
         "manager:errorMessage",
         error instanceof Error ? error.message : "Failed to create quiz",
+      )
+    }
+  })
+
+  socket.on("manager:updateQuizz", ({ quizzId, quizz }) => {
+    if (!ensureAuthenticatedManager(socket.id)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      const updatedQuizz = Config.updateQuizz(quizzId, quizz)
+      socket.emit("manager:quizzUpdated", updatedQuizz)
+      socket.emit("manager:quizzList", Config.quizz())
+    } catch (error) {
+      console.error("Failed to update quizz:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to update quiz",
       )
     }
   })

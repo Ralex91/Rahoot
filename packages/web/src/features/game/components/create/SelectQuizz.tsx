@@ -10,9 +10,16 @@ type Props = {
   onSelect: (_id: string) => void
   onCreate: (_subject: string) => void
   onDelete: (_id: string) => void
+  onEdit: (_id: string) => void
 }
 
-const SelectQuizz = ({ quizzList, onCreate, onDelete, onSelect }: Props) => {
+const SelectQuizz = ({
+  quizzList,
+  onCreate,
+  onDelete,
+  onEdit,
+  onSelect,
+}: Props) => {
   const [selected, setSelected] = useState<string | null>(null)
   const [subject, setSubject] = useState("")
 
@@ -114,19 +121,40 @@ const SelectQuizz = ({ quizzList, onCreate, onDelete, onSelect }: Props) => {
           )}
 
           {sortedQuizzList.map((quizz) => (
-            <button
+            <div
               key={quizz.id}
               className={clsx(
                 "flex w-full items-center gap-3 rounded-md p-3 text-left outline outline-gray-300",
               )}
+              role="button"
+              tabIndex={0}
               onClick={handleSelect(quizz.id)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  handleSelect(quizz.id)()
+                }
+              }}
             >
               <div className="min-w-0 flex-1">
                 <p className="truncate text-lg font-semibold">{quizz.subject}</p>
-                <p className="text-sm text-gray-500">{quizz.questions.length} questions</p>
+                <p className="text-sm text-gray-500">
+                  {quizz.questions.length} questions
+                </p>
               </div>
 
               <div className="flex items-center gap-3">
+                <Button
+                  type="button"
+                  className="bg-white px-3 py-1 text-sm text-black!"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onEdit(quizz.id)
+                  }}
+                >
+                  Edit
+                </Button>
+
                 <div
                   className={clsx(
                     "h-5 w-5 shrink-0 rounded outline outline-offset-3 outline-gray-300",
@@ -146,7 +174,7 @@ const SelectQuizz = ({ quizzList, onCreate, onDelete, onSelect }: Props) => {
                   Delete
                 </Button>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       </div>

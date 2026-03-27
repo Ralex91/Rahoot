@@ -1,4 +1,4 @@
-import { QuizzWithId } from "@rahoot/common/types/game"
+import type { Quizz, QuizzWithId } from "@rahoot/common/types/game"
 import fs from "fs"
 import { resolve } from "path"
 
@@ -8,6 +8,71 @@ const getPath = (path: string = "") =>
   inContainerPath
     ? resolve(inContainerPath, path)
     : resolve(process.cwd(), "../../config", path)
+
+const normalizeOptionalAsset = (value?: string) => {
+  const trimmed = value?.trim()
+
+  return trimmed ? trimmed : undefined
+}
+
+const normalizeQuizz = (quizz: Quizz): Quizz => {
+  const subject = quizz.subject.trim()
+
+  if (!subject) {
+    throw new Error("Quiz subject is required")
+  }
+
+  if (!Array.isArray(quizz.questions) || quizz.questions.length === 0) {
+    throw new Error("Quiz must contain at least one question")
+  }
+
+  return {
+    subject,
+    questions: quizz.questions.map((question, index) => {
+      const normalizedQuestion = question.question.trim()
+      const answers = question.answers.map((answer) => answer.trim())
+
+      if (!normalizedQuestion) {
+        throw new Error(`Question ${index + 1} must have text`)
+      }
+
+      if (answers.length < 2 || answers.length > 4) {
+        throw new Error(`Question ${index + 1} must have between 2 and 4 answers`)
+      }
+
+      if (answers.some((answer) => !answer)) {
+        throw new Error(`Question ${index + 1} contains an empty answer`)
+      }
+
+      if (
+        !Number.isInteger(question.solution) ||
+        question.solution < 0 ||
+        question.solution >= answers.length
+      ) {
+        throw new Error(`Question ${index + 1} has an invalid correct answer`)
+      }
+
+      if (!Number.isInteger(question.cooldown) || question.cooldown < 0) {
+        throw new Error(`Question ${index + 1} has an invalid cooldown`)
+      }
+
+      if (!Number.isInteger(question.time) || question.time <= 0) {
+        throw new Error(`Question ${index + 1} has an invalid answer time`)
+      }
+
+      return {
+        question: normalizedQuestion,
+        answers,
+        solution: question.solution,
+        cooldown: question.cooldown,
+        time: question.time,
+        image: normalizeOptionalAsset(question.image),
+        video: normalizeOptionalAsset(question.video),
+        audio: normalizeOptionalAsset(question.audio),
+      }
+    }),
+  }
+}
 
 class Config {
   static quizzDirectory() {
@@ -150,7 +215,7 @@ class Config {
       quizzId = `${safeBaseId}-${duplicateIndex}`
     }
 
-    const quizz = {
+    const quizz = normalizeQuizz({
       subject: normalizedSubject,
       questions: [
         {
@@ -161,7 +226,7 @@ class Config {
           time: 20,
         },
       ],
-    }
+    })
 
     fs.writeFileSync(
       getPath(`quizz/${quizzId}.json`),
@@ -194,6 +259,35 @@ class Config {
     }
 
     fs.unlinkSync(path)
+  }
+
+  static updateQuizz(quizzId: string, quizz: Quizz) {
+    const normalizedId = quizzId.trim()
+
+    if (!normalizedId) {
+      throw new Error("Quiz id is required")
+    }
+
+    const safeId = normalizedId.replace(/[^a-zA-Z0-9-_]/g, "")
+
+    if (!safeId || safeId !== normalizedId) {
+      throw new Error("Invalid quiz id")
+    }
+
+    const path = getPath(`quizz/${safeId}.json`)
+
+    if (!fs.existsSync(path)) {
+      throw new Error("Quiz not found")
+    }
+
+    const normalizedQuizz = normalizeQuizz(quizz)
+
+    fs.writeFileSync(path, JSON.stringify(normalizedQuizz, null, 2))
+
+    return {
+      id: safeId,
+      ...normalizedQuizz,
+    }
   }
 }
 
