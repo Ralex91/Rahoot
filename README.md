@@ -1,52 +1,63 @@
 <p align="center">
-  <img width="450" height="120" align="center" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/logo.svg">
-  <br>
-  <div align="center">
-    <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Rahoot/edit/main/README.md&countColor=%2337d67a">
-    <img src="https://img.shields.io/docker/pulls/ralex91/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
-  </div>
+  <img width="450" height="120" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/logo.svg" alt="Rahoot logo">
 </p>
-
-## ðŸ§© What is this project?
-
-Rahoot is a straightforward and open-source clone of the Kahoot! platform, allowing users to host it on their own server for smaller events.
-
-> âš ï¸ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
 
 <p align="center">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager Dashboard">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question Screen">
+  <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Rahoot/edit/main/README.md&countColor=%2337d67a">
+  <img src="https://img.shields.io/docker/pulls/ralex91/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
 </p>
 
-## âš™ï¸ Prerequisites
+Rahoot is a self-hosted, open-source quiz game inspired by Kahoot. It is designed for small events, classrooms, and team sessions where you want a lightweight quiz host that runs on your own server.
 
-Choose one of the following deployment methods:
+> Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/Ralex91/Rahoot/issues).
 
-### Without Docker
+<p align="center">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login screen">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager dashboard">
+  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question screen">
+</p>
 
-- Node.js : version 22 or higher
-- PNPM : Learn more about [here](https://pnpm.io/)
+## Features
 
-### With Docker
+- Self-hosted quiz sessions with a manager/host interface
+- Quiz files stored as JSON in `config/quizz`
+- Quiz run history stored in SQLite at `config/history.db`
+- CSV export for completed quiz runs
+- Global fallback audio support plus per-question media
+- Local media uploads stored in `media/`
+
+## Requirements
+
+Choose one setup path:
 
 - Docker and Docker Compose
+- Node.js 22+ and PNPM
 
-## ðŸ“– Getting Started
+## Quick Start
 
-Choose your deployment method:
+### Docker Compose
 
-### ðŸ³ Using Docker (Recommended)
-
-Using Docker Compose (recommended):
-You can find the docker compose configuration in the repository:
-[docker-compose.yml](/compose.yml)
+The simplest way to run Rahoot is with Docker Compose:
 
 ```bash
 docker compose up -d
 ```
 
-Or using Docker directly:
+The app will be available at [http://localhost:3000](http://localhost:3000).
+
+Compose mounts two local folders:
+
+- `./config:/app/config`
+- `./media:/app/media`
+
+Those folders persist:
+
+- game configuration
+- quiz JSON files
+- run history in `config/history.db`
+- uploaded local audio files
+
+### Docker Run
 
 ```bash
 docker run -d \
@@ -56,52 +67,29 @@ docker run -d \
   ralex91/rahoot:latest
 ```
 
-**Configuration Volumes:**
-The `-v ./config:/app/config` and `-v ./media:/app/media` options mount local folders to persist your game settings, quizzes, and uploaded audio files. This allows you to:
-
-- Edit your configuration files directly on your host machine
-- Keep your settings when updating the container
-- Easily backup your quizzes and game configuration
-- Persist quiz run history in the SQLite database at `config/history.db`
-- Store manager-uploaded local audio files in `media/`
-
-The folder will be created automatically on first run with an example quiz to get you started.
-
-The application will be available at http://localhost:3000
-
-### ðŸ› ï¸ Without Docker
-
-1. Clone the repository:
+### Local Development
 
 ```bash
 git clone https://github.com/Ralex91/Rahoot.git
-cd ./Rahoot
-```
-
-2. Install dependencies:
-
-```bash
+cd Rahoot
 pnpm install
+pnpm run dev
 ```
 
-3. Build and start the application:
+For a production build:
 
 ```bash
-# Development mode
-pnpm run dev
-
-# Production mode
 pnpm run build
 pnpm start
 ```
 
-## âš™ï¸ Configuration
+## Configuration
 
-The configuration is split into two main parts:
+Rahoot stores its data in a small set of local files and folders.
 
-### 1. Game Configuration (`config/game.json`)
+### `config/game.json`
 
-Main game settings:
+Main manager settings:
 
 ```json
 {
@@ -110,16 +98,16 @@ Main game settings:
 }
 ```
 
-Options:
+Fields:
 
-- `managerPassword`: The master password for accessing the manager interface. **Must be changed from the default `"PASSWORD"` value**, otherwise manager access is blocked.
-- `defaultAudio`: Optional global audio URL used during answer selection when a question does not define its own `audio` value.
+- `managerPassword`: required for manager login. Change this from the default value before using the app.
+- `defaultAudio`: optional fallback audio played when a question does not define its own `audio`.
 
-### 2. Quiz Configuration (`config/quizz/*.json`)
+### `config/quizz/*.json`
 
-Create your quiz files in the `config/quizz/` directory. You can have multiple quiz files and select which one to use when starting a game.
+Quiz definitions live in `config/quizz/`.
 
-Example quiz configuration (`config/quizz/example.json`):
+Example:
 
 ```json
 {
@@ -137,47 +125,42 @@ Example quiz configuration (`config/quizz/example.json`):
 }
 ```
 
-Quiz Options:
+Question fields:
 
-- `subject`: Title/topic of the quiz
-- `questions`: Array of question objects containing:
-  - `question`: The question text
-  - `answers`: Array of possible answers (2-4 options)
-  - `image`: Optional URL for an image displayed with the question
-  - `video`: Optional URL for a video displayed with the question
-  - `audio`: Optional URL for an audio played during the question
-  - `solution`: Index of correct answer (0-based)
-  - `cooldown`: Time in seconds before showing the question
-  - `time`: Time in seconds allowed to answer
+- `question`: question text
+- `answers`: 2 to 4 possible answers
+- `image`: optional image URL
+- `video`: optional video URL
+- `audio`: optional audio URL
+- `solution`: zero-based index of the correct answer
+- `cooldown`: delay before answers are shown
+- `time`: answer timer in seconds
 
-### 3. Run History (`config/history.db`)
+### `config/history.db`
 
-Completed quiz runs are stored in a lightweight SQLite database at `config/history.db`.
-This file is used by the manager UI to display historical runs and export detailed CSV results for both current and past games.
+Completed quiz runs are stored in SQLite. The manager UI uses this history to list past runs and export detailed CSV results.
 
-### 4. Uploaded Media (`media/`)
+### `media/`
 
-Manager-uploaded local audio files are stored in the sibling `media/` directory.
-These files are served by the application at `/media/<filename>` and can be selected from the manager settings screen as the global fallback quiz audio.
+Manager-uploaded local audio files are stored here and served by the app at `/media/<filename>`.
 
-## ðŸŽ® How to Play
+## How To Use
 
-1. Access the manager interface at http://localhost:3000/manager
-2. Enter the manager password (defined in `config/game.json`)
-3. Share the game URL (http://localhost:3000) and room code with participants
-4. Wait for players to join
-5. Click the start button to begin the game
+1. Open [http://localhost:3000/manager](http://localhost:3000/manager)
+2. Sign in with the manager password from `config/game.json`
+3. Create, edit, delete, or launch a quiz
+4. Share the main app URL and room code with players
+5. Run the quiz and review exports/history afterward
 
-## ðŸ“ Contributing
+## Contributing
 
 1. Fork the repository
-2. Create a new branch (e.g., `feat/my-feature`)
+2. Create a branch
 3. Make your changes
-4. Create a pull request
-5. Wait for review and merge
+4. Open a pull request
 
-For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
+For bugs or feature requests, use [GitHub Issues](https://github.com/Ralex91/Rahoot/issues).
 
-## â­ Star History
+## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Rahoot&type=date&legend=bottom-right)

@@ -137,23 +137,23 @@ class Config {
     const isQuizzExists = fs.existsSync(getConfigPath("quizz"))
 
     if (!isQuizzExists) {
-      fs.mkdirSync(getConfigPath("quizz"))
+      fs.mkdirSync(getConfigPath("quizz"), { recursive: true })
 
       fs.writeFileSync(
         getConfigPath("quizz/example.json"),
         JSON.stringify(
           {
-            subject: "Example Quizz",
+            subject: "Example Quiz",
             questions: [
               {
-                question: "What is good answer ?",
+                question: "What is the correct answer?",
                 answers: ["No", "Good answer", "No", "No"],
                 solution: 1,
                 cooldown: 5,
                 time: 15,
               },
               {
-                question: "What is good answer with image ?",
+                question: "What is the correct answer with an image?",
                 answers: ["No", "No", "No", "Good answer"],
                 image: "https://placehold.co/600x400.png",
                 solution: 3,
@@ -161,7 +161,7 @@ class Config {
                 time: 20,
               },
               {
-                question: "What is good answer with two answers ?",
+                question: "What is the correct answer with two answers?",
                 answers: ["Good answer", "No"],
                 image: "https://placehold.co/600x400.png",
                 solution: 0,
