@@ -2,21 +2,23 @@ import type {
   ManagerSettings,
   ManagerSettingsUpdate,
   Quizz,
-  QuizRunHistorySummary,
   QuizzWithId,
+  QuizRunHistorySummary,
 } from "@rahoot/common/types/game"
+import background from "@rahoot/web/assets/background.webp"
 import Button from "@rahoot/web/features/game/components/Button"
 import HistoryPanel from "@rahoot/web/features/game/components/create/HistoryPanel"
 import QuizzEditor from "@rahoot/web/features/game/components/create/QuizzEditor"
-import SettingsPanel from "@rahoot/web/features/game/components/create/SettingsPanel"
 import { STATUS } from "@rahoot/common/types/game/status"
 import ManagerPassword from "@rahoot/web/features/game/components/create/ManagerPassword"
 import SelectQuizz from "@rahoot/web/features/game/components/create/SelectQuizz"
+import SettingsPanel from "@rahoot/web/features/game/components/create/SettingsPanel"
 import {
   useEvent,
   useSocket,
 } from "@rahoot/web/features/game/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import toast from "react-hot-toast"
@@ -32,30 +34,26 @@ const downloadCsv = (filename: string, content: string) => {
   window.URL.revokeObjectURL(url)
 }
 
+const TABS = [
+  { id: "quizzes", label: "Quizzes" },
+  { id: "history", label: "History" },
+  { id: "settings", label: "Settings" },
+] as const
+
+type ManagerTab = (typeof TABS)[number]["id"]
+
 const ManagerAuthPage = () => {
   const { setGameId, setStatus } = useManagerStore()
   const navigate = useNavigate()
   const { socket } = useSocket()
 
   const [isAuth, setIsAuth] = useState(false)
-  const [history, setHistory] = useState<QuizRunHistorySummary[]>([])
-  const [managerSettings, setManagerSettings] = useState<ManagerSettings>({})
+  const [activeTab, setActiveTab] = useState<ManagerTab>("quizzes")
   const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
+  const [history, setHistory] = useState<QuizRunHistorySummary[]>([])
+  const [settings, setSettings] = useState<ManagerSettings>({})
   const [editingQuizzId, setEditingQuizzId] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<"quizzes" | "history" | "settings">(
-    "quizzes",
-  )
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    socket?.emit("manager:getDashboard")
-  }, [socket])
-
-  useEvent("manager:errorMessage", (message) => {
-    if (isAuth) {
-      toast.error(message)
-    }
-  })
 
   useEvent("manager:quizzList", (quizzList) => {
     setIsAuth(true)
@@ -63,14 +61,15 @@ const ManagerAuthPage = () => {
   })
 
   useEvent("manager:historyList", (history) => {
-    setIsAuth(true)
     setHistory(history)
   })
 
   useEvent("manager:settings", (settings) => {
-    setIsAuth(true)
-    setManagerSettings(settings)
-    setUploadedAudioUrl(null)
+    setSettings(settings)
+  })
+
+  useEvent("manager:errorMessage", (message) => {
+    toast.error(message)
   })
 
   useEvent("manager:quizzCreated", (quizz) => {
@@ -80,6 +79,7 @@ const ManagerAuthPage = () => {
       return [...filtered, quizz]
     })
     setEditingQuizzId(quizz.id)
+    setActiveTab("quizzes")
     toast.success("Quiz created")
   })
 
@@ -99,19 +99,13 @@ const ManagerAuthPage = () => {
     toast.success("Quiz saved")
   })
 
-  useEvent("manager:historyExportReady", ({ filename, content }) => {
-    downloadCsv(filename, content)
-  })
-
-  useEvent("manager:settingsUpdated", (settings) => {
-    setManagerSettings(settings)
-    setUploadedAudioUrl(null)
-    toast.success("Settings saved")
-  })
-
   useEvent("manager:mediaUploaded", ({ url }) => {
     setUploadedAudioUrl(url)
     toast.success("Audio uploaded")
+  })
+
+  useEvent("manager:historyExportReady", ({ filename, content }) => {
+    downloadCsv(filename, content)
   })
 
   useEvent("manager:gameCreated", ({ gameId, inviteCode }) => {
@@ -119,6 +113,18 @@ const ManagerAuthPage = () => {
     setStatus(STATUS.SHOW_ROOM, { text: "Waiting for the players", inviteCode })
     navigate(`/party/manager/${gameId}`)
   })
+
+  useEvent("connect", () => {
+    if (isAuth) {
+      socket?.emit("manager:getDashboard")
+    }
+  })
+
+  useEffect(() => {
+    if (isAuth) {
+      socket?.emit("manager:getDashboard")
+    }
+  }, [isAuth, socket])
 
   const handleAuth = (password: string) => {
     socket?.emit("manager:auth", password)
@@ -144,12 +150,21 @@ const ManagerAuthPage = () => {
     setEditingQuizzId(quizzId)
   }
 
-  const handleUpdateSettings = (settings: ManagerSettingsUpdate) => {
+  const handleSelectTab = (tab: ManagerTab) => {
+    setActiveTab(tab)
+    setEditingQuizzId(null)
+  }
+
+  const handleSaveSettings = (settings: ManagerSettingsUpdate) => {
     socket?.emit("manager:updateSettings", settings)
   }
 
   const handleUploadLocalAudio = (data: { filename: string; content: string }) => {
     socket?.emit("manager:uploadMedia", data)
+  }
+
+  const handleDownloadHistory = (runId: string) => {
+    socket?.emit("manager:downloadHistory", { runId })
   }
 
   if (!isAuth) {
@@ -158,61 +173,73 @@ const ManagerAuthPage = () => {
 
   const editingQuizz = quizzList.find((quizz) => quizz.id === editingQuizzId)
 
+  let content = null
+
   if (editingQuizz) {
-    return (
+    content = (
       <QuizzEditor
         quizz={editingQuizz}
         onBack={() => setEditingQuizzId(null)}
         onSave={handleUpdateQuizz}
       />
     )
+  } else if (activeTab === "history") {
+    content = (
+      <HistoryPanel history={history} onDownload={handleDownloadHistory} />
+    )
+  } else if (activeTab === "settings") {
+    content = (
+      <SettingsPanel
+        settings={settings}
+        uploadedAudioUrl={uploadedAudioUrl}
+        onSave={handleSaveSettings}
+        onUploadLocalAudio={handleUploadLocalAudio}
+      />
+    )
+  } else {
+    content = (
+      <SelectQuizz
+        quizzList={quizzList}
+        onCreate={handleCreateQuizz}
+        onDelete={handleDeleteQuizz}
+        onEdit={handleEditQuizz}
+        onSelect={handleCreate}
+      />
+    )
   }
 
   return (
-    <div className="z-10 flex w-full max-w-5xl flex-col gap-4">
-      <div className="flex gap-2 self-start rounded-md bg-white p-2 shadow-sm">
-        <Button
-          className={activeTab === "quizzes" ? "px-4" : "bg-white px-4 text-black!"}
-          onClick={() => setActiveTab("quizzes")}
-        >
-          Quizzes
-        </Button>
-        <Button
-          className={activeTab === "history" ? "px-4" : "bg-white px-4 text-black!"}
-          onClick={() => setActiveTab("history")}
-        >
-          History
-        </Button>
-        <Button
-          className={activeTab === "settings" ? "px-4" : "bg-white px-4 text-black!"}
-          onClick={() => setActiveTab("settings")}
-        >
-          Settings
-        </Button>
+    <section className="relative min-h-dvh">
+      <div className="fixed top-0 left-0 h-full w-full">
+        <img
+          className="pointer-events-none h-full w-full object-cover"
+          src={background}
+          alt="background"
+        />
       </div>
 
-      {activeTab === "quizzes" ? (
-        <SelectQuizz
-          quizzList={quizzList}
-          onCreate={handleCreateQuizz}
-          onDelete={handleDeleteQuizz}
-          onEdit={handleEditQuizz}
-          onSelect={handleCreate}
-        />
-      ) : activeTab === "history" ? (
-        <HistoryPanel
-          history={history}
-          onDownload={(runId) => socket?.emit("manager:downloadHistory", { runId })}
-        />
-      ) : (
-        <SettingsPanel
-          settings={managerSettings}
-          uploadedAudioUrl={uploadedAudioUrl}
-          onSave={handleUpdateSettings}
-          onUploadLocalAudio={handleUploadLocalAudio}
-        />
-      )}
-    </div>
+      <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
+        <div className="mb-4 flex w-full max-w-5xl flex-wrap gap-2">
+          {TABS.map((tab) => (
+            <Button
+              key={tab.id}
+              type="button"
+              className={clsx(
+                "px-4",
+                activeTab === tab.id
+                  ? "bg-primary"
+                  : "bg-white text-black!",
+              )}
+              onClick={() => handleSelectTab(tab.id)}
+            >
+              {tab.label}
+            </Button>
+          ))}
+        </div>
+
+        {content}
+      </div>
+    </section>
   )
 }
 
