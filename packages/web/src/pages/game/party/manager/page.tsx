@@ -13,6 +13,17 @@ import {
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router"
 
+const downloadCsv = (filename: string, content: string) => {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" })
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement("a")
+
+  link.href = url
+  link.download = filename
+  link.click()
+  window.URL.revokeObjectURL(url)
+}
+
 const ManagerGamePage = () => {
   const navigate = useNavigate()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
@@ -48,6 +59,10 @@ const ManagerGamePage = () => {
     reset()
     setQuestionStates(null)
     toast.error(message)
+  })
+
+  useEvent("manager:historyExportReady", ({ filename, content }) => {
+    downloadCsv(filename, content)
   })
 
   const handleSkip = () => {

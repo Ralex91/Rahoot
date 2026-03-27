@@ -1,7 +1,14 @@
-import { Answer, Player, Quizz } from "@rahoot/common/types/game"
-import { Server, Socket } from "@rahoot/common/types/game/socket"
-import { Status, STATUS, StatusDataMap } from "@rahoot/common/types/game/status"
+import type {
+  Answer,
+  Player,
+  QuizzWithId,
+  QuizRunHistoryDetail,
+} from "@rahoot/common/types/game"
+import type { Server, Socket } from "@rahoot/common/types/game/socket"
+import { STATUS } from "@rahoot/common/types/game/status"
+import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
 import { usernameValidator } from "@rahoot/common/validators/auth"
+import History from "@rahoot/socket/services/history"
 import Registry from "@rahoot/socket/services/registry"
 import { createInviteCode, timeToPoint } from "@rahoot/socket/utils/game"
 import sleep from "@rahoot/socket/utils/sleep"
@@ -30,8 +37,10 @@ class Game {
   leaderboard: Player[]
   tempOldLeaderboard: Player[] | null
 
-  quizz: Quizz
+  quizz: QuizzWithId
   players: Player[]
+  historyRunId: string | null
+  startedAt: string
 
   round: {
     currentQuestion: number
@@ -44,7 +53,9 @@ class Game {
     ms: number
   }
 
-  constructor(io: Server, socket: Socket, quizz: Quizz) {
+  historyQuestions: QuizRunHistoryDetail["questions"]
+
+  constructor(io: Server, socket: Socket, quizz: QuizzWithId) {
     if (!io) {
       throw new Error("Socket server not initialized")
     }
@@ -67,6 +78,8 @@ class Game {
     this.tempOldLeaderboard = null
 
     this.players = []
+    this.historyRunId = null
+    this.startedAt = new Date().toISOString()
 
     this.round = {
       playersAnswers: [],
@@ -78,6 +91,8 @@ class Game {
       active: false,
       ms: 0,
     }
+
+    this.historyQuestions = []
 
     const roomInvite = createInviteCode()
     this.inviteCode = roomInvite
@@ -427,6 +442,32 @@ class Game {
 
     this.players = sortedPlayers
 
+    this.historyQuestions.push({
+      questionNumber: this.round.currentQuestion + 1,
+      question: question.question,
+      answers: question.answers,
+      correctAnswer: question.solution,
+      correctAnswerText: question.answers[question.solution],
+      responses: sortedPlayers.map((player) => {
+        const playerAnswer = this.round.playersAnswers.find(
+          (answer) => answer.playerId === player.id,
+        )
+
+        return {
+          playerId: player.id,
+          username: player.username,
+          answerId: playerAnswer?.answerId ?? null,
+          answerText:
+            playerAnswer && question.answers[playerAnswer.answerId]
+              ? question.answers[playerAnswer.answerId]
+              : null,
+          isCorrect: player.lastCorrect,
+          points: player.lastPoints,
+          totalPoints: player.points,
+        }
+      }),
+    })
+
     sortedPlayers.forEach((player, index) => {
       const rank = index + 1
       const aheadPlayer = sortedPlayers[index - 1]
@@ -522,10 +563,12 @@ class Game {
 
     if (isLastRound) {
       this.started = false
+      const runId = this.persistHistory()
 
       this.broadcastStatus(STATUS.FINISHED, {
         subject: this.quizz.subject,
         top: this.leaderboard.slice(0, 3),
+        runId,
       })
 
       return
@@ -541,6 +584,50 @@ class Game {
     })
 
     this.tempOldLeaderboard = null
+  }
+
+  endGame(socket: Socket) {
+    if (socket.id !== this.manager.id) {
+      return
+    }
+
+    this.abortCooldown()
+    this.started = false
+
+    this.io.to(this.gameId).emit("game:reset", "Quiz ended by manager")
+    registry.removeGame(this.gameId)
+  }
+
+  private persistHistory() {
+    if (this.historyRunId) {
+      return this.historyRunId
+    }
+
+    const runId = uuid()
+    const endedAt = new Date().toISOString()
+
+    History.addRun({
+      id: runId,
+      gameId: this.gameId,
+      quizzId: this.quizz.id,
+      subject: this.quizz.subject,
+      startedAt: this.startedAt,
+      endedAt,
+      totalPlayers: this.players.length,
+      questionCount: this.quizz.questions.length,
+      winner: this.leaderboard[0]?.username ?? null,
+      leaderboard: this.leaderboard.map((player, index) => ({
+        playerId: player.id,
+        rank: index + 1,
+        username: player.username,
+        points: player.points,
+      })),
+      questions: this.historyQuestions,
+    })
+
+    this.historyRunId = runId
+
+    return runId
   }
 }
 
