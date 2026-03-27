@@ -1,7 +1,8 @@
-import { Server } from "@rahoot/common/types/game/socket"
+import type { Server } from "@rahoot/common/types/game/socket"
 import { inviteCodeValidator } from "@rahoot/common/validators/auth"
 import Config from "@rahoot/socket/services/config"
 import Game from "@rahoot/socket/services/game"
+import History from "@rahoot/socket/services/history"
 import Registry from "@rahoot/socket/services/registry"
 import { withGame } from "@rahoot/socket/utils/game"
 import { Server as ServerIO } from "socket.io"
@@ -12,6 +13,7 @@ const io: Server = new ServerIO({
   path: "/ws",
 })
 Config.init()
+History.init()
 
 const registry = Registry.getInstance()
 const authenticatedManagers = new Set<string>()
@@ -22,6 +24,11 @@ const getSocketClientId = (socket: { handshake: { auth: { clientId?: string } } 
 const ensureAuthenticatedManager = (socket: {
   handshake: { auth: { clientId?: string } }
 }) => authenticatedManagers.has(getSocketClientId(socket))
+
+const emitManagerDashboard = (socketId: string) => {
+  io.to(socketId).emit("manager:quizzList", Config.quizz())
+  io.to(socketId).emit("manager:historyList", History.listRuns())
+}
 
 console.log(`Socket server running on port ${WS_PORT}`)
 io.listen(WS_PORT)
@@ -72,7 +79,7 @@ io.on("connection", (socket) => {
       }
 
       authenticatedManagers.add(getSocketClientId(socket))
-      socket.emit("manager:quizzList", Config.quizz())
+      emitManagerDashboard(socket.id)
     } catch (error) {
       console.error("Failed to read game config:", error)
       socket.emit("manager:errorMessage", "Failed to read game config")
@@ -99,6 +106,14 @@ io.on("connection", (socket) => {
     registry.addGame(game)
   })
 
+  socket.on("manager:getDashboard", () => {
+    if (!ensureAuthenticatedManager(socket)) {
+      return
+    }
+
+    emitManagerDashboard(socket.id)
+  })
+
   socket.on("manager:createQuizz", ({ subject }) => {
     if (!ensureAuthenticatedManager(socket)) {
       socket.emit("manager:errorMessage", "Manager authentication required")
@@ -109,7 +124,7 @@ io.on("connection", (socket) => {
     try {
       const quizz = Config.createQuizz(subject)
       socket.emit("manager:quizzCreated", quizz)
-      socket.emit("manager:quizzList", Config.quizz())
+      emitManagerDashboard(socket.id)
     } catch (error) {
       console.error("Failed to create quizz:", error)
       socket.emit(
@@ -129,7 +144,7 @@ io.on("connection", (socket) => {
     try {
       const updatedQuizz = Config.updateQuizz(quizzId, quizz)
       socket.emit("manager:quizzUpdated", updatedQuizz)
-      socket.emit("manager:quizzList", Config.quizz())
+      emitManagerDashboard(socket.id)
     } catch (error) {
       console.error("Failed to update quizz:", error)
       socket.emit(
@@ -149,7 +164,7 @@ io.on("connection", (socket) => {
     try {
       Config.deleteQuizz(quizzId)
       socket.emit("manager:quizzDeleted", quizzId)
-      socket.emit("manager:quizzList", Config.quizz())
+      emitManagerDashboard(socket.id)
     } catch (error) {
       console.error("Failed to delete quizz:", error)
       socket.emit(
@@ -208,6 +223,28 @@ io.on("connection", (socket) => {
   socket.on("manager:showLeaderboard", ({ gameId }) =>
     withGame(gameId, socket, (game) => game.showLeaderboard()),
   )
+
+  socket.on("manager:endGame", ({ gameId }) =>
+    withGame(gameId, socket, (game) => game.endGame(socket)),
+  )
+
+  socket.on("manager:downloadHistory", ({ runId }) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      socket.emit("manager:historyExportReady", History.exportCsv(runId))
+    } catch (error) {
+      console.error("Failed to export history:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to export history",
+      )
+    }
+  })
 
   socket.on("disconnect", () => {
     console.log(`A user disconnected : ${socket.id}`)

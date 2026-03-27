@@ -1,4 +1,6 @@
 import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import Button from "@rahoot/web/features/game/components/Button"
+import { useSocket } from "@rahoot/web/features/game/contexts/socketProvider"
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,
@@ -61,9 +63,9 @@ const usePodiumAnimation = (topLength: number) => {
   return apparition
 }
 
-const Podium = ({ data: { subject, top } }: Props) => {
+const Podium = ({ data: { subject, top, runId } }: Props) => {
   const apparition = usePodiumAnimation(top.length)
-
+  const { socket } = useSocket()
   const { width, height } = useScreenSize()
 
   return (
@@ -82,9 +84,17 @@ const Podium = ({ data: { subject, top } }: Props) => {
         </div>
       )}
       <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-between">
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
-          {subject}
-        </h2>
+        <div className="flex w-full flex-col items-center gap-4">
+          <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+            {subject}
+          </h2>
+          <Button
+            className="bg-white px-4 text-black!"
+            onClick={() => socket?.emit("manager:downloadHistory", { runId })}
+          >
+            Download results
+          </Button>
+        </div>
 
         <div
           style={{ gridTemplateColumns: `repeat(${top.length}, 1fr)` }}

@@ -67,6 +67,7 @@ export const MANAGER_SKIP_EVENTS = {
   [STATUS.SELECT_ANSWER]: "manager:abortQuiz",
   [STATUS.SHOW_RESPONSES]: "manager:showLeaderboard",
   [STATUS.SHOW_LEADERBOARD]: "manager:nextQuestion",
+  [STATUS.FINISHED]: "manager:endGame",
 } as const satisfies Partial<
   Record<keyof typeof GAME_STATE_COMPONENTS_MANAGER, string>
 >
@@ -87,6 +88,6 @@ export const MANAGER_SKIP_BTN = {
   [STATUS.SHOW_RESULT]: null,
   [STATUS.SHOW_RESPONSES]: "Next",
   [STATUS.SHOW_LEADERBOARD]: "Next",
-  [STATUS.FINISHED]: null,
+  [STATUS.FINISHED]: "End Quiz",
   [STATUS.WAIT]: null,
 }

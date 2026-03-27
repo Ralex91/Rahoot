@@ -7,11 +7,11 @@
   </div>
 </p>
 
-## 🧩 What is this project?
+## ðŸ§© What is this project?
 
 Rahoot is a straightforward and open-source clone of the Kahoot! platform, allowing users to host it on their own server for smaller events.
 
-> ⚠️ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
+> âš ï¸ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
 
 <p align="center">
   <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login">
@@ -19,7 +19,7 @@ Rahoot is a straightforward and open-source clone of the Kahoot! platform, allow
   <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question Screen">
 </p>
 
-## ⚙️ Prerequisites
+## âš™ï¸ Prerequisites
 
 Choose one of the following deployment methods:
 
@@ -32,11 +32,11 @@ Choose one of the following deployment methods:
 
 - Docker and Docker Compose
 
-## 📖 Getting Started
+## ðŸ“– Getting Started
 
 Choose your deployment method:
 
-### 🐳 Using Docker (Recommended)
+### ðŸ³ Using Docker (Recommended)
 
 Using Docker Compose (recommended):
 You can find the docker compose configuration in the repository:
@@ -61,12 +61,13 @@ The `-v ./config:/app/config` option mounts a local `config` folder to persist y
 - Edit your configuration files directly on your host machine
 - Keep your settings when updating the container
 - Easily backup your quizzes and game configuration
+- Persist quiz run history in the SQLite database at `config/history.db`
 
 The folder will be created automatically on first run with an example quiz to get you started.
 
 The application will be available at http://localhost:3000
 
-### 🛠️ Without Docker
+### ðŸ› ï¸ Without Docker
 
 1. Clone the repository:
 
@@ -92,7 +93,7 @@ pnpm run build
 pnpm start
 ```
 
-## ⚙️ Configuration
+## âš™ï¸ Configuration
 
 The configuration is split into two main parts:
 
@@ -145,7 +146,12 @@ Quiz Options:
   - `cooldown`: Time in seconds before showing the question
   - `time`: Time in seconds allowed to answer
 
-## 🎮 How to Play
+### 3. Run History (`config/history.db`)
+
+Completed quiz runs are stored in a lightweight SQLite database at `config/history.db`.
+This file is used by the manager UI to display historical runs and export detailed CSV results for both current and past games.
+
+## ðŸŽ® How to Play
 
 1. Access the manager interface at http://localhost:3000/manager
 2. Enter the manager password (defined in `config/game.json`)
@@ -153,7 +159,7 @@ Quiz Options:
 4. Wait for players to join
 5. Click the start button to begin the game
 
-## 📝 Contributing
+## ðŸ“ Contributing
 
 1. Fork the repository
 2. Create a new branch (e.g., `feat/my-feature`)
@@ -163,6 +169,6 @@ Quiz Options:
 
 For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
 
-## ⭐ Star History
+## â­ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Rahoot&type=date&legend=bottom-right)

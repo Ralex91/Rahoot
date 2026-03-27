@@ -18,9 +18,9 @@ COPY . .
 RUN pnpm build
 
 # ---- RUNNER ----
-FROM alpine:3.21 AS runner
+FROM node:24-alpine AS runner
 
-RUN apk add --no-cache nginx nodejs supervisor
+RUN apk add --no-cache nginx supervisor
 
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 COPY docker/supervisord.conf /etc/supervisord.conf
