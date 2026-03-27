@@ -14,6 +14,14 @@ const io: Server = new ServerIO({
 Config.init()
 
 const registry = Registry.getInstance()
+const authenticatedManagers = new Set<string>()
+
+const getSocketClientId = (socket: { handshake: { auth: { clientId?: string } } }) =>
+  socket.handshake.auth.clientId ?? ""
+
+const ensureAuthenticatedManager = (socket: {
+  handshake: { auth: { clientId?: string } }
+}) => authenticatedManagers.has(getSocketClientId(socket))
 
 console.log(`Socket server running on port ${WS_PORT}`)
 io.listen(WS_PORT)
@@ -63,6 +71,7 @@ io.on("connection", (socket) => {
         return
       }
 
+      authenticatedManagers.add(getSocketClientId(socket))
       socket.emit("manager:quizzList", Config.quizz())
     } catch (error) {
       console.error("Failed to read game config:", error)
@@ -71,6 +80,12 @@ io.on("connection", (socket) => {
   })
 
   socket.on("game:create", (quizzId) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
     const quizzList = Config.quizz()
     const quizz = quizzList.find((q) => q.id === quizzId)
 
@@ -82,6 +97,66 @@ io.on("connection", (socket) => {
 
     const game = new Game(io, socket, quizz)
     registry.addGame(game)
+  })
+
+  socket.on("manager:createQuizz", ({ subject }) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      const quizz = Config.createQuizz(subject)
+      socket.emit("manager:quizzCreated", quizz)
+      socket.emit("manager:quizzList", Config.quizz())
+    } catch (error) {
+      console.error("Failed to create quizz:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to create quiz",
+      )
+    }
+  })
+
+  socket.on("manager:updateQuizz", ({ quizzId, quizz }) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      const updatedQuizz = Config.updateQuizz(quizzId, quizz)
+      socket.emit("manager:quizzUpdated", updatedQuizz)
+      socket.emit("manager:quizzList", Config.quizz())
+    } catch (error) {
+      console.error("Failed to update quizz:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to update quiz",
+      )
+    }
+  })
+
+  socket.on("manager:deleteQuizz", ({ quizzId }) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      Config.deleteQuizz(quizzId)
+      socket.emit("manager:quizzDeleted", quizzId)
+      socket.emit("manager:quizzList", Config.quizz())
+    } catch (error) {
+      console.error("Failed to delete quizz:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to delete quiz",
+      )
+    }
   })
 
   socket.on("player:join", (inviteCode) => {
