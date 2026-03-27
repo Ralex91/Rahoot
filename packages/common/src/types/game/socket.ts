@@ -1,5 +1,7 @@
 import type {
   GameUpdateQuestion,
+  ManagerSettings,
+  ManagerSettingsUpdate,
   Player,
   Quizz,
   QuizRunHistorySummary,
@@ -71,10 +73,16 @@ export interface ServerToClientEvents {
     content: string
   }) => void
   "manager:historyList": (_history: QuizRunHistorySummary[]) => void
+  "manager:mediaUploaded": (_data: {
+    filename: string
+    url: string
+  }) => void
   "manager:playerKicked": (_playerId: string) => void
   "manager:quizzCreated": (_quizz: QuizzWithId) => void
   "manager:quizzDeleted": (_quizzId: string) => void
   "manager:quizzUpdated": (_quizz: QuizzWithId) => void
+  "manager:settings": (_settings: ManagerSettings) => void
+  "manager:settingsUpdated": (_settings: ManagerSettings) => void
 }
 
 export interface ClientToServerEvents {
@@ -86,6 +94,11 @@ export interface ClientToServerEvents {
   "manager:downloadHistory": (_data: { runId: string }) => void
   "manager:endGame": (_message: MessageGameId) => void
   "manager:getDashboard": () => void
+  "manager:uploadMedia": (_data: {
+    filename: string
+    content: string
+  }) => void
+  "manager:updateSettings": (_data: ManagerSettingsUpdate) => void
   "manager:updateQuizz": (_data: { quizzId: string; quizz: Quizz }) => void
   "manager:reconnect": (_message: { gameId: string }) => void
   "manager:kickPlayer": (_message: { gameId: string; playerId: string }) => void

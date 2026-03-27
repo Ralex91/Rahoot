@@ -1,4 +1,6 @@
 import type {
+  ManagerSettings,
+  ManagerSettingsUpdate,
   Quizz,
   QuizRunHistorySummary,
   QuizzWithId,
@@ -6,6 +8,7 @@ import type {
 import Button from "@rahoot/web/features/game/components/Button"
 import HistoryPanel from "@rahoot/web/features/game/components/create/HistoryPanel"
 import QuizzEditor from "@rahoot/web/features/game/components/create/QuizzEditor"
+import SettingsPanel from "@rahoot/web/features/game/components/create/SettingsPanel"
 import { STATUS } from "@rahoot/common/types/game/status"
 import ManagerPassword from "@rahoot/web/features/game/components/create/ManagerPassword"
 import SelectQuizz from "@rahoot/web/features/game/components/create/SelectQuizz"
@@ -36,13 +39,23 @@ const ManagerAuthPage = () => {
 
   const [isAuth, setIsAuth] = useState(false)
   const [history, setHistory] = useState<QuizRunHistorySummary[]>([])
+  const [managerSettings, setManagerSettings] = useState<ManagerSettings>({})
   const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
   const [editingQuizzId, setEditingQuizzId] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<"quizzes" | "history">("quizzes")
+  const [activeTab, setActiveTab] = useState<"quizzes" | "history" | "settings">(
+    "quizzes",
+  )
+  const [uploadedAudioUrl, setUploadedAudioUrl] = useState<string | null>(null)
 
   useEffect(() => {
     socket?.emit("manager:getDashboard")
   }, [socket])
+
+  useEvent("manager:errorMessage", (message) => {
+    if (isAuth) {
+      toast.error(message)
+    }
+  })
 
   useEvent("manager:quizzList", (quizzList) => {
     setIsAuth(true)
@@ -52,6 +65,12 @@ const ManagerAuthPage = () => {
   useEvent("manager:historyList", (history) => {
     setIsAuth(true)
     setHistory(history)
+  })
+
+  useEvent("manager:settings", (settings) => {
+    setIsAuth(true)
+    setManagerSettings(settings)
+    setUploadedAudioUrl(null)
   })
 
   useEvent("manager:quizzCreated", (quizz) => {
@@ -84,6 +103,17 @@ const ManagerAuthPage = () => {
     downloadCsv(filename, content)
   })
 
+  useEvent("manager:settingsUpdated", (settings) => {
+    setManagerSettings(settings)
+    setUploadedAudioUrl(null)
+    toast.success("Settings saved")
+  })
+
+  useEvent("manager:mediaUploaded", ({ url }) => {
+    setUploadedAudioUrl(url)
+    toast.success("Audio uploaded")
+  })
+
   useEvent("manager:gameCreated", ({ gameId, inviteCode }) => {
     setGameId(gameId)
     setStatus(STATUS.SHOW_ROOM, { text: "Waiting for the players", inviteCode })
@@ -112,6 +142,14 @@ const ManagerAuthPage = () => {
   const handleEditQuizz = (quizzId: string) => {
     setActiveTab("quizzes")
     setEditingQuizzId(quizzId)
+  }
+
+  const handleUpdateSettings = (settings: ManagerSettingsUpdate) => {
+    socket?.emit("manager:updateSettings", settings)
+  }
+
+  const handleUploadLocalAudio = (data: { filename: string; content: string }) => {
+    socket?.emit("manager:uploadMedia", data)
   }
 
   if (!isAuth) {
@@ -145,6 +183,12 @@ const ManagerAuthPage = () => {
         >
           History
         </Button>
+        <Button
+          className={activeTab === "settings" ? "px-4" : "bg-white px-4 text-black!"}
+          onClick={() => setActiveTab("settings")}
+        >
+          Settings
+        </Button>
       </div>
 
       {activeTab === "quizzes" ? (
@@ -155,10 +199,17 @@ const ManagerAuthPage = () => {
           onEdit={handleEditQuizz}
           onSelect={handleCreate}
         />
-      ) : (
+      ) : activeTab === "history" ? (
         <HistoryPanel
           history={history}
           onDownload={(runId) => socket?.emit("manager:downloadHistory", { runId })}
+        />
+      ) : (
+        <SettingsPanel
+          settings={managerSettings}
+          uploadedAudioUrl={uploadedAudioUrl}
+          onSave={handleUpdateSettings}
+          onUploadLocalAudio={handleUploadLocalAudio}
         />
       )}
     </div>

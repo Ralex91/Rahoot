@@ -28,6 +28,15 @@ export type Quizz = {
 
 export type QuizzWithId = Quizz & { id: string }
 
+export type ManagerSettings = {
+  defaultAudio?: string
+}
+
+export type ManagerSettingsUpdate = {
+  managerPassword?: string
+  defaultAudio?: string | null
+}
+
 export type GameUpdateQuestion = {
   current: number
   total: number

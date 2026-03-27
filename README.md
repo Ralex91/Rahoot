@@ -52,16 +52,18 @@ Or using Docker directly:
 docker run -d \
   -p 3000:3000 \
   -v ./config:/app/config \
+  -v ./media:/app/media \
   ralex91/rahoot:latest
 ```
 
-**Configuration Volume:**
-The `-v ./config:/app/config` option mounts a local `config` folder to persist your game settings and quizzes. This allows you to:
+**Configuration Volumes:**
+The `-v ./config:/app/config` and `-v ./media:/app/media` options mount local folders to persist your game settings, quizzes, and uploaded audio files. This allows you to:
 
 - Edit your configuration files directly on your host machine
 - Keep your settings when updating the container
 - Easily backup your quizzes and game configuration
 - Persist quiz run history in the SQLite database at `config/history.db`
+- Store manager-uploaded local audio files in `media/`
 
 The folder will be created automatically on first run with an example quiz to get you started.
 
@@ -103,13 +105,15 @@ Main game settings:
 
 ```json
 {
-  "managerPassword": "PASSWORD"
+  "managerPassword": "PASSWORD",
+  "defaultAudio": "/media/example.mp3"
 }
 ```
 
 Options:
 
 - `managerPassword`: The master password for accessing the manager interface. **Must be changed from the default `"PASSWORD"` value**, otherwise manager access is blocked.
+- `defaultAudio`: Optional global audio URL used during answer selection when a question does not define its own `audio` value.
 
 ### 2. Quiz Configuration (`config/quizz/*.json`)
 
@@ -150,6 +154,11 @@ Quiz Options:
 
 Completed quiz runs are stored in a lightweight SQLite database at `config/history.db`.
 This file is used by the manager UI to display historical runs and export detailed CSV results for both current and past games.
+
+### 4. Uploaded Media (`media/`)
+
+Manager-uploaded local audio files are stored in the sibling `media/` directory.
+These files are served by the application at `/media/<filename>` and can be selected from the manager settings screen as the global fallback quiz audio.
 
 ## ðŸŽ® How to Play
 
