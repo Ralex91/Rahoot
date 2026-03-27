@@ -65,6 +65,10 @@ const ManagerGamePage = () => {
     downloadCsv(filename, content)
   })
 
+  useEvent("manager:errorMessage", (message) => {
+    toast.error(message)
+  })
+
   const handleSkip = () => {
     if (!gameId || !status) {
       return

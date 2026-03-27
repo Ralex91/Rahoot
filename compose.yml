@@ -1,6 +1,9 @@
 services:
   rahoot:
-    image: ralex91/rahoot:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rahoot:local
     ports:
       - "3000:3000"
     volumes:

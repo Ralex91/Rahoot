@@ -5,16 +5,11 @@ import type {
   QuizzWithId,
 } from "@rahoot/common/types/game"
 import fs from "fs"
-import { basename, extname, resolve } from "path"
+import { resolve } from "path"
 
 const inContainerPath = process.env.CONFIG_PATH
 
-type GameConfig = {
-  managerPassword: string
-  defaultAudio?: string
-}
-
-const getConfigPath = (path: string = "") =>
+const getPath = (path: string = "") =>
   inContainerPath
     ? resolve(inContainerPath, path)
     : resolve(process.cwd(), "../../config", path)
@@ -29,14 +24,6 @@ const normalizeOptionalAsset = (value?: string) => {
 
   return trimmed ? trimmed : undefined
 }
-
-const normalizeManagerPassword = (value: unknown) =>
-  typeof value === "string" && value.trim() ? value.trim() : "PASSWORD"
-
-const normalizeGameConfig = (config: Partial<GameConfig>): GameConfig => ({
-  managerPassword: normalizeManagerPassword(config.managerPassword),
-  defaultAudio: normalizeOptionalAsset(config.defaultAudio),
-})
 
 const normalizeQuizz = (quizz: Quizz): Quizz => {
   const subject = quizz.subject.trim()
@@ -99,7 +86,7 @@ const normalizeQuizz = (quizz: Quizz): Quizz => {
 
 class Config {
   static quizzDirectory() {
-    return getConfigPath("quizz")
+    return getPath("quizz")
   }
 
   static mediaDirectory() {
@@ -107,23 +94,17 @@ class Config {
   }
 
   static init() {
-    const isConfigFolderExists = fs.existsSync(getConfigPath())
+    const isConfigFolderExists = fs.existsSync(getPath())
 
     if (!isConfigFolderExists) {
-      fs.mkdirSync(getConfigPath(), { recursive: true })
+      fs.mkdirSync(getPath(), { recursive: true })
     }
 
-    const isMediaFolderExists = fs.existsSync(getMediaPath())
-
-    if (!isMediaFolderExists) {
-      fs.mkdirSync(getMediaPath(), { recursive: true })
-    }
-
-    const isGameConfigExists = fs.existsSync(getConfigPath("game.json"))
+    const isGameConfigExists = fs.existsSync(getPath("game.json"))
 
     if (!isGameConfigExists) {
       fs.writeFileSync(
-        getConfigPath("game.json"),
+        getPath("game.json"),
         JSON.stringify(
           {
             managerPassword: "PASSWORD",
@@ -134,13 +115,13 @@ class Config {
       )
     }
 
-    const isQuizzExists = fs.existsSync(getConfigPath("quizz"))
+    const isQuizzExists = fs.existsSync(getPath("quizz"))
 
     if (!isQuizzExists) {
-      fs.mkdirSync(getConfigPath("quizz"), { recursive: true })
+      fs.mkdirSync(getPath("quizz"), { recursive: true })
 
       fs.writeFileSync(
-        getConfigPath("quizz/example.json"),
+        getPath("quizz/example.json"),
         JSON.stringify(
           {
             subject: "Example Quiz",
@@ -175,36 +156,40 @@ class Config {
         ),
       )
     }
+
+    if (!fs.existsSync(getMediaPath())) {
+      fs.mkdirSync(getMediaPath(), { recursive: true })
+    }
   }
 
   static game() {
-    const isExists = fs.existsSync(getConfigPath("game.json"))
+    const isExists = fs.existsSync(getPath("game.json"))
 
     if (!isExists) {
       throw new Error("Game config not found")
     }
 
     try {
-      const config = fs.readFileSync(getConfigPath("game.json"), "utf-8")
+      const config = fs.readFileSync(getPath("game.json"), "utf-8")
 
-      return normalizeGameConfig(JSON.parse(config) as Partial<GameConfig>)
+      return JSON.parse(config)
     } catch (error) {
       console.error("Failed to read game config:", error)
     }
 
-    return normalizeGameConfig({})
+    return {}
   }
 
   static managerSettings(): ManagerSettings {
-    const { defaultAudio } = Config.game()
+    const config = Config.game()
 
     return {
-      defaultAudio,
+      defaultAudio: normalizeOptionalAsset(config.defaultAudio),
     }
   }
 
   static quizz() {
-    const isExists = fs.existsSync(getConfigPath("quizz"))
+    const isExists = fs.existsSync(getPath("quizz"))
 
     if (!isExists) {
       return []
@@ -212,11 +197,11 @@ class Config {
 
     try {
       const files = fs
-        .readdirSync(getConfigPath("quizz"))
+        .readdirSync(getPath("quizz"))
         .filter((file) => file.endsWith(".json"))
 
       const quizz: QuizzWithId[] = files.map((file) => {
-        const data = fs.readFileSync(getConfigPath(`quizz/${file}`), "utf-8")
+        const data = fs.readFileSync(getPath(`quizz/${file}`), "utf-8")
         const config = JSON.parse(data)
 
         const id = file.replace(".json", "")
@@ -251,7 +236,7 @@ class Config {
     let quizzId = safeBaseId
     let duplicateIndex = 1
 
-    while (fs.existsSync(getConfigPath(`quizz/${quizzId}.json`))) {
+    while (fs.existsSync(getPath(`quizz/${quizzId}.json`))) {
       duplicateIndex += 1
       quizzId = `${safeBaseId}-${duplicateIndex}`
     }
@@ -270,7 +255,7 @@ class Config {
     })
 
     fs.writeFileSync(
-      getConfigPath(`quizz/${quizzId}.json`),
+      getPath(`quizz/${quizzId}.json`),
       JSON.stringify(quizz, null, 2),
     )
 
@@ -293,7 +278,7 @@ class Config {
       throw new Error("Invalid quiz id")
     }
 
-    const path = getConfigPath(`quizz/${safeId}.json`)
+    const path = getPath(`quizz/${safeId}.json`)
 
     if (!fs.existsSync(path)) {
       throw new Error("Quiz not found")
@@ -315,7 +300,7 @@ class Config {
       throw new Error("Invalid quiz id")
     }
 
-    const path = getConfigPath(`quizz/${safeId}.json`)
+    const path = getPath(`quizz/${safeId}.json`)
 
     if (!fs.existsSync(path)) {
       throw new Error("Quiz not found")
@@ -331,84 +316,63 @@ class Config {
     }
   }
 
-  static updateSettings(settings: ManagerSettingsUpdate) {
+  static updateManagerSettings(settings: ManagerSettingsUpdate) {
     const currentConfig = Config.game()
-    const nextPassword =
-      settings.managerPassword === undefined
-        ? currentConfig.managerPassword
-        : settings.managerPassword.trim()
+    const nextConfig = { ...currentConfig }
 
-    if (!nextPassword) {
-      throw new Error("Manager password is required")
+    if (settings.managerPassword !== undefined) {
+      const managerPassword = settings.managerPassword.trim()
+
+      if (!managerPassword) {
+        throw new Error("Manager password is required")
+      }
+
+      nextConfig.managerPassword = managerPassword
     }
 
-    const defaultAudio =
-      settings.defaultAudio === undefined
-        ? currentConfig.defaultAudio
-        : settings.defaultAudio === null
-          ? undefined
-          : normalizeOptionalAsset(settings.defaultAudio)
+    if (settings.defaultAudio === null) {
+      delete nextConfig.defaultAudio
+    } else if (settings.defaultAudio !== undefined) {
+      const defaultAudio = normalizeOptionalAsset(settings.defaultAudio)
 
-    const nextConfig: GameConfig = {
-      managerPassword: nextPassword,
-      defaultAudio,
+      if (defaultAudio) {
+        nextConfig.defaultAudio = defaultAudio
+      } else {
+        delete nextConfig.defaultAudio
+      }
     }
 
-    fs.writeFileSync(
-      getConfigPath("game.json"),
-      JSON.stringify(nextConfig, null, 2),
-    )
+    fs.writeFileSync(getPath("game.json"), JSON.stringify(nextConfig, null, 2))
 
     return Config.managerSettings()
   }
 
   static uploadMedia(filename: string, content: string) {
-    const normalizedFilename = basename(filename).trim()
+    const normalizedFilename = filename.trim()
 
     if (!normalizedFilename) {
       throw new Error("Filename is required")
     }
 
-    const safeBaseName = normalizedFilename
-      .replace(extname(normalizedFilename), "")
-      .replace(/[^a-zA-Z0-9-_]/g, "-")
-      .replace(/-+/g, "-")
+    const safeFilename = normalizedFilename
+      .replace(/[^a-zA-Z0-9._-]+/g, "-")
       .replace(/^-+|-+$/g, "")
 
-    const extension = extname(normalizedFilename)
-      .toLowerCase()
-      .replace(/[^a-z0-9.]/g, "")
-    const safeFilename = `${safeBaseName || "audio"}-${Date.now()}${extension}`
-    const outputPath = getMediaPath(safeFilename)
-    const fileContent = Buffer.from(content, "base64")
+    if (!safeFilename) {
+      throw new Error("Invalid filename")
+    }
 
-    if (fileContent.length === 0) {
+    const targetPath = getMediaPath(safeFilename)
+    const buffer = Buffer.from(content, "base64")
+
+    if (!buffer.length) {
       throw new Error("Uploaded file is empty")
     }
 
     fs.mkdirSync(getMediaPath(), { recursive: true })
-    fs.writeFileSync(outputPath, fileContent)
+    fs.writeFileSync(targetPath, buffer)
 
-    return {
-      filename: safeFilename,
-      url: `/media/${encodeURIComponent(safeFilename)}`,
-    }
-  }
-
-  static resolveMediaFile(filename: string) {
-    const decodedFilename = decodeURIComponent(filename).trim()
-
-    if (!decodedFilename || decodedFilename !== basename(decodedFilename)) {
-      return null
-    }
-
-    const safeFilename = decodedFilename.replace(/[^a-zA-Z0-9._-]/g, "")
-
-    if (!safeFilename) {
-      return null
-    }
-
-    return getMediaPath(safeFilename)
+    return `/media/${safeFilename}`
   }
 }
 

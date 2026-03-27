@@ -4,8 +4,8 @@ import type {
   ManagerSettingsUpdate,
   Player,
   Quizz,
-  QuizRunHistorySummary,
   QuizzWithId,
+  QuizRunHistorySummary,
 } from "@rahoot/common/types/game"
 import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
 import { Server as ServerIO, Socket as SocketIO } from "socket.io"
@@ -68,44 +68,37 @@ export interface ServerToClientEvents {
   "manager:newPlayer": (_player: Player) => void
   "manager:removePlayer": (_playerId: string) => void
   "manager:errorMessage": (_message: string) => void
-  "manager:historyExportReady": (_data: {
-    filename: string
-    content: string
-  }) => void
-  "manager:historyList": (_history: QuizRunHistorySummary[]) => void
-  "manager:mediaUploaded": (_data: {
-    filename: string
-    url: string
-  }) => void
   "manager:playerKicked": (_playerId: string) => void
   "manager:quizzCreated": (_quizz: QuizzWithId) => void
   "manager:quizzDeleted": (_quizzId: string) => void
   "manager:quizzUpdated": (_quizz: QuizzWithId) => void
+  "manager:historyList": (_history: QuizRunHistorySummary[]) => void
+  "manager:historyExportReady": (_data: {
+    filename: string
+    content: string
+  }) => void
   "manager:settings": (_settings: ManagerSettings) => void
-  "manager:settingsUpdated": (_settings: ManagerSettings) => void
+  "manager:mediaUploaded": (_data: { url: string }) => void
 }
 
 export interface ClientToServerEvents {
   // Manager actions
   "game:create": (_quizzId: string) => void
   "manager:auth": (_password: string) => void
+  "manager:getDashboard": () => void
   "manager:createQuizz": (_data: { subject: string }) => void
   "manager:deleteQuizz": (_data: { quizzId: string }) => void
-  "manager:downloadHistory": (_data: { runId: string }) => void
-  "manager:endGame": (_message: MessageGameId) => void
-  "manager:getDashboard": () => void
-  "manager:uploadMedia": (_data: {
-    filename: string
-    content: string
-  }) => void
-  "manager:updateSettings": (_data: ManagerSettingsUpdate) => void
   "manager:updateQuizz": (_data: { quizzId: string; quizz: Quizz }) => void
+  "manager:updateSettings": (_data: ManagerSettingsUpdate) => void
+  "manager:uploadMedia": (_data: { filename: string; content: string }) => void
+  "manager:downloadHistory": (_data: { runId: string }) => void
   "manager:reconnect": (_message: { gameId: string }) => void
   "manager:kickPlayer": (_message: { gameId: string; playerId: string }) => void
   "manager:startGame": (_message: MessageGameId) => void
   "manager:abortQuiz": (_message: MessageGameId) => void
   "manager:nextQuestion": (_message: MessageGameId) => void
   "manager:showLeaderboard": (_message: MessageGameId) => void
+  "manager:endGame": (_message: MessageGameId) => void
 
   // Player actions
   "player:join": (_inviteCode: string) => void
