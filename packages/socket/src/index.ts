@@ -16,8 +16,12 @@ Config.init()
 const registry = Registry.getInstance()
 const authenticatedManagers = new Set<string>()
 
-const ensureAuthenticatedManager = (socketId: string) =>
-  authenticatedManagers.has(socketId)
+const getSocketClientId = (socket: { handshake: { auth: { clientId?: string } } }) =>
+  socket.handshake.auth.clientId ?? ""
+
+const ensureAuthenticatedManager = (socket: {
+  handshake: { auth: { clientId?: string } }
+}) => authenticatedManagers.has(getSocketClientId(socket))
 
 console.log(`Socket server running on port ${WS_PORT}`)
 io.listen(WS_PORT)
@@ -67,7 +71,7 @@ io.on("connection", (socket) => {
         return
       }
 
-      authenticatedManagers.add(socket.id)
+      authenticatedManagers.add(getSocketClientId(socket))
       socket.emit("manager:quizzList", Config.quizz())
     } catch (error) {
       console.error("Failed to read game config:", error)
@@ -76,7 +80,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("game:create", (quizzId) => {
-    if (!ensureAuthenticatedManager(socket.id)) {
+    if (!ensureAuthenticatedManager(socket)) {
       socket.emit("manager:errorMessage", "Manager authentication required")
 
       return
@@ -96,7 +100,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("manager:createQuizz", ({ subject }) => {
-    if (!ensureAuthenticatedManager(socket.id)) {
+    if (!ensureAuthenticatedManager(socket)) {
       socket.emit("manager:errorMessage", "Manager authentication required")
 
       return
@@ -116,7 +120,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("manager:updateQuizz", ({ quizzId, quizz }) => {
-    if (!ensureAuthenticatedManager(socket.id)) {
+    if (!ensureAuthenticatedManager(socket)) {
       socket.emit("manager:errorMessage", "Manager authentication required")
 
       return
@@ -136,7 +140,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("manager:deleteQuizz", ({ quizzId }) => {
-    if (!ensureAuthenticatedManager(socket.id)) {
+    if (!ensureAuthenticatedManager(socket)) {
       socket.emit("manager:errorMessage", "Manager authentication required")
 
       return
@@ -207,7 +211,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`A user disconnected : ${socket.id}`)
-    authenticatedManagers.delete(socket.id)
 
     const managerGame = registry.getGameByManagerSocketId(socket.id)
 
