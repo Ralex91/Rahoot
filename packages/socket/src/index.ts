@@ -146,7 +146,7 @@ io.on("connection", (socket) => {
     const quizz = quizzList.find((q) => q.id === quizzId)
 
     if (!quizz) {
-      socket.emit("game:errorMessage", "Quizz not found")
+      socket.emit("game:errorMessage", "Quiz not found")
 
       return
     }
