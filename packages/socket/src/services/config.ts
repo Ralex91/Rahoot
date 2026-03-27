@@ -10,6 +10,10 @@ const getPath = (path: string = "") =>
     : resolve(process.cwd(), "../../config", path)
 
 class Config {
+  static quizzDirectory() {
+    return getPath("quizz")
+  }
+
   static init() {
     const isConfigFolderExists = fs.existsSync(getPath())
 
@@ -123,6 +127,73 @@ class Config {
 
       return []
     }
+  }
+
+  static createQuizz(subject: string) {
+    const normalizedSubject = subject.trim()
+
+    if (!normalizedSubject) {
+      throw new Error("Quiz subject is required")
+    }
+
+    const baseId = normalizedSubject
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+
+    const safeBaseId = baseId || "quiz"
+    let quizzId = safeBaseId
+    let duplicateIndex = 1
+
+    while (fs.existsSync(getPath(`quizz/${quizzId}.json`))) {
+      duplicateIndex += 1
+      quizzId = `${safeBaseId}-${duplicateIndex}`
+    }
+
+    const quizz = {
+      subject: normalizedSubject,
+      questions: [
+        {
+          question: "New question",
+          answers: ["Answer 1", "Answer 2"],
+          solution: 0,
+          cooldown: 5,
+          time: 20,
+        },
+      ],
+    }
+
+    fs.writeFileSync(
+      getPath(`quizz/${quizzId}.json`),
+      JSON.stringify(quizz, null, 2),
+    )
+
+    return {
+      id: quizzId,
+      ...quizz,
+    }
+  }
+
+  static deleteQuizz(quizzId: string) {
+    const normalizedId = quizzId.trim()
+
+    if (!normalizedId) {
+      throw new Error("Quiz id is required")
+    }
+
+    const safeId = normalizedId.replace(/[^a-zA-Z0-9-_]/g, "")
+
+    if (!safeId || safeId !== normalizedId) {
+      throw new Error("Invalid quiz id")
+    }
+
+    const path = getPath(`quizz/${safeId}.json`)
+
+    if (!fs.existsSync(path)) {
+      throw new Error("Quiz not found")
+    }
+
+    fs.unlinkSync(path)
   }
 }
 

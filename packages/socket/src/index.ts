@@ -14,6 +14,10 @@ const io: Server = new ServerIO({
 Config.init()
 
 const registry = Registry.getInstance()
+const authenticatedManagers = new Set<string>()
+
+const ensureAuthenticatedManager = (socketId: string) =>
+  authenticatedManagers.has(socketId)
 
 console.log(`Socket server running on port ${WS_PORT}`)
 io.listen(WS_PORT)
@@ -63,6 +67,7 @@ io.on("connection", (socket) => {
         return
       }
 
+      authenticatedManagers.add(socket.id)
       socket.emit("manager:quizzList", Config.quizz())
     } catch (error) {
       console.error("Failed to read game config:", error)
@@ -71,6 +76,12 @@ io.on("connection", (socket) => {
   })
 
   socket.on("game:create", (quizzId) => {
+    if (!ensureAuthenticatedManager(socket.id)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
     const quizzList = Config.quizz()
     const quizz = quizzList.find((q) => q.id === quizzId)
 
@@ -82,6 +93,45 @@ io.on("connection", (socket) => {
 
     const game = new Game(io, socket, quizz)
     registry.addGame(game)
+  })
+
+  socket.on("manager:createQuizz", ({ subject }) => {
+    if (!ensureAuthenticatedManager(socket.id)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      Config.createQuizz(subject)
+      socket.emit("manager:quizzList", Config.quizz())
+    } catch (error) {
+      console.error("Failed to create quizz:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to create quiz",
+      )
+    }
+  })
+
+  socket.on("manager:deleteQuizz", ({ quizzId }) => {
+    if (!ensureAuthenticatedManager(socket.id)) {
+      socket.emit("manager:errorMessage", "Manager authentication required")
+
+      return
+    }
+
+    try {
+      Config.deleteQuizz(quizzId)
+      socket.emit("manager:quizzDeleted", quizzId)
+      socket.emit("manager:quizzList", Config.quizz())
+    } catch (error) {
+      console.error("Failed to delete quizz:", error)
+      socket.emit(
+        "manager:errorMessage",
+        error instanceof Error ? error.message : "Failed to delete quiz",
+      )
+    }
   })
 
   socket.on("player:join", (inviteCode) => {
@@ -136,6 +186,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`A user disconnected : ${socket.id}`)
+    authenticatedManagers.delete(socket.id)
 
     const managerGame = registry.getGameByManagerSocketId(socket.id)
 

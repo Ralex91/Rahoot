@@ -65,12 +65,15 @@ export interface ServerToClientEvents {
   "manager:removePlayer": (_playerId: string) => void
   "manager:errorMessage": (_message: string) => void
   "manager:playerKicked": (_playerId: string) => void
+  "manager:quizzDeleted": (_quizzId: string) => void
 }
 
 export interface ClientToServerEvents {
   // Manager actions
   "game:create": (_quizzId: string) => void
   "manager:auth": (_password: string) => void
+  "manager:createQuizz": (_data: { subject: string }) => void
+  "manager:deleteQuizz": (_data: { quizzId: string }) => void
   "manager:reconnect": (_message: { gameId: string }) => void
   "manager:kickPlayer": (_message: { gameId: string; playerId: string }) => void
   "manager:startGame": (_message: MessageGameId) => void
