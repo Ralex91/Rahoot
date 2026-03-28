@@ -16,6 +16,7 @@ import sleep from "@rahoot/socket/utils/sleep"
 import { v4 as uuid } from "uuid"
 
 const registry = Registry.getInstance()
+const PLAYER_RECONNECT_GRACE_MS = 60_000
 
 class Game {
   io: Server
@@ -55,6 +56,7 @@ class Game {
   }
 
   historyQuestions: QuizRunHistoryDetail["questions"]
+  pendingPlayerRemovals: Map<string, ReturnType<typeof setTimeout>>
 
   constructor(io: Server, socket: Socket, quizz: QuizzWithId) {
     if (!io) {
@@ -94,6 +96,7 @@ class Game {
     }
 
     this.historyQuestions = []
+    this.pendingPlayerRemovals = new Map()
 
     const roomInvite = createInviteCode()
     this.inviteCode = roomInvite
@@ -167,6 +170,7 @@ class Game {
     }
 
     this.players.push(playerData)
+    this.cancelPendingPlayerRemoval(playerData.clientId)
 
     this.io.to(this.manager.id).emit("manager:newPlayer", playerData)
     this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)
@@ -255,6 +259,7 @@ class Game {
     }
 
     socket.join(this.gameId)
+    this.cancelPendingPlayerRemoval(player.clientId)
 
     const oldSocketId = player.id
     player.id = socket.id
@@ -326,6 +331,8 @@ class Game {
     if (this.started) {
       return
     }
+
+    this.removeDisconnectedWaitingPlayers()
 
     if (this.players.length === 0) {
       socket.emit("game:errorMessage", "No players connected")
@@ -595,9 +602,82 @@ class Game {
 
     this.abortCooldown()
     this.started = false
+    this.clearPendingPlayerRemovals()
 
     this.io.to(this.gameId).emit("game:reset", "Quiz ended by manager")
     registry.removeGame(this.gameId)
+  }
+
+  schedulePlayerRemoval(playerId: string) {
+    const player = this.players.find((p) => p.id === playerId)
+
+    if (!player || this.started) {
+      return
+    }
+
+    this.cancelPendingPlayerRemoval(player.clientId)
+
+    const timeout = setTimeout(() => {
+      const pendingPlayer = this.players.find(
+        (p) => p.clientId === player.clientId,
+      )
+
+      if (!pendingPlayer || pendingPlayer.connected || this.started) {
+        return
+      }
+
+      this.players = this.players.filter(
+        (p) => p.clientId !== player.clientId,
+      )
+      this.playerStatus.delete(pendingPlayer.id)
+      this.pendingPlayerRemovals.delete(player.clientId)
+
+      this.io.to(this.manager.id).emit("manager:removePlayer", pendingPlayer.id)
+      this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)
+
+      console.log(
+        `Removed player ${pendingPlayer.username} from game ${this.gameId} after reconnect timeout`,
+      )
+    }, PLAYER_RECONNECT_GRACE_MS)
+
+    this.pendingPlayerRemovals.set(player.clientId, timeout)
+  }
+
+  cancelPendingPlayerRemoval(clientId: string) {
+    const timeout = this.pendingPlayerRemovals.get(clientId)
+
+    if (!timeout) {
+      return
+    }
+
+    clearTimeout(timeout)
+    this.pendingPlayerRemovals.delete(clientId)
+  }
+
+  clearPendingPlayerRemovals() {
+    this.pendingPlayerRemovals.forEach((timeout) => clearTimeout(timeout))
+    this.pendingPlayerRemovals.clear()
+  }
+
+  private removeDisconnectedWaitingPlayers() {
+    if (this.started) {
+      return
+    }
+
+    const disconnectedPlayers = this.players.filter((player) => !player.connected)
+
+    if (disconnectedPlayers.length === 0) {
+      return
+    }
+
+    disconnectedPlayers.forEach((player) => {
+      this.cancelPendingPlayerRemoval(player.clientId)
+      this.playerStatus.delete(player.id)
+      this.io.to(this.manager.id).emit("manager:removePlayer", player.id)
+    })
+
+    this.players = this.players.filter((player) => player.connected)
+    this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)
   }
 
   private persistHistory() {
