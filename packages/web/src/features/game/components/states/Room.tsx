@@ -5,7 +5,7 @@ import {
   useSocket,
 } from "@rahoot/web/features/game/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import QRCode from "react-qr-code"
 
 type Props = {
@@ -20,16 +20,30 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   const [playerList, setPlayerList] = useState<Player[]>(players)
   const [totalPlayers, setTotalPlayers] = useState(0)
 
+  useEffect(() => {
+    setPlayerList(players)
+  }, [players])
+
   useEvent("manager:newPlayer", (player) => {
-    setPlayerList([...playerList, player])
+    setPlayerList((currentPlayers) => {
+      const playersWithoutOldEntry = currentPlayers.filter(
+        (currentPlayer) => currentPlayer.id !== player.id,
+      )
+
+      return [...playersWithoutOldEntry, player]
+    })
   })
 
   useEvent("manager:removePlayer", (playerId) => {
-    setPlayerList(playerList.filter((p) => p.id !== playerId))
+    setPlayerList((currentPlayers) =>
+      currentPlayers.filter((player) => player.id !== playerId),
+    )
   })
 
   useEvent("manager:playerKicked", (playerId) => {
-    setPlayerList(playerList.filter((p) => p.id !== playerId))
+    setPlayerList((currentPlayers) =>
+      currentPlayers.filter((player) => player.id !== playerId),
+    )
   })
 
   useEvent("game:totalPlayers", (total) => {

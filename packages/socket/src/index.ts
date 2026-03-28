@@ -366,6 +366,7 @@ io.on("connection", (socket) => {
       if (!managerGame.started) {
         console.log("Reset game (manager disconnected)")
         managerGame.abortCooldown()
+        managerGame.clearPendingPlayerRemovals()
         io.to(managerGame.gameId).emit("game:reset", "Manager disconnected")
         registry.removeGame(managerGame.gameId)
 
