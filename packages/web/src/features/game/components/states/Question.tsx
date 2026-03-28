@@ -17,7 +17,7 @@ const Question = ({ data: { question, image, cooldown } }: Props) => {
   return (
     <section className="relative mx-auto flex h-full w-full max-w-7xl flex-1 flex-col items-center px-4">
       <div className="flex flex-1 flex-col items-center justify-center gap-5">
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+        <h2 className="anim-show text-center text-2xl font-bold text-white drop-shadow-lg sm:text-3xl md:text-4xl lg:text-5xl">
           {question}
         </h2>
 
@@ -25,12 +25,12 @@ const Question = ({ data: { question, image, cooldown } }: Props) => {
           <img
             alt={question}
             src={image}
-            className="max-h-60 w-auto rounded-md sm:max-h-100"
+            className="max-h-60 w-full max-w-3xl rounded-md object-contain sm:max-h-100"
           />
         )}
       </div>
       <div
-        className="bg-primary mb-20 h-4 self-start justify-self-end rounded-full"
+        className="bg-primary mb-6 h-4 self-start justify-self-end rounded-full sm:mb-20"
         style={{ animation: `progressBar ${cooldown}s linear forwards` }}
       ></div>
     </section>

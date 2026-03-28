@@ -41,13 +41,34 @@ const TABS = [
 ] as const
 
 type ManagerTab = (typeof TABS)[number]["id"]
+const MANAGER_AUTH_STORAGE_KEY = "manager_auth"
+
+const readManagerAuth = () => {
+  try {
+    return localStorage.getItem(MANAGER_AUTH_STORAGE_KEY) === "true"
+  } catch {
+    return false
+  }
+}
+
+const persistManagerAuth = (value: boolean) => {
+  try {
+    if (value) {
+      localStorage.setItem(MANAGER_AUTH_STORAGE_KEY, "true")
+    } else {
+      localStorage.removeItem(MANAGER_AUTH_STORAGE_KEY)
+    }
+  } catch {
+    // Ignore storage failures and fall back to in-memory auth state.
+  }
+}
 
 const ManagerAuthPage = () => {
-  const { setGameId, setStatus } = useManagerStore()
+  const { reset, setGameId, setStatus } = useManagerStore()
   const navigate = useNavigate()
   const { socket } = useSocket()
 
-  const [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(readManagerAuth)
   const [activeTab, setActiveTab] = useState<ManagerTab>("quizzes")
   const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
   const [history, setHistory] = useState<QuizRunHistorySummary[]>([])
@@ -56,6 +77,7 @@ const ManagerAuthPage = () => {
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState<string | null>(null)
 
   useEvent("manager:quizzList", (quizzList) => {
+    persistManagerAuth(true)
     setIsAuth(true)
     setQuizzList(quizzList)
   })
@@ -69,6 +91,18 @@ const ManagerAuthPage = () => {
   })
 
   useEvent("manager:errorMessage", (message) => {
+    if (message === "Manager authentication required") {
+      persistManagerAuth(false)
+      setIsAuth(false)
+      setActiveTab("quizzes")
+      setQuizzList([])
+      setHistory([])
+      setSettings({})
+      reset()
+      setEditingQuizzId(null)
+      setUploadedAudioUrl(null)
+    }
+
     toast.error(message)
   })
 
@@ -167,6 +201,20 @@ const ManagerAuthPage = () => {
     socket?.emit("manager:downloadHistory", { runId })
   }
 
+  const handleLogout = () => {
+    persistManagerAuth(false)
+    setIsAuth(false)
+    setActiveTab("quizzes")
+    setQuizzList([])
+    setHistory([])
+    setSettings({})
+    setEditingQuizzId(null)
+    setUploadedAudioUrl(null)
+    reset()
+    socket?.emit("manager:logout")
+    navigate("/manager")
+  }
+
   if (!isAuth) {
     return <ManagerPassword onSubmit={handleAuth} />
   }
@@ -219,22 +267,32 @@ const ManagerAuthPage = () => {
       </div>
 
       <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
-        <div className="mb-4 flex w-full max-w-5xl flex-wrap gap-2">
-          {TABS.map((tab) => (
-            <Button
-              key={tab.id}
-              type="button"
-              className={clsx(
-                "px-4",
-                activeTab === tab.id
-                  ? "bg-primary"
-                  : "bg-white text-black!",
-              )}
-              onClick={() => handleSelectTab(tab.id)}
-            >
-              {tab.label}
-            </Button>
-          ))}
+        <div className="mb-4 flex w-full max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-2">
+            {TABS.map((tab) => (
+              <Button
+                key={tab.id}
+                type="button"
+                className={clsx(
+                  "px-4",
+                  activeTab === tab.id
+                    ? "bg-primary"
+                    : "bg-white text-black!",
+                )}
+                onClick={() => handleSelectTab(tab.id)}
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            type="button"
+            className="self-start bg-white px-4 text-black! sm:self-auto"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
         </div>
 
         {content}

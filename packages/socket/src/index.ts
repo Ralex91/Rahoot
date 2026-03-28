@@ -160,6 +160,10 @@ io.on("connection", (socket) => {
     emitManagerDashboard(socket)
   })
 
+  socket.on("manager:logout", () => {
+    authenticatedManagers.delete(getSocketClientId(socket))
+  })
+
   socket.on("game:create", (quizzId) => {
     if (!ensureAuthenticatedManager(socket)) {
       socket.emit("manager:errorMessage", "Manager authentication required")
