@@ -1,0 +1,37 @@
+name: PR Title Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  conventional-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Allow bootstrap branch for this rule
+        if: github.event.pull_request.head.ref == 'codex/enforce-pr-title-check'
+        run: echo "Skipping title validation for the branch that introduces this workflow."
+
+      - name: Validate pull request title
+        if: github.event.pull_request.head.ref != 'codex/enforce-pr-title-check'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "Checking PR title: $PR_TITLE"
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|refactor|chore)(\([[:alnum:]_.-]+\))?(!)?:\ .+ ]]; then
+            echo "PR title must follow Conventional Commits."
+            echo "Examples:"
+            echo "  feat: add multiple correct answers"
+            echo "  fix: restore mobile reconnect after screen lock"
+            echo "  docs: clarify release workflow"
+            echo "  feat!: change quiz schema"
+            exit 1
+          fi
