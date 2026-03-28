@@ -206,6 +206,7 @@ The manager UI now covers much more than starting a game:
 MindBuzz uses automated release management on `main`:
 
 - merge commits should follow Conventional Commits, such as `feat:`, `fix:`, or `feat!:`
+- pull request titles are validated against the same Conventional Commit format
 - Release Please keeps a release PR up to date with the next version and changelog
 - merging that release PR creates the GitHub release and triggers Docker publishing
 - the Docker release workflow publishes:
