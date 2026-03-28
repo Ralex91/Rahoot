@@ -1,6 +1,6 @@
-import { Socket } from "@rahoot/common/types/game/socket"
-import Game from "@rahoot/socket/services/game"
-import Registry from "@rahoot/socket/services/registry"
+import { Socket } from "@mindbuzz/common/types/game/socket"
+import Game from "@mindbuzz/socket/services/game"
+import Registry from "@mindbuzz/socket/services/registry"
 
 export const withGame = (
   gameId: string | undefined,
@@ -49,3 +49,4 @@ export const timeToPoint = (startTime: number, secondes: number): number => {
 
   return points
 }
+

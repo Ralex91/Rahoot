@@ -1,5 +1,5 @@
-import type { PlayerStatusDataMap } from "@rahoot/common/types/game/status"
-import Loader from "@rahoot/web/features/game/components/Loader"
+import type { PlayerStatusDataMap } from "@mindbuzz/common/types/game/status"
+import Loader from "@mindbuzz/web/features/game/components/Loader"
 
 type Props = {
   data: PlayerStatusDataMap["WAIT"]
@@ -15,3 +15,4 @@ const Wait = ({ data: { text } }: Props) => (
 )
 
 export default Wait
+

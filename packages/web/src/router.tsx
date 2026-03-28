@@ -1,6 +1,6 @@
-import AuthLayout from "@rahoot/web/pages/game/auth/layout"
-import PlayerAuthPage from "@rahoot/web/pages/game/auth/page"
-import { GameLayout } from "@rahoot/web/pages/game/layout"
+import AuthLayout from "@mindbuzz/web/pages/game/auth/layout"
+import PlayerAuthPage from "@mindbuzz/web/pages/game/auth/page"
+import { GameLayout } from "@mindbuzz/web/pages/game/layout"
 import { createBrowserRouter, RouterProvider } from "react-router"
 import AuthManagerPage from "./pages/game/auth/manager/page"
 import ManagerGamePage from "./pages/game/party/manager/page"
@@ -40,3 +40,4 @@ const router = createBrowserRouter([
 const Router = () => <RouterProvider router={router} />
 
 export default Router
+

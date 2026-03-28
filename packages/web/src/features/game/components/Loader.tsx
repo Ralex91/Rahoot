@@ -1,4 +1,4 @@
-import loader from "@rahoot/web/assets/loader.svg"
+import loader from "@mindbuzz/web/assets/loader.svg"
 
 type Props = {
   className?: string
@@ -9,3 +9,4 @@ const Loader = ({ className }: Props) => (
 )
 
 export default Loader
+

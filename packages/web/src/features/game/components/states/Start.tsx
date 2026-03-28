@@ -1,6 +1,6 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { useEvent } from "@rahoot/web/features/game/contexts/socketProvider"
-import { SFX_BOUMP_SOUND } from "@rahoot/web/features/game/utils/constants"
+import type { CommonStatusDataMap } from "@mindbuzz/common/types/game/status"
+import { useEvent } from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { SFX_BOUMP_SOUND } from "@mindbuzz/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"
 import useSound from "use-sound"
@@ -53,3 +53,4 @@ const Start = ({ data: { time, subject } }: Props) => {
 }
 
 export default Start
+

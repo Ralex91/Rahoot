@@ -3,7 +3,7 @@ import type {
   ManagerSettingsUpdate,
   Quizz,
   QuizzWithId,
-} from "@rahoot/common/types/game"
+} from "@mindbuzz/common/types/game"
 import fs from "fs"
 import { resolve } from "path"
 
@@ -377,3 +377,4 @@ class Config {
 }
 
 export default Config
+

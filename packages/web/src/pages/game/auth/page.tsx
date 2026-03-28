@@ -1,10 +1,10 @@
-import Room from "@rahoot/web/features/game/components/join/Room"
-import Username from "@rahoot/web/features/game/components/join/Username"
+import Room from "@mindbuzz/web/features/game/components/join/Room"
+import Username from "@mindbuzz/web/features/game/components/join/Username"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { usePlayerStore } from "@mindbuzz/web/features/game/stores/player"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
@@ -30,3 +30,4 @@ const PlayerAuthPage = () => {
 }
 
 export default PlayerAuthPage
+

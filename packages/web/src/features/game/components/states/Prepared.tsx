@@ -1,8 +1,8 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
+import type { CommonStatusDataMap } from "@mindbuzz/common/types/game/status"
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@mindbuzz/web/features/game/utils/constants"
 import clsx from "clsx"
 import { createElement } from "react"
 
@@ -34,3 +34,4 @@ const Prepared = ({ data: { totalAnswers, questionNumber } }: Props) => (
 )
 
 export default Prepared
+

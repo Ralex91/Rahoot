@@ -1,10 +1,10 @@
-import type { Player } from "@rahoot/common/types/game"
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import type { Player } from "@mindbuzz/common/types/game"
+import type { ManagerStatusDataMap } from "@mindbuzz/common/types/game/status"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { useManagerStore } from "@mindbuzz/web/features/game/stores/manager"
 import { useEffect, useState } from "react"
 import QRCode from "react-qr-code"
 
@@ -112,3 +112,4 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
 }
 
 export default Room
+

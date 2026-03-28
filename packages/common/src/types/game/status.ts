@@ -1,4 +1,4 @@
-import type { Player } from "@rahoot/common/types/game"
+import type { Player } from "@mindbuzz/common/types/game"
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
@@ -56,3 +56,4 @@ type ManagerExtraStatus = {
 export type PlayerStatusDataMap = CommonStatusDataMap
 export type ManagerStatusDataMap = CommonStatusDataMap & ManagerExtraStatus
 export type StatusDataMap = PlayerStatusDataMap & ManagerStatusDataMap
+

@@ -6,8 +6,8 @@ import type {
   Quizz,
   QuizzWithId,
   QuizRunHistorySummary,
-} from "@rahoot/common/types/game"
-import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
+} from "@mindbuzz/common/types/game"
+import type { Status, StatusDataMap } from "@mindbuzz/common/types/game/status"
 import { Server as ServerIO, Socket as SocketIO } from "socket.io"
 
 export type Server = ServerIO<ClientToServerEvents, ServerToClientEvents>
@@ -112,3 +112,4 @@ export interface ClientToServerEvents {
   // Common
   disconnect: () => void
 }
+

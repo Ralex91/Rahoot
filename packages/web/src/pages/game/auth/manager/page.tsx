@@ -4,21 +4,21 @@ import type {
   Quizz,
   QuizzWithId,
   QuizRunHistorySummary,
-} from "@rahoot/common/types/game"
-import background from "@rahoot/web/assets/background.webp"
-import logo from "@rahoot/web/assets/logo.svg"
-import Button from "@rahoot/web/features/game/components/Button"
-import HistoryPanel from "@rahoot/web/features/game/components/create/HistoryPanel"
-import QuizzEditor from "@rahoot/web/features/game/components/create/QuizzEditor"
-import { STATUS } from "@rahoot/common/types/game/status"
-import ManagerPassword from "@rahoot/web/features/game/components/create/ManagerPassword"
-import SelectQuizz from "@rahoot/web/features/game/components/create/SelectQuizz"
-import SettingsPanel from "@rahoot/web/features/game/components/create/SettingsPanel"
+} from "@mindbuzz/common/types/game"
+import background from "@mindbuzz/web/assets/background.webp"
+import logo from "@mindbuzz/web/assets/logo.svg"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import HistoryPanel from "@mindbuzz/web/features/game/components/create/HistoryPanel"
+import QuizzEditor from "@mindbuzz/web/features/game/components/create/QuizzEditor"
+import { STATUS } from "@mindbuzz/common/types/game/status"
+import ManagerPassword from "@mindbuzz/web/features/game/components/create/ManagerPassword"
+import SelectQuizz from "@mindbuzz/web/features/game/components/create/SelectQuizz"
+import SettingsPanel from "@mindbuzz/web/features/game/components/create/SettingsPanel"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { useManagerStore } from "@mindbuzz/web/features/game/stores/manager"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
@@ -309,3 +309,4 @@ const ManagerAuthPage = () => {
 }
 
 export default ManagerAuthPage
+

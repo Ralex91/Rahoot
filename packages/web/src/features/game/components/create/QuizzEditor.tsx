@@ -1,6 +1,6 @@
-import type { Quizz, QuizzWithId } from "@rahoot/common/types/game"
-import Button from "@rahoot/web/features/game/components/Button"
-import Input from "@rahoot/web/features/game/components/Input"
+import type { Quizz, QuizzWithId } from "@mindbuzz/common/types/game"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import Input from "@mindbuzz/web/features/game/components/Input"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
@@ -396,3 +396,4 @@ const QuizzEditor = ({ quizz, onBack, onSave }: Props) => {
 }
 
 export default QuizzEditor
+

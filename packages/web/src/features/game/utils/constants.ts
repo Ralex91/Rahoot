@@ -1,19 +1,19 @@
-import Answers from "@rahoot/web/features/game/components/states/Answers"
-import Leaderboard from "@rahoot/web/features/game/components/states/Leaderboard"
-import Podium from "@rahoot/web/features/game/components/states/Podium"
-import Prepared from "@rahoot/web/features/game/components/states/Prepared"
-import Question from "@rahoot/web/features/game/components/states/Question"
-import Responses from "@rahoot/web/features/game/components/states/Responses"
-import Result from "@rahoot/web/features/game/components/states/Result"
-import Room from "@rahoot/web/features/game/components/states/Room"
-import Start from "@rahoot/web/features/game/components/states/Start"
-import Wait from "@rahoot/web/features/game/components/states/Wait"
+import Answers from "@mindbuzz/web/features/game/components/states/Answers"
+import Leaderboard from "@mindbuzz/web/features/game/components/states/Leaderboard"
+import Podium from "@mindbuzz/web/features/game/components/states/Podium"
+import Prepared from "@mindbuzz/web/features/game/components/states/Prepared"
+import Question from "@mindbuzz/web/features/game/components/states/Question"
+import Responses from "@mindbuzz/web/features/game/components/states/Responses"
+import Result from "@mindbuzz/web/features/game/components/states/Result"
+import Room from "@mindbuzz/web/features/game/components/states/Room"
+import Start from "@mindbuzz/web/features/game/components/states/Start"
+import Wait from "@mindbuzz/web/features/game/components/states/Wait"
 
-import { STATUS } from "@rahoot/common/types/game/status"
-import Circle from "@rahoot/web/features/game/components/icons/Circle"
-import Rhombus from "@rahoot/web/features/game/components/icons/Rhombus"
-import Square from "@rahoot/web/features/game/components/icons/Square"
-import Triangle from "@rahoot/web/features/game/components/icons/Triangle"
+import { STATUS } from "@mindbuzz/common/types/game/status"
+import Circle from "@mindbuzz/web/features/game/components/icons/Circle"
+import Rhombus from "@mindbuzz/web/features/game/components/icons/Rhombus"
+import Square from "@mindbuzz/web/features/game/components/icons/Square"
+import Triangle from "@mindbuzz/web/features/game/components/icons/Triangle"
 
 export const ANSWERS_COLORS = [
   "bg-red-500",
@@ -91,3 +91,4 @@ export const MANAGER_SKIP_BTN = {
   [STATUS.FINISHED]: "End Quiz",
   [STATUS.WAIT]: null,
 }
+

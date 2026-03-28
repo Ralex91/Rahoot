@@ -1,6 +1,6 @@
-import logo from "@rahoot/web/assets/logo.svg"
-import Loader from "@rahoot/web/features/game/components/Loader"
-import { useSocket } from "@rahoot/web/features/game/contexts/socketProvider"
+import logo from "@mindbuzz/web/assets/logo.svg"
+import Loader from "@mindbuzz/web/features/game/components/Loader"
+import { useSocket } from "@mindbuzz/web/features/game/contexts/socketProvider"
 import { Outlet, useLocation } from "react-router"
 
 const AuthLayout = () => {
@@ -42,3 +42,4 @@ const AuthLayout = () => {
 }
 
 export default AuthLayout
+

@@ -7,9 +7,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      "@rahoot/web": path.resolve(__dirname, "./src"),
-      "@rahoot/common": path.resolve(__dirname, "../common/src"),
-      "@rahoot/socket": path.resolve(__dirname, "../socket/src"),
+      "@mindbuzz/web": path.resolve(__dirname, "./src"),
+      "@mindbuzz/common": path.resolve(__dirname, "../common/src"),
+      "@mindbuzz/socket": path.resolve(__dirname, "../socket/src"),
     },
   },
   server: {
@@ -30,3 +30,4 @@ export default defineConfig({
     host: "0.0.0.0",
   },
 })
+

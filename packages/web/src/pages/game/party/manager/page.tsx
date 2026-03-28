@@ -1,16 +1,16 @@
-import { STATUS } from "@rahoot/common/types/game/status"
-import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
+import { STATUS } from "@mindbuzz/common/types/game/status"
+import GameWrapper from "@mindbuzz/web/features/game/components/GameWrapper"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
-import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { useManagerStore } from "@mindbuzz/web/features/game/stores/manager"
+import { useQuestionStore } from "@mindbuzz/web/features/game/stores/question"
 import {
   GAME_STATE_COMPONENTS_MANAGER,
   MANAGER_SKIP_EVENTS,
   isKeyOf,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@mindbuzz/web/features/game/utils/constants"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router"
 
@@ -102,3 +102,4 @@ const ManagerGamePage = () => {
 }
 
 export default ManagerGamePage
+

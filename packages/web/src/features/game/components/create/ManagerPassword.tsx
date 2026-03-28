@@ -1,6 +1,6 @@
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import Form from "@mindbuzz/web/features/game/components/Form"
+import Input from "@mindbuzz/web/features/game/components/Input"
 import { type KeyboardEvent, useState } from "react"
 
 type Props = {
@@ -34,3 +34,4 @@ const ManagerPassword = ({ onSubmit }: Props) => {
 }
 
 export default ManagerPassword
+

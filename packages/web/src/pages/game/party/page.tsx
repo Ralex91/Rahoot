@@ -1,14 +1,14 @@
-import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
+import GameWrapper from "@mindbuzz/web/features/game/components/GameWrapper"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { usePlayerStore } from "@mindbuzz/web/features/game/stores/player"
+import { useQuestionStore } from "@mindbuzz/web/features/game/stores/question"
 import {
   GAME_STATE_COMPONENTS,
   isKeyOf,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@mindbuzz/web/features/game/utils/constants"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router"
@@ -94,3 +94,4 @@ const PlayerGamePage = () => {
 }
 
 export default PlayerGamePage
+

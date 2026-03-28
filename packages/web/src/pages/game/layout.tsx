@@ -1,7 +1,7 @@
 import {
   SocketProvider,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
 import { useEffect } from "react"
 import { Outlet } from "react-router"
 
@@ -33,3 +33,4 @@ export const GameLayout = () => (
     <GameLayoutWrapped />
   </SocketProvider>
 )
+

@@ -1,11 +1,12 @@
 services:
-  rahoot:
+  mindbuzz:
     build:
       context: .
       dockerfile: Dockerfile
-    image: kriziw/rahoot:latest
+    image: kriziw/mindbuzz:latest
     ports:
       - "3000:3000"
     volumes:
       - ./config:/app/config
       - ./media:/app/media
+
