@@ -189,6 +189,7 @@ class Game {
       return
     }
 
+    this.cancelPendingPlayerRemoval(player.clientId)
     this.players = this.players.filter((p) => p.id !== playerId)
     this.playerStatus.delete(playerId)
 
@@ -264,6 +265,11 @@ class Game {
     const oldSocketId = player.id
     player.id = socket.id
     player.connected = true
+
+    if (!this.started) {
+      this.io.to(this.manager.id).emit("manager:removePlayer", oldSocketId)
+      this.io.to(this.manager.id).emit("manager:newPlayer", { ...player })
+    }
 
     const status = this.playerStatus.get(oldSocketId) ||
       this.lastBroadcastStatus || {
