@@ -94,6 +94,25 @@ const ensureAuthenticatedManager = (socket: {
   handshake: { auth: { clientId?: string } }
 }) => authenticatedManagers.has(getSocketClientId(socket))
 
+const revokeManagerGamesForClient = (clientId: string) => {
+  registry
+    .getAllGames()
+    .filter((game) => game.manager.clientId === clientId)
+    .forEach((game) => {
+      if (!game.started) {
+        game.abortCooldown()
+        game.clearPendingPlayerRemovals()
+        io.to(game.gameId).emit("game:reset", "Manager logged out")
+        registry.removeGame(game.gameId)
+
+        return
+      }
+
+      game.revokeManagerControl("Manager logged out")
+      registry.markGameAsEmpty(game)
+    })
+}
+
 console.log(`Socket server running on port ${WS_PORT}`)
 httpServer.listen(WS_PORT)
 
@@ -115,6 +134,12 @@ io.on("connection", (socket) => {
   })
 
   socket.on("manager:reconnect", ({ gameId }) => {
+    if (!ensureAuthenticatedManager(socket)) {
+      socket.emit("game:reset", "Manager authentication required")
+
+      return
+    }
+
     const game = registry.getManagerGame(gameId, socket.handshake.auth.clientId)
 
     if (game) {
@@ -161,7 +186,10 @@ io.on("connection", (socket) => {
   })
 
   socket.on("manager:logout", () => {
-    authenticatedManagers.delete(getSocketClientId(socket))
+    const clientId = getSocketClientId(socket)
+
+    authenticatedManagers.delete(clientId)
+    revokeManagerGamesForClient(clientId)
   })
 
   socket.on("game:create", (quizzId) => {
