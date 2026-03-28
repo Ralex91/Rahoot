@@ -12,18 +12,20 @@ export type Answer = {
   points: number
 }
 
+export type QuizzQuestion = {
+  question: string
+  image?: string
+  video?: string
+  audio?: string
+  answers: string[]
+  solutions: number[]
+  cooldown: number
+  time: number
+}
+
 export type Quizz = {
   subject: string
-  questions: {
-    question: string
-    image?: string
-    video?: string
-    audio?: string
-    answers: string[]
-    solution: number
-    cooldown: number
-    time: number
-  }[]
+  questions: QuizzQuestion[]
 }
 
 export type QuizzWithId = Quizz & { id: string }
@@ -63,8 +65,8 @@ export type QuizRunQuestion = {
   questionNumber: number
   question: string
   answers: string[]
-  correctAnswer: number
-  correctAnswerText: string
+  correctAnswers: number[]
+  correctAnswerTexts: string[]
   responses: QuizRunQuestionResponse[]
 }
 

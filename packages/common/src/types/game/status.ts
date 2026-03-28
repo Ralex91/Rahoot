@@ -22,6 +22,7 @@ export type CommonStatusDataMap = {
   SELECT_ANSWER: {
     question: string
     answers: string[]
+    multipleCorrect: boolean
     image?: string
     video?: string
     audio?: string
@@ -45,7 +46,7 @@ type ManagerExtraStatus = {
   SHOW_RESPONSES: {
     question: string
     responses: Record<number, number>
-    correct: number
+    correct: number[]
     answers: string[]
     image?: string
     video?: string

@@ -2,6 +2,7 @@ import type {
   ManagerSettings,
   ManagerSettingsUpdate,
   Quizz,
+  QuizzQuestion,
   QuizzWithId,
 } from "@mindbuzz/common/types/game"
 import fs from "fs"
@@ -25,7 +26,45 @@ const normalizeOptionalAsset = (value?: string) => {
   return trimmed ? trimmed : undefined
 }
 
-const normalizeQuizz = (quizz: Quizz): Quizz => {
+type RawQuizzQuestion = Omit<QuizzQuestion, "solutions"> & {
+  solution?: number
+  solutions?: number[]
+}
+
+type RawQuizz = {
+  subject: string
+  questions: RawQuizzQuestion[]
+}
+
+const normalizeSolutions = (
+  question: RawQuizzQuestion,
+  answers: string[],
+  questionIndex: number,
+) => {
+  const candidateSolutions = Array.isArray(question.solutions)
+    ? question.solutions
+    : Number.isInteger(question.solution)
+      ? [question.solution]
+      : []
+  const normalizedSolutions = [...new Set(candidateSolutions)].sort((a, b) => a - b)
+
+  if (normalizedSolutions.length === 0) {
+    throw new Error(`Question ${questionIndex + 1} must have at least one correct answer`)
+  }
+
+  if (
+    normalizedSolutions.some(
+      (solution) =>
+        !Number.isInteger(solution) || solution < 0 || solution >= answers.length,
+    )
+  ) {
+    throw new Error(`Question ${questionIndex + 1} has an invalid correct answer`)
+  }
+
+  return normalizedSolutions
+}
+
+const normalizeQuizz = (quizz: RawQuizz): Quizz => {
   const subject = quizz.subject.trim()
 
   if (!subject) {
@@ -54,14 +93,6 @@ const normalizeQuizz = (quizz: Quizz): Quizz => {
         throw new Error(`Question ${index + 1} contains an empty answer`)
       }
 
-      if (
-        !Number.isInteger(question.solution) ||
-        question.solution < 0 ||
-        question.solution >= answers.length
-      ) {
-        throw new Error(`Question ${index + 1} has an invalid correct answer`)
-      }
-
       if (!Number.isInteger(question.cooldown) || question.cooldown < 0) {
         throw new Error(`Question ${index + 1} has an invalid cooldown`)
       }
@@ -73,7 +104,7 @@ const normalizeQuizz = (quizz: Quizz): Quizz => {
       return {
         question: normalizedQuestion,
         answers,
-        solution: question.solution,
+        solutions: normalizeSolutions(question, answers, index),
         cooldown: question.cooldown,
         time: question.time,
         image: normalizeOptionalAsset(question.image),
@@ -129,7 +160,7 @@ class Config {
               {
                 question: "What is the correct answer?",
                 answers: ["No", "Good answer", "No", "No"],
-                solution: 1,
+                solutions: [1],
                 cooldown: 5,
                 time: 15,
               },
@@ -137,15 +168,15 @@ class Config {
                 question: "What is the correct answer with an image?",
                 answers: ["No", "No", "No", "Good answer"],
                 image: "https://placehold.co/600x400.png",
-                solution: 3,
+                solutions: [3],
                 cooldown: 5,
                 time: 20,
               },
               {
-                question: "What is the correct answer with two answers?",
-                answers: ["Good answer", "No"],
+                question: "Which answers are correct?",
+                answers: ["Good answer", "No", "Another good answer"],
                 image: "https://placehold.co/600x400.png",
-                solution: 0,
+                solutions: [0, 2],
                 cooldown: 5,
                 time: 20,
               },
@@ -202,7 +233,7 @@ class Config {
 
       const quizz: QuizzWithId[] = files.map((file) => {
         const data = fs.readFileSync(getPath(`quizz/${file}`), "utf-8")
-        const config = JSON.parse(data)
+        const config = normalizeQuizz(JSON.parse(data) as RawQuizz)
 
         const id = file.replace(".json", "")
 
@@ -247,7 +278,7 @@ class Config {
         {
           question: "New question",
           answers: ["Answer 1", "Answer 2"],
-          solution: 0,
+          solutions: [0],
           cooldown: 5,
           time: 20,
         },

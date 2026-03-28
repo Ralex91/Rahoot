@@ -24,7 +24,7 @@ The original project is a great lightweight self-hosted Kahoot-style game. This 
 ## What's Added In This Version
 
 - Manager dashboard with quiz creation, editing, deletion, and launch
-- In-browser quiz editor for question text, answers, timers, and optional media
+- In-browser quiz editor for question text, answers, single or multiple correct answers, timers, and optional media
 - SQLite-backed run history for completed games
 - CSV export for the current run and retrospective exports from history
 - Manager settings for password updates and default fallback audio
@@ -160,7 +160,7 @@ Example:
       "question": "What is the correct answer?",
       "answers": ["No", "Yes", "No", "No"],
       "image": "https://images.unsplash.com/....",
-      "solution": 1,
+      "solutions": [1],
       "cooldown": 5,
       "time": 15
     }
@@ -175,7 +175,7 @@ Question fields:
 - `image`: optional image URL
 - `video`: optional video URL
 - `audio`: optional audio URL
-- `solution`: zero-based index of the correct answer
+- `solutions`: zero-based indexes of the correct answers. Players still choose one answer, and any listed correct answer counts as correct.
 - `cooldown`: delay before answers are shown
 - `time`: answer timer in seconds
 

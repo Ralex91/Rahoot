@@ -18,6 +18,9 @@ import { v4 as uuid } from "uuid"
 const registry = Registry.getInstance()
 const PLAYER_RECONNECT_GRACE_MS = 60_000
 
+const isCorrectAnswer = (selectedAnswerId: number, correctAnswerIds: number[]) =>
+  correctAnswerIds.includes(selectedAnswerId)
+
 class Game {
   io: Server
 
@@ -405,6 +408,7 @@ class Game {
     this.broadcastStatus(STATUS.SELECT_ANSWER, {
       question: question.question,
       answers: question.answers,
+      multipleCorrect: question.solutions.length > 1,
       image: question.image,
       video: question.video,
       audio: question.audio ?? defaultAudio,
@@ -421,7 +425,7 @@ class Game {
     this.showResults(question)
   }
 
-  showResults(question: any) {
+  showResults(question: QuizzWithId["questions"][number]) {
     const oldLeaderboard =
       this.leaderboard.length === 0
         ? this.players.map((p) => ({ ...p }))
@@ -443,7 +447,7 @@ class Game {
         )
 
         const isCorrect = playerAnswer
-          ? playerAnswer.answerId === question.solution
+          ? isCorrectAnswer(playerAnswer.answerId, question.solutions)
           : false
 
         const points =
@@ -461,8 +465,10 @@ class Game {
       questionNumber: this.round.currentQuestion + 1,
       question: question.question,
       answers: question.answers,
-      correctAnswer: question.solution,
-      correctAnswerText: question.answers[question.solution],
+      correctAnswers: question.solutions,
+      correctAnswerTexts: question.solutions.map(
+        (solution) => question.answers[solution],
+      ),
       responses: sortedPlayers.map((player) => {
         const playerAnswer = this.round.playersAnswers.find(
           (answer) => answer.playerId === player.id,
@@ -500,7 +506,7 @@ class Game {
     this.sendStatus(this.manager.id, STATUS.SHOW_RESPONSES, {
       question: question.question,
       responses: totalType,
-      correct: question.solution,
+      correct: question.solutions,
       answers: question.answers,
       image: question.image,
     })
@@ -519,6 +525,14 @@ class Game {
     }
 
     if (this.round.playersAnswers.find((p) => p.playerId === socket.id)) {
+      return
+    }
+
+    if (
+      !Number.isInteger(answerId) ||
+      answerId < 0 ||
+      answerId >= question.answers.length
+    ) {
       return
     }
 
