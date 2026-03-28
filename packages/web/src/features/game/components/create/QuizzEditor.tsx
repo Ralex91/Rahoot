@@ -14,7 +14,7 @@ type Props = {
 const createEmptyQuestion = () => ({
   question: "",
   answers: ["", ""],
-  solution: 0,
+  solutions: [0],
   cooldown: 5,
   time: 20,
   image: "",
@@ -66,7 +66,7 @@ const QuizzEditor = ({ quizz, onBack, onSave }: Props) => {
 
   const handleQuestionNumberField = (
     index: number,
-    field: "cooldown" | "time" | "solution",
+    field: "cooldown" | "time",
     value: number,
   ) => {
     updateQuestion(index, (question) => ({
@@ -145,17 +145,40 @@ const QuizzEditor = ({ quizz, onBack, onSave }: Props) => {
         const answers = currentQuestion.answers.filter(
           (_, index) => index !== answerIndex,
         )
-        const solution =
-          currentQuestion.solution >= answers.length
-            ? answers.length - 1
-            : currentQuestion.solution > answerIndex
-              ? currentQuestion.solution - 1
-              : currentQuestion.solution
+        const solutions = currentQuestion.solutions
+          .filter((solution) => solution !== answerIndex)
+          .map((solution) => (solution > answerIndex ? solution - 1 : solution))
+
+        if (solutions.length === 0) {
+          solutions.push(0)
+        }
 
         return {
           ...currentQuestion,
           answers,
-          solution,
+          solutions,
+        }
+      })
+    }
+
+  const handleToggleCorrectAnswer =
+    (questionIndex: number, answerIndex: number) => () => {
+      updateQuestion(questionIndex, (currentQuestion) => {
+        const isSelected = currentQuestion.solutions.includes(answerIndex)
+
+        if (isSelected && currentQuestion.solutions.length === 1) {
+          toast.error("Each question needs at least one correct answer")
+
+          return currentQuestion
+        }
+
+        const solutions = isSelected
+          ? currentQuestion.solutions.filter((solution) => solution !== answerIndex)
+          : [...currentQuestion.solutions, answerIndex].sort((a, b) => a - b)
+
+        return {
+          ...currentQuestion,
+          solutions,
         }
       })
     }
@@ -339,11 +362,15 @@ const QuizzEditor = ({ quizz, onBack, onSave }: Props) => {
                 </Button>
               </div>
 
+              <p className="mb-3 text-sm text-gray-500">
+                Select one or more correct answers for this question.
+              </p>
+
               <div className="space-y-3">
                 {question.answers.map((answer, answerIndex) => (
                   <div
                     key={`${quizz.id}-${questionIndex}-${answerIndex}`}
-                    className="grid gap-2 md:grid-cols-[minmax(0,1fr)_140px_120px]"
+                    className="grid gap-2 md:grid-cols-[minmax(0,1fr)_160px_120px]"
                   >
                     <Input
                       value={answer}
@@ -358,16 +385,9 @@ const QuizzEditor = ({ quizz, onBack, onSave }: Props) => {
 
                     <label className="flex items-center gap-2 rounded-sm bg-white px-3 py-2 outline-2 outline-gray-300">
                       <input
-                        type="radio"
-                        name={`solution-${questionIndex}`}
-                        checked={question.solution === answerIndex}
-                        onChange={() =>
-                          handleQuestionNumberField(
-                            questionIndex,
-                            "solution",
-                            answerIndex,
-                          )
-                        }
+                        type="checkbox"
+                        checked={question.solutions.includes(answerIndex)}
+                        onChange={handleToggleCorrectAnswer(questionIndex, answerIndex)}
                       />
                       <span className="text-sm font-semibold text-gray-700">
                         Correct answer

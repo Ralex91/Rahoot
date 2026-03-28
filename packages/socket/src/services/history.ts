@@ -19,6 +19,30 @@ const escapeCsv = (value: string | number | null) => {
   return `"${normalized.replace(/"/g, '""')}"`
 }
 
+type LegacyQuizRunQuestion = QuizRunHistoryDetail["questions"][number] & {
+  correctAnswer?: number
+  correctAnswerText?: string
+}
+
+type LegacyQuizRunHistoryDetail = Omit<QuizRunHistoryDetail, "questions"> & {
+  questions: LegacyQuizRunQuestion[]
+}
+
+const normalizeRun = (
+  run: LegacyQuizRunHistoryDetail,
+): QuizRunHistoryDetail => ({
+  ...run,
+  questions: run.questions.map((question) => ({
+    ...question,
+    correctAnswers:
+      question.correctAnswers ??
+      (question.correctAnswer !== undefined ? [question.correctAnswer] : []),
+    correctAnswerTexts:
+      question.correctAnswerTexts ??
+      (question.correctAnswerText ? [question.correctAnswerText] : []),
+  })),
+})
+
 class History {
   private static db: DatabaseSync | null = null
 
@@ -123,7 +147,9 @@ class History {
       return null
     }
 
-    return JSON.parse(result.payloadJson) as QuizRunHistoryDetail
+    return normalizeRun(
+      JSON.parse(result.payloadJson) as LegacyQuizRunHistoryDetail,
+    )
   }
 
   static exportCsv(runId: string) {
@@ -143,8 +169,8 @@ class History {
         "Player",
         "Answer Id",
         "Answer Text",
-        "Correct Answer Id",
-        "Correct Answer Text",
+        "Correct Answer Ids",
+        "Correct Answer Texts",
         "Is Correct",
         "Points Earned",
         "Total Points",
@@ -170,8 +196,8 @@ class History {
             response.username,
             response.answerId,
             response.answerText,
-            question.correctAnswer,
-            question.correctAnswerText,
+            question.correctAnswers.join("; "),
+            question.correctAnswerTexts.join(" | "),
             response.isCorrect ? "yes" : "no",
             response.points,
             response.totalPoints,

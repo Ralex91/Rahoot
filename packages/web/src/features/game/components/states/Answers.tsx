@@ -21,7 +21,7 @@ type Props = {
 }
 
 const Answers = ({
-  data: { question, answers, image, audio, video, time, totalPlayer },
+  data: { question, answers, multipleCorrect, image, audio, video, time, totalPlayer },
 }: Props) => {
   const { gameId }: { gameId?: string } = useParams()
   const { socket } = useSocket()
@@ -82,6 +82,12 @@ const Answers = ({
         <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg sm:text-3xl md:text-4xl lg:text-5xl">
           {question}
         </h2>
+
+        {multipleCorrect && (
+          <p className="rounded-full bg-black/40 px-4 py-2 text-sm font-semibold text-white sm:text-base">
+            More than one answer may be correct.
+          </p>
+        )}
 
         {Boolean(audio) && !player && (
           <audio
