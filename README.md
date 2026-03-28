@@ -1,20 +1,20 @@
 <p align="center">
-  <img width="450" height="120" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/logo.svg" alt="Rahoot logo">
+  <img width="450" height="120" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/logo.svg" alt="Rahoot logo">
 </p>
 
 <p align="center">
-  <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Rahoot/edit/main/README.md&countColor=%2337d67a">
-  <img src="https://img.shields.io/docker/pulls/ralex91/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
+  <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/kriziw/Rahoot/edit/main/README.md&countColor=%2337d67a">
+  <img src="https://img.shields.io/docker/pulls/kriziw/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
 </p>
 
 Rahoot is a self-hosted, open-source quiz game inspired by Kahoot. It is designed for small events, classrooms, and team sessions where you want a lightweight quiz host that runs on your own server.
 
-> Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/Ralex91/Rahoot/issues).
+> Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/kriziw/Rahoot/issues).
 
 <p align="center">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login screen">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager dashboard">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question screen">
+  <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview1.jpg" alt="Login screen">
+  <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview2.jpg" alt="Manager dashboard">
+  <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview3.jpg" alt="Question screen">
 </p>
 
 ## Features
@@ -45,6 +45,10 @@ docker compose up -d
 
 The app will be available at [http://localhost:3000](http://localhost:3000).
 
+The repository `compose.yml` uses the published Docker Hub image:
+
+- `kriziw/rahoot:latest`
+
 Compose mounts two local folders:
 
 - `./config:/app/config`
@@ -64,13 +68,13 @@ docker run -d \
   -p 3000:3000 \
   -v ./config:/app/config \
   -v ./media:/app/media \
-  ralex91/rahoot:latest
+  kriziw/rahoot:latest
 ```
 
 ### Local Development
 
 ```bash
-git clone https://github.com/Ralex91/Rahoot.git
+git clone https://github.com/kriziw/Rahoot.git
 cd Rahoot
 pnpm install
 pnpm run dev
@@ -81,6 +85,21 @@ For a production build:
 ```bash
 pnpm run build
 pnpm start
+```
+
+### Build From Source With Docker
+
+If you want to build the image yourself from this repository instead of pulling it from Docker Hub:
+
+```bash
+git clone https://github.com/kriziw/Rahoot.git
+cd Rahoot
+docker build -t kriziw/rahoot:local .
+docker run -d \
+  -p 3000:3000 \
+  -v ./config:/app/config \
+  -v ./media:/app/media \
+  kriziw/rahoot:local
 ```
 
 ## Configuration
@@ -159,8 +178,24 @@ Manager-uploaded local audio files are stored here and served by the app at `/me
 3. Make your changes
 4. Open a pull request
 
-For bugs or feature requests, use [GitHub Issues](https://github.com/Ralex91/Rahoot/issues).
+For bugs or feature requests, use [GitHub Issues](https://github.com/kriziw/Rahoot/issues).
+
+## Releases
+
+Rahoot now uses automated release management on `main`:
+
+- merge commits should follow Conventional Commits, such as `feat:`, `fix:`, or `feat!:`
+- GitHub Actions keeps a release PR up to date with the next version and changelog
+- merging that release PR creates the GitHub release and publishes Docker tags for:
+  - the full version, for example `1.2.3`
+  - the major/minor line, for example `1.2`
+  - `latest`
+
+The release workflow expects these repository secrets:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Rahoot&type=date&legend=bottom-right)
+[![Star History Chart](https://api.star-history.com/svg?repos=kriziw/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#kriziw/Rahoot&type=date&legend=bottom-right)

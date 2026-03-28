@@ -1,9 +1,6 @@
 services:
   rahoot:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: rahoot:local
+    image: kriziw/rahoot:latest
     ports:
       - "3000:3000"
     volumes:
