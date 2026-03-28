@@ -1,23 +1,21 @@
 <p align="center">
-  <img width="450" height="120" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/logo.svg" alt="Rahoot logo">
+  <img width="450" height="120" src="https://raw.githubusercontent.com/kriziw/MindBuzz/main/.github/logo.svg" alt="MindBuzz logo">
 </p>
 
 <p align="center">
-  <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/kriziw/Rahoot/edit/main/README.md&countColor=%2337d67a">
-  <img src="https://img.shields.io/docker/pulls/kriziw/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
+  <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/kriziw/MindBuzz/edit/main/README.md&countColor=%2337d67a">
+  <img src="https://img.shields.io/docker/pulls/kriziw/mindbuzz?style=for-the-badge&color=37d67a" alt="Docker Pulls">
 </p>
 
-Rahoot is a self-hosted quiz platform for classrooms, team sessions, events, and internal training. This repository is an enhanced fork of the original [Ralex91/Rahoot](https://github.com/Ralex91/Rahoot), expanding the manager experience with richer quiz administration, run history, exports, settings, media support, and mobile reconnect improvements.
+MindBuzz is a self-hosted quiz platform for classrooms, team sessions, events, and internal training. This repository is an enhanced fork of the original [Ralex91/Rahoot](https://github.com/Ralex91/Rahoot), expanding the manager experience with richer quiz administration, run history, exports, settings, media support, and mobile reconnect improvements.
 
 Original credit belongs to [Ralex91](https://github.com/Ralex91) for the original Rahoot project and foundation.
 
-> Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/kriziw/Rahoot/issues).
+> Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/kriziw/MindBuzz/issues).
 
-<p align="center">
-  <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview1.jpg" alt="Login screen">
-  <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview2.jpg" alt="Manager dashboard">
-  <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview3.jpg" alt="Question screen">
-</p>
+## AI-Assisted Development
+
+MindBuzz is developed with AI assistance for parts of implementation, refactoring, UI copy, documentation, and release preparation. All AI-assisted changes are reviewed and approved by a human maintainer before they are merged, but the project intentionally discloses that AI tooling is part of the development workflow.
 
 ## Why This Fork Exists
 
@@ -56,7 +54,7 @@ Choose one setup path:
 
 ### Docker Compose
 
-The simplest way to run Rahoot is with Docker Compose:
+The simplest way to run MindBuzz is with Docker Compose:
 
 ```bash
 docker compose up -d
@@ -66,7 +64,7 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 The repository `compose.yml` uses the published Docker Hub image:
 
-- `kriziw/rahoot:latest`
+- `kriziw/mindbuzz:latest`
 
 It mounts:
 
@@ -87,14 +85,14 @@ docker run -d \
   -p 3000:3000 \
   -v ./config:/app/config \
   -v ./media:/app/media \
-  kriziw/rahoot:latest
+  kriziw/mindbuzz:latest
 ```
 
 ### Local Development
 
 ```bash
-git clone https://github.com/kriziw/Rahoot.git
-cd Rahoot
+git clone https://github.com/kriziw/MindBuzz.git
+cd MindBuzz
 pnpm install
 pnpm run dev
 ```
@@ -109,14 +107,14 @@ pnpm start
 ### Build From Source With Docker
 
 ```bash
-git clone https://github.com/kriziw/Rahoot.git
-cd Rahoot
-docker build -t kriziw/rahoot:local .
+git clone https://github.com/kriziw/MindBuzz.git
+cd MindBuzz
+docker build -t kriziw/mindbuzz:local .
 docker run -d \
   -p 3000:3000 \
   -v ./config:/app/config \
   -v ./media:/app/media \
-  kriziw/rahoot:local
+  kriziw/mindbuzz:local
 ```
 
 ## How To Use
@@ -130,7 +128,7 @@ docker run -d \
 
 ## Data Layout
 
-Rahoot stores its runtime data in a few simple locations.
+MindBuzz stores its runtime data in a few simple locations.
 
 ### `config/game.json`
 
@@ -205,7 +203,7 @@ The manager UI now covers much more than starting a game:
 
 ## Releases
 
-Rahoot uses automated release management on `main`:
+MindBuzz uses automated release management on `main`:
 
 - merge commits should follow Conventional Commits, such as `feat:`, `fix:`, or `feat!:`
 - GitHub Actions keeps a release PR up to date with the next version and changelog
@@ -226,18 +224,19 @@ The release workflow expects these repository secrets:
 3. Make your changes
 4. Open a pull request
 
-For bugs or feature requests, use [GitHub Issues](https://github.com/kriziw/Rahoot/issues).
+For bugs or feature requests, use [GitHub Issues](https://github.com/kriziw/MindBuzz/issues).
 
 ## Attribution
 
-This repository builds on the original [Ralex91/Rahoot](https://github.com/Ralex91/Rahoot) project. If you are evaluating Rahoot for the first time, please consider checking out the upstream project and giving credit to the original work as well.
+This repository builds on the original [Ralex91/Rahoot](https://github.com/Ralex91/Rahoot) project. If you are evaluating MindBuzz for the first time, please consider checking out the upstream project and giving credit to the original work as well.
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=kriziw%2FRahoot&type=date&legend=bottom-right">
+<a href="https://www.star-history.com/?repos=kriziw%2FMindBuzz&type=date&legend=bottom-right">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=kriziw/Rahoot&type=date&theme=dark&legend=bottom-right" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=kriziw/Rahoot&type=date&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=kriziw/Rahoot&type=date&legend=bottom-right" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=kriziw/MindBuzz&type=date&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=kriziw/MindBuzz&type=date&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=kriziw/MindBuzz&type=date&legend=bottom-right" />
  </picture>
 </a>
+

@@ -1,4 +1,4 @@
-import type { GameUpdateQuestion } from "@rahoot/common/types/game"
+import type { GameUpdateQuestion } from "@mindbuzz/common/types/game"
 import { create } from "zustand"
 
 type QuestionStore = {
@@ -10,3 +10,4 @@ export const useQuestionStore = create<QuestionStore>((set) => ({
   questionStates: null,
   setQuestionStates: (state) => set({ questionStates: state }),
 }))
+

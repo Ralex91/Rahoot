@@ -1,5 +1,5 @@
 {
-  "name": "@rahoot/common",
+  "name": "@mindbuzz/common",
   "type": "module",
   "scripts": {
     "lint": "eslint"
@@ -17,3 +17,4 @@
     "typescript-eslint": "^8.57.0"
   }
 }
+

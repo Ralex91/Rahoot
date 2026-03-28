@@ -1,13 +1,13 @@
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import Button from "@rahoot/web/features/game/components/Button"
-import { useSocket } from "@rahoot/web/features/game/contexts/socketProvider"
+import type { ManagerStatusDataMap } from "@mindbuzz/common/types/game/status"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import { useSocket } from "@mindbuzz/web/features/game/contexts/socketProvider"
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,
   SFX_PODIUM_THREE,
   SFX_SNEAR_ROOL,
-} from "@rahoot/web/features/game/utils/constants"
-import useScreenSize from "@rahoot/web/hooks/useScreenSize"
+} from "@mindbuzz/web/features/game/utils/constants"
+import useScreenSize from "@mindbuzz/web/hooks/useScreenSize"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
@@ -194,3 +194,4 @@ const Podium = ({ data: { subject, top, runId } }: Props) => {
 }
 
 export default Podium
+

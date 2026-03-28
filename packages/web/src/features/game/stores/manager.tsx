@@ -1,9 +1,9 @@
-import type { Player } from "@rahoot/common/types/game"
-import type { StatusDataMap } from "@rahoot/common/types/game/status"
+import type { Player } from "@mindbuzz/common/types/game"
+import type { StatusDataMap } from "@mindbuzz/common/types/game/status"
 import {
   createStatus,
   type Status,
-} from "@rahoot/web/features/game/utils/createStatus"
+} from "@mindbuzz/web/features/game/utils/createStatus"
 import { create } from "zustand"
 
 type ManagerStore<T> = {
@@ -37,3 +37,4 @@ export const useManagerStore = create<ManagerStore<StatusDataMap>>((set) => ({
 
   reset: () => set(initialState),
 }))
+

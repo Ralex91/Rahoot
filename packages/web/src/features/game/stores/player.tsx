@@ -1,8 +1,8 @@
-import type { StatusDataMap } from "@rahoot/common/types/game/status"
+import type { StatusDataMap } from "@mindbuzz/common/types/game/status"
 import {
   createStatus,
   type Status,
-} from "@rahoot/web/features/game/utils/createStatus"
+} from "@mindbuzz/web/features/game/utils/createStatus"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
@@ -73,3 +73,4 @@ export const usePlayerStore = create<PlayerStore<StatusDataMap>>()(
     },
   ),
 )
+

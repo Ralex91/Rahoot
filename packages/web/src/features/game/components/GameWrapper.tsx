@@ -1,14 +1,14 @@
-import type { Status } from "@rahoot/common/types/game/status"
-import background from "@rahoot/web/assets/background.webp"
-import Button from "@rahoot/web/features/game/components/Button"
-import Loader from "@rahoot/web/features/game/components/Loader"
+import type { Status } from "@mindbuzz/common/types/game/status"
+import background from "@mindbuzz/web/assets/background.webp"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import Loader from "@mindbuzz/web/features/game/components/Loader"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
-import { MANAGER_SKIP_BTN } from "@rahoot/web/features/game/utils/constants"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { usePlayerStore } from "@mindbuzz/web/features/game/stores/player"
+import { useQuestionStore } from "@mindbuzz/web/features/game/stores/question"
+import { MANAGER_SKIP_BTN } from "@mindbuzz/web/features/game/utils/constants"
 import clsx from "clsx"
 import { type PropsWithChildren, useEffect, useState } from "react"
 import toast from "react-hot-toast"
@@ -104,3 +104,4 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
 }
 
 export default GameWrapper
+

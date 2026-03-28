@@ -1,5 +1,5 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { SFX_SHOW_SOUND } from "@rahoot/web/features/game/utils/constants"
+import type { CommonStatusDataMap } from "@mindbuzz/common/types/game/status"
+import { SFX_SHOW_SOUND } from "@mindbuzz/web/features/game/utils/constants"
 import { useEffect } from "react"
 import useSound from "use-sound"
 
@@ -38,3 +38,4 @@ const Question = ({ data: { question, image, cooldown } }: Props) => {
 }
 
 export default Question
+

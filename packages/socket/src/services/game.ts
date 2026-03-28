@@ -3,16 +3,16 @@ import type {
   Player,
   QuizzWithId,
   QuizRunHistoryDetail,
-} from "@rahoot/common/types/game"
-import type { Server, Socket } from "@rahoot/common/types/game/socket"
-import { STATUS } from "@rahoot/common/types/game/status"
-import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
-import { usernameValidator } from "@rahoot/common/validators/auth"
-import Config from "@rahoot/socket/services/config"
-import History from "@rahoot/socket/services/history"
-import Registry from "@rahoot/socket/services/registry"
-import { createInviteCode, timeToPoint } from "@rahoot/socket/utils/game"
-import sleep from "@rahoot/socket/utils/sleep"
+} from "@mindbuzz/common/types/game"
+import type { Server, Socket } from "@mindbuzz/common/types/game/socket"
+import { STATUS } from "@mindbuzz/common/types/game/status"
+import type { Status, StatusDataMap } from "@mindbuzz/common/types/game/status"
+import { usernameValidator } from "@mindbuzz/common/validators/auth"
+import Config from "@mindbuzz/socket/services/config"
+import History from "@mindbuzz/socket/services/history"
+import Registry from "@mindbuzz/socket/services/registry"
+import { createInviteCode, timeToPoint } from "@mindbuzz/socket/utils/game"
+import sleep from "@mindbuzz/socket/utils/sleep"
 import { v4 as uuid } from "uuid"
 
 const registry = Registry.getInstance()
@@ -732,3 +732,4 @@ class Game {
 }
 
 export default Game
+

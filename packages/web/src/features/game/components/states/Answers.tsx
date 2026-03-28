@@ -1,16 +1,16 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
+import type { CommonStatusDataMap } from "@mindbuzz/common/types/game/status"
+import AnswerButton from "@mindbuzz/web/features/game/components/AnswerButton"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { usePlayerStore } from "@mindbuzz/web/features/game/stores/player"
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
   SFX_ANSWERS_MUSIC,
   SFX_ANSWERS_SOUND,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@mindbuzz/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router"
@@ -142,3 +142,4 @@ const Answers = ({
 }
 
 export default Answers
+

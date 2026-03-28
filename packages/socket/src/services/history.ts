@@ -1,7 +1,7 @@
 import type {
   QuizRunHistoryDetail,
   QuizRunHistorySummary,
-} from "@rahoot/common/types/game"
+} from "@mindbuzz/common/types/game"
 import fs from "fs"
 import { resolve } from "path"
 import { DatabaseSync } from "node:sqlite"
@@ -193,3 +193,4 @@ class History {
 }
 
 export default History
+

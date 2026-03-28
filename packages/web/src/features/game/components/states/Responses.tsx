@@ -1,12 +1,12 @@
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
+import type { ManagerStatusDataMap } from "@mindbuzz/common/types/game/status"
+import AnswerButton from "@mindbuzz/web/features/game/components/AnswerButton"
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
   SFX_ANSWERS_MUSIC,
   SFX_RESULTS_SOUND,
-} from "@rahoot/web/features/game/utils/constants"
-import { calculatePercentages } from "@rahoot/web/features/game/utils/score"
+} from "@mindbuzz/web/features/game/utils/constants"
+import { calculatePercentages } from "@mindbuzz/web/features/game/utils/score"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import useSound from "use-sound"
@@ -100,3 +100,4 @@ const Responses = ({
 }
 
 export default Responses
+

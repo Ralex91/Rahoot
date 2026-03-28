@@ -5,11 +5,12 @@
     "noErrorTruncation": true,
     "esModuleInterop": true,
     "paths": {
-      "@rahoot/common/*": ["./packages/common/src/*"],
-      "@rahoot/socket/*": ["./packages/socket/src/*"],
-      "@rahoot/web/*": ["./packages/web/src/*"]
+      "@mindbuzz/common/*": ["./packages/common/src/*"],
+      "@mindbuzz/socket/*": ["./packages/socket/src/*"],
+      "@mindbuzz/web/*": ["./packages/web/src/*"]
     },
     "strict": true,
     "strictNullChecks": true
   }
 }
+

@@ -45,7 +45,7 @@ importers:
 
   packages/socket:
     dependencies:
-      '@rahoot/common':
+      '@mindbuzz/common':
         specifier: workspace:*
         version: link:../common
       dayjs:
@@ -85,10 +85,10 @@ importers:
 
   packages/web:
     dependencies:
-      '@rahoot/common':
+      '@mindbuzz/common':
         specifier: workspace:*
         version: link:../common
-      '@rahoot/socket':
+      '@mindbuzz/socket':
         specifier: workspace:*
         version: link:../socket
       '@tailwindcss/vite':
@@ -4245,3 +4245,4 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.14
       react: 19.2.4
+

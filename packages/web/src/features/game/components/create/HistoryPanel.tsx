@@ -1,5 +1,5 @@
-import type { QuizRunHistorySummary } from "@rahoot/common/types/game"
-import Button from "@rahoot/web/features/game/components/Button"
+import type { QuizRunHistorySummary } from "@mindbuzz/common/types/game"
+import Button from "@mindbuzz/web/features/game/components/Button"
 
 type Props = {
   history: QuizRunHistorySummary[]
@@ -48,3 +48,4 @@ const HistoryPanel = ({ history, onDownload }: Props) => (
 )
 
 export default HistoryPanel
+

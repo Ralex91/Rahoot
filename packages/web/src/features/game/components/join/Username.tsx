@@ -1,12 +1,12 @@
-import { STATUS } from "@rahoot/common/types/game/status"
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
+import { STATUS } from "@mindbuzz/common/types/game/status"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import Form from "@mindbuzz/web/features/game/components/Form"
+import Input from "@mindbuzz/web/features/game/components/Input"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@mindbuzz/web/features/game/contexts/socketProvider"
+import { usePlayerStore } from "@mindbuzz/web/features/game/stores/player"
 
 import { type KeyboardEvent, useState } from "react"
 import { useNavigate } from "react-router"
@@ -51,3 +51,4 @@ const Username = () => {
 }
 
 export default Username
+

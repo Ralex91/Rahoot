@@ -1,10 +1,10 @@
-import { Server, Socket } from "@rahoot/common/types/game/socket"
-import { inviteCodeValidator } from "@rahoot/common/validators/auth"
-import Config from "@rahoot/socket/services/config"
-import Game from "@rahoot/socket/services/game"
-import History from "@rahoot/socket/services/history"
-import Registry from "@rahoot/socket/services/registry"
-import { withGame } from "@rahoot/socket/utils/game"
+import { Server, Socket } from "@mindbuzz/common/types/game/socket"
+import { inviteCodeValidator } from "@mindbuzz/common/validators/auth"
+import Config from "@mindbuzz/socket/services/config"
+import Game from "@mindbuzz/socket/services/game"
+import History from "@mindbuzz/socket/services/history"
+import Registry from "@mindbuzz/socket/services/registry"
+import { withGame } from "@mindbuzz/socket/utils/game"
 import fs from "fs"
 import { createServer } from "http"
 import { extname, relative, resolve } from "path"
@@ -440,3 +440,4 @@ process.on("SIGTERM", () => {
   Registry.getInstance().cleanup()
   process.exit(0)
 })
+

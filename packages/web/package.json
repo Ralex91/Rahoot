@@ -1,5 +1,5 @@
 {
-  "name": "@rahoot/web",
+  "name": "@mindbuzz/web",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@rahoot/common": "workspace:*",
-    "@rahoot/socket": "workspace:*",
+    "@mindbuzz/common": "workspace:*",
+    "@mindbuzz/socket": "workspace:*",
     "@tailwindcss/vite": "^4.2.1",
     "clsx": "^2.1.1",
     "motion": "^12.36.0",
@@ -46,3 +46,4 @@
     "vite": "^7.3.1"
   }
 }
+

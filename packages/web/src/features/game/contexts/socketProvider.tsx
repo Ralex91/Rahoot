@@ -3,7 +3,7 @@
 import type {
   ClientToServerEvents,
   ServerToClientEvents,
-} from "@rahoot/common/types/game/socket"
+} from "@mindbuzz/common/types/game/socket"
 import React, {
   createContext,
   useCallback,
@@ -154,3 +154,4 @@ export const useEvent = <E extends keyof ServerToClientEvents>(
     }
   }, [socket, event, callback])
 }
+

@@ -1,9 +1,9 @@
 import type {
   ManagerSettings,
   ManagerSettingsUpdate,
-} from "@rahoot/common/types/game"
-import Button from "@rahoot/web/features/game/components/Button"
-import Input from "@rahoot/web/features/game/components/Input"
+} from "@mindbuzz/common/types/game"
+import Button from "@mindbuzz/web/features/game/components/Button"
+import Input from "@mindbuzz/web/features/game/components/Input"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
@@ -217,3 +217,4 @@ const SettingsPanel = ({
 }
 
 export default SettingsPanel
+

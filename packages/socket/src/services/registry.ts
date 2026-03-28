@@ -1,4 +1,4 @@
-import Game from "@rahoot/socket/services/game"
+import Game from "@mindbuzz/socket/services/game"
 import dayjs from "dayjs"
 
 interface EmptyGame {
@@ -159,3 +159,4 @@ class Registry {
 }
 
 export default Registry
+
