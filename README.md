@@ -206,16 +206,22 @@ The manager UI now covers much more than starting a game:
 MindBuzz uses automated release management on `main`:
 
 - merge commits should follow Conventional Commits, such as `feat:`, `fix:`, or `feat!:`
-- GitHub Actions keeps a release PR up to date with the next version and changelog
-- merging that release PR creates the GitHub release and publishes Docker tags for:
-  - the full version, for example `1.2.3`
-  - the major/minor line, for example `1.2`
+- Release Please keeps a release PR up to date with the next version and changelog
+- merging that release PR creates the GitHub release and triggers Docker publishing
+- the Docker release workflow publishes:
+  - the full version, for example `1.6.0`
+  - the major/minor line, for example `1.6`
   - `latest`
 
 The release workflow expects these repository secrets:
 
+- `RELEASE_PLEASE_TOKEN`
 - `DOCKERHUB_USERNAME`
 - `DOCKERHUB_TOKEN`
+
+Repository setup note:
+
+- enable `Allow GitHub Actions to create and approve pull requests` in the repository Actions settings
 
 ## Contributing
 
