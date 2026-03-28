@@ -608,6 +608,18 @@ class Game {
     registry.removeGame(this.gameId)
   }
 
+  revokeManagerControl(reason: string) {
+    const activeManagerSocketId = this.manager.id
+
+    if (activeManagerSocketId) {
+      this.io.to(activeManagerSocketId).emit("game:reset", reason)
+      this.io.in(activeManagerSocketId).socketsLeave(this.gameId)
+    }
+
+    this.manager.id = ""
+    this.manager.connected = false
+  }
+
   schedulePlayerRemoval(playerId: string) {
     const player = this.players.find((p) => p.id === playerId)
 
