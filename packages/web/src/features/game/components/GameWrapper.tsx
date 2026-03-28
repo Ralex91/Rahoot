@@ -61,20 +61,22 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
         {!isConnected && !statusName ? (
           <div className="flex h-full w-full flex-1 flex-col items-center justify-center">
             <Loader className="h-30" />
-            <h1 className="text-4xl font-bold text-white">Connecting...</h1>
+            <h1 className="px-4 text-center text-3xl font-bold text-white md:text-4xl">
+              Connecting...
+            </h1>
           </div>
         ) : (
           <>
-            <div className="flex w-full justify-between p-4">
+            <div className="flex w-full items-start justify-between gap-3 p-3 sm:p-4">
               {questionStates && (
-                <div className="shadow-inset flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
+                <div className="shadow-inset flex items-center rounded-md bg-white px-3 py-2 text-base font-bold text-black sm:px-4 sm:text-lg">
                   {`${questionStates.current} / ${questionStates.total}`}
                 </div>
               )}
 
               {manager && next && (
                 <Button
-                  className={clsx("self-end bg-white px-4 text-black!", {
+                  className={clsx("self-end bg-white px-4 !text-black", {
                     "pointer-events-none": isDisabled,
                   })}
                   onClick={handleNext}
@@ -87,9 +89,9 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
             {children}
 
             {!manager && (
-              <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
-                <p className="text-gray-800">{player?.username}</p>
-                <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
+              <div className="z-50 flex items-center justify-between gap-3 bg-white px-3 py-2 text-base font-bold text-white sm:px-4 sm:text-lg">
+                <p className="min-w-0 truncate text-gray-800">{player?.username}</p>
+                <div className="shrink-0 rounded-sm bg-gray-800 px-3 py-1 text-base sm:text-lg">
                   {player?.points}
                 </div>
               </div>

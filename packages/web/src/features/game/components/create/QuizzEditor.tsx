@@ -173,7 +173,7 @@ const QuizzEditor = ({ quizz, onBack, onSave }: Props) => {
         </div>
 
         <div className="flex flex-col gap-2 md:flex-row">
-          <Button className="bg-white px-4 text-black!" onClick={onBack}>
+          <Button className="bg-white px-4 !text-black" onClick={onBack}>
             Back to quizzes
           </Button>
           <Button className="px-4" onClick={handleSave}>

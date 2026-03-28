@@ -92,6 +92,7 @@ export interface ClientToServerEvents {
   "manager:updateSettings": (_data: ManagerSettingsUpdate) => void
   "manager:uploadMedia": (_data: { filename: string; content: string }) => void
   "manager:downloadHistory": (_data: { runId: string }) => void
+  "manager:logout": () => void
   "manager:reconnect": (_message: { gameId: string }) => void
   "manager:kickPlayer": (_message: { gameId: string; playerId: string }) => void
   "manager:startGame": (_message: MessageGameId) => void

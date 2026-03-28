@@ -6,6 +6,7 @@ import type {
   QuizRunHistorySummary,
 } from "@rahoot/common/types/game"
 import background from "@rahoot/web/assets/background.webp"
+import logo from "@rahoot/web/assets/logo.svg"
 import Button from "@rahoot/web/features/game/components/Button"
 import HistoryPanel from "@rahoot/web/features/game/components/create/HistoryPanel"
 import QuizzEditor from "@rahoot/web/features/game/components/create/QuizzEditor"
@@ -41,13 +42,34 @@ const TABS = [
 ] as const
 
 type ManagerTab = (typeof TABS)[number]["id"]
+const MANAGER_AUTH_STORAGE_KEY = "manager_auth"
+
+const readManagerAuth = () => {
+  try {
+    return localStorage.getItem(MANAGER_AUTH_STORAGE_KEY) === "true"
+  } catch {
+    return false
+  }
+}
+
+const persistManagerAuth = (value: boolean) => {
+  try {
+    if (value) {
+      localStorage.setItem(MANAGER_AUTH_STORAGE_KEY, "true")
+    } else {
+      localStorage.removeItem(MANAGER_AUTH_STORAGE_KEY)
+    }
+  } catch {
+    // Ignore storage failures and fall back to in-memory auth state.
+  }
+}
 
 const ManagerAuthPage = () => {
-  const { setGameId, setStatus } = useManagerStore()
+  const { reset, setGameId, setStatus } = useManagerStore()
   const navigate = useNavigate()
   const { socket } = useSocket()
 
-  const [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(readManagerAuth)
   const [activeTab, setActiveTab] = useState<ManagerTab>("quizzes")
   const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
   const [history, setHistory] = useState<QuizRunHistorySummary[]>([])
@@ -56,6 +78,7 @@ const ManagerAuthPage = () => {
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState<string | null>(null)
 
   useEvent("manager:quizzList", (quizzList) => {
+    persistManagerAuth(true)
     setIsAuth(true)
     setQuizzList(quizzList)
   })
@@ -69,6 +92,18 @@ const ManagerAuthPage = () => {
   })
 
   useEvent("manager:errorMessage", (message) => {
+    if (message === "Manager authentication required") {
+      persistManagerAuth(false)
+      setIsAuth(false)
+      setActiveTab("quizzes")
+      setQuizzList([])
+      setHistory([])
+      setSettings({})
+      reset()
+      setEditingQuizzId(null)
+      setUploadedAudioUrl(null)
+    }
+
     toast.error(message)
   })
 
@@ -167,44 +202,94 @@ const ManagerAuthPage = () => {
     socket?.emit("manager:downloadHistory", { runId })
   }
 
-  if (!isAuth) {
-    return <ManagerPassword onSubmit={handleAuth} />
+  const handleLogout = () => {
+    persistManagerAuth(false)
+    setIsAuth(false)
+    setActiveTab("quizzes")
+    setQuizzList([])
+    setHistory([])
+    setSettings({})
+    setEditingQuizzId(null)
+    setUploadedAudioUrl(null)
+    reset()
+    socket?.emit("manager:logout")
+    navigate("/manager")
   }
 
   const editingQuizz = quizzList.find((quizz) => quizz.id === editingQuizzId)
 
   let content = null
 
-  if (editingQuizz) {
+  if (!isAuth) {
     content = (
-      <QuizzEditor
-        quizz={editingQuizz}
-        onBack={() => setEditingQuizzId(null)}
-        onSave={handleUpdateQuizz}
-      />
+      <div className="relative z-10 flex min-h-dvh w-full flex-col items-center justify-center px-4 py-6">
+        <img src={logo} className="mb-10 h-16" alt="logo" />
+        <ManagerPassword onSubmit={handleAuth} />
+      </div>
     )
-  } else if (activeTab === "history") {
+  } else if (editingQuizz) {
     content = (
-      <HistoryPanel history={history} onDownload={handleDownloadHistory} />
-    )
-  } else if (activeTab === "settings") {
-    content = (
-      <SettingsPanel
-        settings={settings}
-        uploadedAudioUrl={uploadedAudioUrl}
-        onSave={handleSaveSettings}
-        onUploadLocalAudio={handleUploadLocalAudio}
-      />
+      <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
+        <QuizzEditor
+          quizz={editingQuizz}
+          onBack={() => setEditingQuizzId(null)}
+          onSave={handleUpdateQuizz}
+        />
+      </div>
     )
   } else {
+    const dashboardContent =
+      activeTab === "history" ? (
+        <HistoryPanel history={history} onDownload={handleDownloadHistory} />
+      ) : activeTab === "settings" ? (
+        <SettingsPanel
+          settings={settings}
+          uploadedAudioUrl={uploadedAudioUrl}
+          onSave={handleSaveSettings}
+          onUploadLocalAudio={handleUploadLocalAudio}
+        />
+      ) : (
+        <SelectQuizz
+          quizzList={quizzList}
+          onCreate={handleCreateQuizz}
+          onDelete={handleDeleteQuizz}
+          onEdit={handleEditQuizz}
+          onSelect={handleCreate}
+        />
+      )
+
     content = (
-      <SelectQuizz
-        quizzList={quizzList}
-        onCreate={handleCreateQuizz}
-        onDelete={handleDeleteQuizz}
-        onEdit={handleEditQuizz}
-        onSelect={handleCreate}
-      />
+      <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
+        <div className="mb-4 flex w-full max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-2">
+            {TABS.map((tab) => (
+              <Button
+                key={tab.id}
+                type="button"
+                className={clsx(
+                  "px-4",
+                  activeTab === tab.id
+                    ? "bg-primary"
+                    : "bg-white !text-black",
+                )}
+                onClick={() => handleSelectTab(tab.id)}
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            type="button"
+            className="self-start bg-white px-4 !text-black sm:self-auto"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </div>
+
+        {dashboardContent}
+      </div>
     )
   }
 
@@ -218,27 +303,7 @@ const ManagerAuthPage = () => {
         />
       </div>
 
-      <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
-        <div className="mb-4 flex w-full max-w-5xl flex-wrap gap-2">
-          {TABS.map((tab) => (
-            <Button
-              key={tab.id}
-              type="button"
-              className={clsx(
-                "px-4",
-                activeTab === tab.id
-                  ? "bg-primary"
-                  : "bg-white text-black!",
-              )}
-              onClick={() => handleSelectTab(tab.id)}
-            >
-              {tab.label}
-            </Button>
-          ))}
-        </div>
-
-        {content}
-      </div>
+      {content}
     </section>
   )
 }

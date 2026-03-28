@@ -1,5 +1,8 @@
 services:
   rahoot:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: kriziw/rahoot:latest
     ports:
       - "3000:3000"

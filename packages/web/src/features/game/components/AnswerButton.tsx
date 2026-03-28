@@ -18,13 +18,13 @@ const AnswerButton = ({
 }: Props) => (
   <button
     className={clsx(
-      "shadow-inset flex items-center gap-3 rounded px-4 py-6 text-left",
+      "shadow-inset flex min-h-24 items-center gap-3 rounded px-3 py-4 text-left text-sm sm:min-h-28 sm:px-4 sm:py-6 sm:text-base md:text-lg",
       className,
     )}
     {...otherProps}
   >
-    <Icon className="h-6 w-6" />
-    <span className="drop-shadow-md">{children}</span>
+    <Icon className="h-5 w-5 shrink-0 sm:h-6 sm:w-6" />
+    <span className="min-w-0 break-words drop-shadow-md">{children}</span>
   </button>
 )
 

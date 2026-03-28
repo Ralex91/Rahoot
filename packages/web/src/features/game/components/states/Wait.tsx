@@ -6,9 +6,9 @@ type Props = {
 }
 
 const Wait = ({ data: { text } }: Props) => (
-  <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
+  <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-4 text-center">
     <Loader className="h-30" />
-    <h2 className="mt-5 text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+    <h2 className="mt-5 text-center text-2xl font-bold text-white drop-shadow-lg sm:text-3xl md:text-4xl lg:text-5xl">
       {text}
     </h2>
   </section>

@@ -89,7 +89,7 @@ const Podium = ({ data: { subject, top, runId } }: Props) => {
             {subject}
           </h2>
           <Button
-            className="bg-white px-4 text-black!"
+            className="bg-white px-4 !text-black"
             onClick={() => socket?.emit("manager:downloadHistory", { runId })}
           >
             Download results

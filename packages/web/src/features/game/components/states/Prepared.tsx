@@ -11,11 +11,11 @@ type Props = {
 }
 
 const Prepared = ({ data: { totalAnswers, questionNumber } }: Props) => (
-  <section className="anim-show relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
-    <h2 className="anim-show mb-20 text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+  <section className="anim-show relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-4 text-center">
+    <h2 className="anim-show mb-10 text-center text-2xl font-bold text-white drop-shadow-lg sm:mb-20 sm:text-3xl md:text-4xl lg:text-5xl">
       Question #{questionNumber}
     </h2>
-    <div className="anim-quizz grid aspect-square w-60 grid-cols-2 gap-4 rounded-2xl bg-gray-700 p-5 md:w-60">
+    <div className="anim-quizz grid aspect-square w-44 grid-cols-2 gap-3 rounded-2xl bg-gray-700 p-4 sm:w-52 sm:gap-4 sm:p-5 md:w-60">
       {[...Array(totalAnswers)].map((_, key) => (
         <div
           key={key}
@@ -24,7 +24,9 @@ const Prepared = ({ data: { totalAnswers, questionNumber } }: Props) => (
             ANSWERS_COLORS[key],
           )}
         >
-          {createElement(ANSWERS_ICONS[key], { className: "h-10 md:h-14" })}
+          {createElement(ANSWERS_ICONS[key], {
+            className: "h-8 sm:h-10 md:h-14",
+          })}
         </div>
       ))}
     </div>

@@ -1,3 +1,4 @@
+import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
 import {
   useEvent,
@@ -71,6 +72,15 @@ const ManagerGamePage = () => {
 
   const handleSkip = () => {
     if (!gameId || !status) {
+      return
+    }
+
+    if (status.name === STATUS.FINISHED) {
+      socket?.emit("manager:endGame", { gameId })
+      navigate("/manager")
+      reset()
+      setQuestionStates(null)
+
       return
     }
 

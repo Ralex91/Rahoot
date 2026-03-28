@@ -65,7 +65,7 @@ const Answers = ({
     return () => {
       stopMusic()
     }
-  }, [playMusic])
+  }, [audio, playMusic, stopMusic, video])
 
   useEvent("game:cooldown", (sec) => {
     setCooldown(sec)
@@ -77,15 +77,15 @@ const Answers = ({
   })
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-between">
-      <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-5">
-        <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+    <div className="flex h-full flex-1 flex-col justify-between pb-3 sm:pb-4">
+      <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-4 px-3 sm:gap-5 sm:px-4">
+        <h2 className="text-center text-2xl font-bold text-white drop-shadow-lg sm:text-3xl md:text-4xl lg:text-5xl">
           {question}
         </h2>
 
         {Boolean(audio) && !player && (
           <audio
-            className="m-4 mb-2 w-auto rounded-md"
+            className="mb-2 w-full max-w-md rounded-md"
             src={audio}
             autoPlay
             controls
@@ -94,7 +94,7 @@ const Answers = ({
 
         {Boolean(video) && !player && (
           <video
-            className="m-4 mb-2 aspect-video max-h-60 w-auto rounded-md px-4 sm:max-h-100"
+            className="mb-2 aspect-video max-h-60 w-full max-w-3xl rounded-md sm:max-h-100"
             src={video}
             autoPlay
             controls
@@ -105,18 +105,18 @@ const Answers = ({
           <img
             alt={question}
             src={image}
-            className="mb-2 max-h-60 w-auto rounded-md px-4 sm:max-h-100"
+            className="mb-2 max-h-60 w-full max-w-3xl rounded-md object-contain sm:max-h-100"
           />
         )}
       </div>
 
       <div>
-        <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
-          <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
+        <div className="mx-auto mb-3 flex w-full max-w-7xl justify-between gap-2 px-3 text-base font-bold text-white sm:mb-4 sm:px-4 sm:text-lg md:text-xl">
+          <div className="flex min-w-0 flex-col items-center rounded-full bg-black/40 px-3 py-1 text-base font-bold sm:px-4 sm:text-lg">
             <span className="translate-y-1 text-sm">Time</span>
             <span>{cooldown}</span>
           </div>
-          <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
+          <div className="flex min-w-0 flex-col items-center rounded-full bg-black/40 px-3 py-1 text-base font-bold sm:px-4 sm:text-lg">
             <span className="translate-y-1 text-sm">Answers</span>
             <span>
               {totalAnswer}/{totalPlayer}
@@ -124,7 +124,7 @@ const Answers = ({
           </div>
         </div>
 
-        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-xl">
+        <div className="mx-auto mb-1 grid w-full max-w-7xl grid-cols-2 gap-2 px-3 text-lg font-bold text-white sm:mb-4 sm:px-4 md:text-xl">
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}
