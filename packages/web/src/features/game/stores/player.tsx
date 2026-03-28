@@ -4,6 +4,7 @@ import {
   type Status,
 } from "@rahoot/web/features/game/utils/createStatus"
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 type PlayerState = {
   username?: string
@@ -33,30 +34,42 @@ const initialState = {
   status: null,
 }
 
-export const usePlayerStore = create<PlayerStore<StatusDataMap>>((set) => ({
-  ...initialState,
+export const usePlayerStore = create<PlayerStore<StatusDataMap>>()(
+  persist(
+    (set) => ({
+      ...initialState,
 
-  setGameId: (gameId) => set({ gameId }),
+      setGameId: (gameId) => set({ gameId }),
 
-  setPlayer: (player: PlayerState) => set({ player }),
-  login: (username) =>
-    set((state) => ({
-      player: { ...state.player, username },
-    })),
+      setPlayer: (player: PlayerState) => set({ player }),
+      login: (username) =>
+        set((state) => ({
+          player: { ...state.player, username },
+        })),
 
-  join: (gameId) => {
-    set((state) => ({
-      gameId,
-      player: { ...state.player, points: 0 },
-    }))
-  },
+      join: (gameId) => {
+        set((state) => ({
+          gameId,
+          player: { ...state.player, points: 0 },
+        }))
+      },
 
-  updatePoints: (points) =>
-    set((state) => ({
-      player: { ...state.player, points },
-    })),
+      updatePoints: (points) =>
+        set((state) => ({
+          player: { ...state.player, points },
+        })),
 
-  setStatus: (name, data) => set({ status: createStatus(name, data) }),
+      setStatus: (name, data) => set({ status: createStatus(name, data) }),
 
-  reset: () => set(initialState),
-}))
+      reset: () => set(initialState),
+    }),
+    {
+      name: "player-session",
+      partialize: (state) => ({
+        gameId: state.gameId,
+        player: state.player,
+        status: state.status,
+      }),
+    },
+  ),
+)
