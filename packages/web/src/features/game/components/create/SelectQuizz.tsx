@@ -146,7 +146,7 @@ const SelectQuizz = ({
               <div className="flex items-center gap-3">
                 <Button
                   type="button"
-                  className="bg-white px-3 py-1 text-sm text-black!"
+                  className="bg-white px-3 py-1 text-sm !text-black"
                   onClick={(event) => {
                     event.stopPropagation()
                     onEdit(quizz.id)

@@ -277,7 +277,7 @@ const ManagerAuthPage = () => {
                   "px-4",
                   activeTab === tab.id
                     ? "bg-primary"
-                    : "bg-white text-black!",
+                    : "bg-white !text-black",
                 )}
                 onClick={() => handleSelectTab(tab.id)}
               >
@@ -288,7 +288,7 @@ const ManagerAuthPage = () => {
 
           <Button
             type="button"
-            className="self-start bg-white px-4 text-black! sm:self-auto"
+            className="self-start bg-white px-4 !text-black sm:self-auto"
             onClick={handleLogout}
           >
             Logout

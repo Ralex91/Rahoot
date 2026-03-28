@@ -142,14 +142,14 @@ const SettingsPanel = ({
 
         <div className="mb-4 flex gap-2">
           <Button
-            className={audioSource === "remote" ? "px-4" : "bg-white px-4 text-black!"}
+            className={audioSource === "remote" ? "px-4" : "bg-white px-4 !text-black"}
             onClick={() => setAudioSource("remote")}
             type="button"
           >
             Remote URL
           </Button>
           <Button
-            className={audioSource === "local" ? "px-4" : "bg-white px-4 text-black!"}
+            className={audioSource === "local" ? "px-4" : "bg-white px-4 !text-black"}
             onClick={() => setAudioSource("local")}
             type="button"
           >
@@ -193,7 +193,7 @@ const SettingsPanel = ({
 
         <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <Button
-            className="bg-white px-4 text-black!"
+            className="bg-white px-4 !text-black"
             onClick={() => {
               setRemoteAudioUrl("")
               setLocalAudioUrl("")

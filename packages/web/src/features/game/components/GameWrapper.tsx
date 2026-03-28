@@ -76,7 +76,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
 
               {manager && next && (
                 <Button
-                  className={clsx("self-end bg-white px-4 text-black!", {
+                  className={clsx("self-end bg-white px-4 !text-black", {
                     "pointer-events-none": isDisabled,
                   })}
                   onClick={handleNext}
