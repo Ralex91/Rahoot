@@ -7,7 +7,9 @@
   <img src="https://img.shields.io/docker/pulls/kriziw/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
 </p>
 
-Rahoot is a self-hosted, open-source quiz game inspired by Kahoot. It is designed for small events, classrooms, and team sessions where you want a lightweight quiz host that runs on your own server.
+Rahoot is a self-hosted quiz platform for classrooms, team sessions, events, and internal training. This repository is an enhanced fork of the original [Ralex91/Rahoot](https://github.com/Ralex91/Rahoot), expanding the manager experience with richer quiz administration, run history, exports, settings, media support, and mobile reconnect improvements.
+
+Original credit belongs to [Ralex91](https://github.com/Ralex91) for the original Rahoot project and foundation.
 
 > Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/kriziw/Rahoot/issues).
 
@@ -17,21 +19,38 @@ Rahoot is a self-hosted, open-source quiz game inspired by Kahoot. It is designe
   <img width="30%" src="https://raw.githubusercontent.com/kriziw/Rahoot/main/.github/preview3.jpg" alt="Question screen">
 </p>
 
-## Features
+## Why This Fork Exists
 
-- Self-hosted quiz sessions with a manager/host interface
-- Quiz files stored as JSON in `config/quizz`
-- Quiz run history stored in SQLite at `config/history.db`
-- CSV export for completed quiz runs
-- Global fallback audio support plus per-question media
-- Local media uploads stored in `media/`
+The original project is a great lightweight self-hosted Kahoot-style game. This fork keeps that spirit, but pushes the admin side much further so you can manage quizzes and review results without constantly dropping into JSON files by hand.
+
+## What's Added In This Version
+
+- Manager dashboard with quiz creation, editing, deletion, and launch
+- In-browser quiz editor for question text, answers, timers, and optional media
+- SQLite-backed run history for completed games
+- CSV export for the current run and retrospective exports from history
+- Manager settings for password updates and default fallback audio
+- Support for remote audio URLs and local audio uploads stored in `media/`
+- Improved manager session persistence and explicit logout flow
+- Better mobile reconnect recovery for players after app switching or screen lock
+- Published Docker image and release automation for easier deployments
+
+## Core Features
+
+- Self-hosted multiplayer quiz sessions
+- Host / manager interface plus player join flow by room code
+- Quiz definitions stored as JSON in `config/quizz/`
+- Detailed completed-run history stored in SQLite at `config/history.db`
+- Optional image, video, and audio per question
+- Global fallback audio when a question does not define its own audio
+- Docker-first deployment with persistent config and media volumes
 
 ## Requirements
 
 Choose one setup path:
 
 - Docker and Docker Compose
-- Node.js 22+ and PNPM
+- Node.js 24+ and PNPM
 
 ## Quick Start
 
@@ -49,17 +68,17 @@ The repository `compose.yml` uses the published Docker Hub image:
 
 - `kriziw/rahoot:latest`
 
-Compose mounts two local folders:
+It mounts:
 
 - `./config:/app/config`
 - `./media:/app/media`
 
 Those folders persist:
 
-- game configuration
+- manager configuration
 - quiz JSON files
-- run history in `config/history.db`
-- uploaded local audio files
+- quiz run history
+- uploaded local media
 
 ### Docker Run
 
@@ -89,8 +108,6 @@ pnpm start
 
 ### Build From Source With Docker
 
-If you want to build the image yourself from this repository instead of pulling it from Docker Hub:
-
 ```bash
 git clone https://github.com/kriziw/Rahoot.git
 cd Rahoot
@@ -102,9 +119,18 @@ docker run -d \
   kriziw/rahoot:local
 ```
 
-## Configuration
+## How To Use
 
-Rahoot stores its data in a small set of local files and folders.
+1. Open [http://localhost:3000/manager](http://localhost:3000/manager)
+2. Sign in with the manager password from `config/game.json`
+3. Create, edit, delete, or launch a quiz
+4. Share the main app URL and room code with players
+5. Run the quiz
+6. Download current results or revisit them later from the history view
+
+## Data Layout
+
+Rahoot stores its runtime data in a few simple locations.
 
 ### `config/game.json`
 
@@ -119,8 +145,8 @@ Main manager settings:
 
 Fields:
 
-- `managerPassword`: required for manager login. Change this from the default value before using the app.
-- `defaultAudio`: optional fallback audio played when a question does not define its own `audio`.
+- `managerPassword`: required for manager login
+- `defaultAudio`: optional fallback audio used when a question does not define `audio`
 
 ### `config/quizz/*.json`
 
@@ -163,26 +189,23 @@ Completed quiz runs are stored in SQLite. The manager UI uses this history to li
 
 Manager-uploaded local audio files are stored here and served by the app at `/media/<filename>`.
 
-## How To Use
+## Manager Capabilities
 
-1. Open [http://localhost:3000/manager](http://localhost:3000/manager)
-2. Sign in with the manager password from `config/game.json`
-3. Create, edit, delete, or launch a quiz
-4. Share the main app URL and room code with players
-5. Run the quiz and review exports/history afterward
+The manager UI now covers much more than starting a game:
 
-## Contributing
-
-1. Fork the repository
-2. Create a branch
-3. Make your changes
-4. Open a pull request
-
-For bugs or feature requests, use [GitHub Issues](https://github.com/kriziw/Rahoot/issues).
+- authenticate into the admin dashboard
+- create new quizzes
+- edit existing quizzes from the browser
+- delete quizzes
+- launch quiz sessions
+- review historic runs
+- export detailed CSV results
+- update the manager password
+- set a default audio track by URL or upload a local file
 
 ## Releases
 
-Rahoot now uses automated release management on `main`:
+Rahoot uses automated release management on `main`:
 
 - merge commits should follow Conventional Commits, such as `feat:`, `fix:`, or `feat!:`
 - GitHub Actions keeps a release PR up to date with the next version and changelog
@@ -195,6 +218,19 @@ The release workflow expects these repository secrets:
 
 - `DOCKERHUB_USERNAME`
 - `DOCKERHUB_TOKEN`
+
+## Contributing
+
+1. Fork the repository
+2. Create a branch
+3. Make your changes
+4. Open a pull request
+
+For bugs or feature requests, use [GitHub Issues](https://github.com/kriziw/Rahoot/issues).
+
+## Attribution
+
+This repository builds on the original [Ralex91/Rahoot](https://github.com/Ralex91/Rahoot) project. If you are evaluating Rahoot for the first time, please consider checking out the upstream project and giving credit to the original work as well.
 
 ## Star History
 
