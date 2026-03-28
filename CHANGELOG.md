@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/kriziw/MindBuzz/compare/v1.6.0...v1.6.1) (2026-03-28)
+
+
+### Bug Fixes
+
+* bootstrap PR title validation ([db6a8ee](https://github.com/kriziw/MindBuzz/commit/db6a8ee3dc581cc67249c95a25843a50f687b624))
+
 ## [1.6.0](https://github.com/kriziw/MindBuzz/compare/v1.5.0...v1.6.0) (2026-03-28)
 
 
