@@ -6,6 +6,7 @@ import type {
   QuizRunHistorySummary,
 } from "@rahoot/common/types/game"
 import background from "@rahoot/web/assets/background.webp"
+import logo from "@rahoot/web/assets/logo.svg"
 import Button from "@rahoot/web/features/game/components/Button"
 import HistoryPanel from "@rahoot/web/features/game/components/create/HistoryPanel"
 import QuizzEditor from "@rahoot/web/features/game/components/create/QuizzEditor"
@@ -221,7 +222,8 @@ const ManagerAuthPage = () => {
 
   if (!isAuth) {
     content = (
-      <div className="flex min-h-dvh w-full items-center justify-center px-4 py-6">
+      <div className="relative z-10 flex min-h-dvh w-full flex-col items-center justify-center px-4 py-6">
+        <img src={logo} className="mb-10 h-16" alt="logo" />
         <ManagerPassword onSubmit={handleAuth} />
       </div>
     )
