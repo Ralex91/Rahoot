@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/kriziw/MindBuzz/compare/v1.6.1...v1.7.0) (2026-03-28)
+
+
+### Features
+
+* support multiple correct answers ([933a67f](https://github.com/kriziw/MindBuzz/commit/933a67fe1fc78f648c8e347995805da6db4823c9))
+* support multiple correct answers ([19d4135](https://github.com/kriziw/MindBuzz/commit/19d4135295e0010b5760a0bfe919813cefccb8da))
+
+
+### Bug Fixes
+
+* preserve legacy history exports ([f9500ea](https://github.com/kriziw/MindBuzz/commit/f9500ea0e6d32750c0859ffa23ff1d52e8072987))
+
 ## [1.6.1](https://github.com/kriziw/MindBuzz/compare/v1.6.0...v1.6.1) (2026-03-28)
 
 
