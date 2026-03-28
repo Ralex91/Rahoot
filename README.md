@@ -13,11 +13,9 @@ Original credit belongs to [Ralex91](https://github.com/Ralex91) for the origina
 
 > Warning: the project is still under active development. If you hit bugs or have feature ideas, please open an [issue](https://github.com/kriziw/MindBuzz/issues).
 
-<p align="center">
-  <img width="30%" src="https://raw.githubusercontent.com/kriziw/MindBuzz/main/.github/preview1.jpg" alt="Login screen">
-  <img width="30%" src="https://raw.githubusercontent.com/kriziw/MindBuzz/main/.github/preview2.jpg" alt="Manager dashboard">
-  <img width="30%" src="https://raw.githubusercontent.com/kriziw/MindBuzz/main/.github/preview3.jpg" alt="Question screen">
-</p>
+## AI-Assisted Development
+
+MindBuzz is developed with AI assistance for parts of implementation, refactoring, UI copy, documentation, and release preparation. All AI-assisted changes are reviewed and approved by a human maintainer before they are merged, but the project intentionally discloses that AI tooling is part of the development workflow.
 
 ## Why This Fork Exists
 
