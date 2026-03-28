@@ -1,10 +1,11 @@
 import logo from "@rahoot/web/assets/logo.svg"
 import Loader from "@rahoot/web/features/game/components/Loader"
 import { useSocket } from "@rahoot/web/features/game/contexts/socketProvider"
-import { Outlet } from "react-router"
+import { Outlet, useLocation } from "react-router"
 
 const AuthLayout = () => {
   const { isConnected } = useSocket()
+  const { pathname } = useLocation()
 
   if (!isConnected) {
     return (
@@ -21,6 +22,10 @@ const AuthLayout = () => {
         </h2>
       </section>
     )
+  }
+
+  if (pathname === "/manager") {
+    return <Outlet />
   }
 
   return (

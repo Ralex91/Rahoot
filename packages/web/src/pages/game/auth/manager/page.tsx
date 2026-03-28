@@ -215,57 +215,48 @@ const ManagerAuthPage = () => {
     navigate("/manager")
   }
 
-  if (!isAuth) {
-    return <ManagerPassword onSubmit={handleAuth} />
-  }
-
   const editingQuizz = quizzList.find((quizz) => quizz.id === editingQuizzId)
 
   let content = null
 
-  if (editingQuizz) {
+  if (!isAuth) {
     content = (
-      <QuizzEditor
-        quizz={editingQuizz}
-        onBack={() => setEditingQuizzId(null)}
-        onSave={handleUpdateQuizz}
-      />
+      <div className="flex min-h-dvh w-full items-center justify-center px-4 py-6">
+        <ManagerPassword onSubmit={handleAuth} />
+      </div>
     )
-  } else if (activeTab === "history") {
+  } else if (editingQuizz) {
     content = (
-      <HistoryPanel history={history} onDownload={handleDownloadHistory} />
-    )
-  } else if (activeTab === "settings") {
-    content = (
-      <SettingsPanel
-        settings={settings}
-        uploadedAudioUrl={uploadedAudioUrl}
-        onSave={handleSaveSettings}
-        onUploadLocalAudio={handleUploadLocalAudio}
-      />
-    )
-  } else {
-    content = (
-      <SelectQuizz
-        quizzList={quizzList}
-        onCreate={handleCreateQuizz}
-        onDelete={handleDeleteQuizz}
-        onEdit={handleEditQuizz}
-        onSelect={handleCreate}
-      />
-    )
-  }
-
-  return (
-    <section className="relative min-h-dvh">
-      <div className="fixed top-0 left-0 h-full w-full">
-        <img
-          className="pointer-events-none h-full w-full object-cover"
-          src={background}
-          alt="background"
+      <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
+        <QuizzEditor
+          quizz={editingQuizz}
+          onBack={() => setEditingQuizzId(null)}
+          onSave={handleUpdateQuizz}
         />
       </div>
+    )
+  } else {
+    const dashboardContent =
+      activeTab === "history" ? (
+        <HistoryPanel history={history} onDownload={handleDownloadHistory} />
+      ) : activeTab === "settings" ? (
+        <SettingsPanel
+          settings={settings}
+          uploadedAudioUrl={uploadedAudioUrl}
+          onSave={handleSaveSettings}
+          onUploadLocalAudio={handleUploadLocalAudio}
+        />
+      ) : (
+        <SelectQuizz
+          quizzList={quizzList}
+          onCreate={handleCreateQuizz}
+          onDelete={handleDeleteQuizz}
+          onEdit={handleEditQuizz}
+          onSelect={handleCreate}
+        />
+      )
 
+    content = (
       <div className="relative z-10 flex min-h-dvh flex-col items-center px-4 py-6">
         <div className="mb-4 flex w-full max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-2">
@@ -295,8 +286,22 @@ const ManagerAuthPage = () => {
           </Button>
         </div>
 
-        {content}
+        {dashboardContent}
       </div>
+    )
+  }
+
+  return (
+    <section className="relative min-h-dvh">
+      <div className="fixed top-0 left-0 h-full w-full">
+        <img
+          className="pointer-events-none h-full w-full object-cover"
+          src={background}
+          alt="background"
+        />
+      </div>
+
+      {content}
     </section>
   )
 }
