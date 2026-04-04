@@ -5,8 +5,8 @@ import {
   useSocket,
 } from "@rahoot/web/features/game/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+import { QRCodeSVG } from "qrcode.react"
 import { useState } from "react"
-import QRCode from "react-qr-code"
 
 type Props = {
   data: ManagerStatusDataMap["SHOW_ROOM"]
@@ -63,7 +63,7 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
         </div>
 
         <div className="flex h-40 shrink-0 rounded-md bg-white p-2">
-          <QRCode
+          <QRCodeSVG
             className="h-auto w-auto"
             value={`${webUrl}?pin=${inviteCode}`}
           />
