@@ -52,7 +52,10 @@ io.on("connection", (socket) => {
       const config = Config.game()
 
       if (config.managerPassword === "PASSWORD") {
-        socket.emit("manager:errorMessage", "Manager password is not configured")
+        socket.emit(
+          "manager:errorMessage",
+          "Manager password is not configured",
+        )
 
         return
       }
@@ -140,7 +143,7 @@ io.on("connection", (socket) => {
     const managerGame = registry.getGameByManagerSocketId(socket.id)
 
     if (managerGame) {
-      managerGame.manager.connected = false
+      managerGame.setManagerDisconnected()
       registry.markGameAsEmpty(managerGame)
 
       if (!managerGame.started) {
@@ -159,25 +162,19 @@ io.on("connection", (socket) => {
       return
     }
 
-    const player = game.players.find((p) => p.id === socket.id)
-
-    if (!player) {
-      return
-    }
-
     if (!game.started) {
-      game.players = game.players.filter((p) => p.id !== socket.id)
+      const player = game.removePlayer(socket.id)
 
-      io.to(game.manager.id).emit("manager:removePlayer", player.id)
-      io.to(game.gameId).emit("game:totalPlayers", game.players.length)
-
-      console.log(`Removed player ${player.username} from game ${game.gameId}`)
+      if (player) {
+        console.log(
+          `Removed player ${player.username} from game ${game.gameId}`,
+        )
+      }
 
       return
     }
 
-    player.connected = false
-    io.to(game.gameId).emit("game:totalPlayers", game.players.length)
+    game.setPlayerDisconnected(socket.id)
   })
 })
 

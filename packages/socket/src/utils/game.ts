@@ -5,7 +5,7 @@ import Registry from "@rahoot/socket/services/registry"
 export const withGame = (
   gameId: string | undefined,
   socket: Socket,
-  callback: (_game: Game) => void
+  callback: (_game: Game) => void,
 ): void => {
   if (!gameId) {
     socket.emit("game:errorMessage", "Game not found")
