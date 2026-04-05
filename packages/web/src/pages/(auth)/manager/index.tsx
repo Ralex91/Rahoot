@@ -1,7 +1,7 @@
 import type { QuizzWithId } from "@rahoot/common/types/game"
 import { STATUS } from "@rahoot/common/types/game/status"
-import ManagerPassword from "@rahoot/web/features/game/components/create/ManagerPassword"
-import SelectQuizz from "@rahoot/web/features/game/components/create/SelectQuizz"
+import ManagerPassword from "@rahoot/web/features/manager/components/ManagerPassword"
+import SelectQuizz from "@rahoot/web/features/manager/components/SelectQuizz"
 import {
   useEvent,
   useSocket,
@@ -25,7 +25,10 @@ const ManagerAuthPage = () => {
 
   useEvent("manager:gameCreated", ({ gameId, inviteCode }) => {
     setGameId(gameId)
-    setStatus(STATUS.SHOW_ROOM, { text: "Waiting for the players", inviteCode })
+    setStatus(STATUS.SHOW_ROOM, {
+      text: "Waiting for the players",
+      inviteCode,
+    })
     navigate({ to: "/party/manager/$gameId", params: { gameId } })
   })
 

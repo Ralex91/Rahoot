@@ -1,6 +1,6 @@
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
+import Button from "@rahoot/web/components/Button"
+import Card from "@rahoot/web/components/Card"
+import Input from "@rahoot/web/components/Input"
 import {
   useEvent,
   useSocket,
@@ -40,14 +40,14 @@ const Room = () => {
   }, [pin, isConnected, socket])
 
   return (
-    <Form>
+    <Card>
       <Input
         onChange={(e) => setInvitation(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="PIN Code here"
       />
       <Button onClick={handleJoin}>Submit</Button>
-    </Form>
+    </Card>
   )
 }
 

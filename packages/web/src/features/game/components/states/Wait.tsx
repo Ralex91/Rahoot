@@ -1,5 +1,5 @@
 import type { PlayerStatusDataMap } from "@rahoot/common/types/game/status"
-import Loader from "@rahoot/web/features/game/components/Loader"
+import Loader from "@rahoot/web/components/Loader"
 
 type Props = {
   data: PlayerStatusDataMap["WAIT"]

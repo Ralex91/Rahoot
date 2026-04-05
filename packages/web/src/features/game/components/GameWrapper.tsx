@@ -1,7 +1,7 @@
 import type { Status } from "@rahoot/common/types/game/status"
 import background from "@rahoot/web/assets/background.webp"
-import Button from "@rahoot/web/features/game/components/Button"
-import Loader from "@rahoot/web/features/game/components/Loader"
+import Button from "@rahoot/web/components/Button"
+import Loader from "@rahoot/web/components/Loader"
 import {
   useEvent,
   useSocket,
@@ -48,7 +48,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
   }
 
   return (
-    <section className="relative min-h-dvh flex">
+    <section className="relative flex min-h-dvh">
       <div className="fixed top-0 left-0 h-full w-full">
         <img
           className="pointer-events-none h-full w-full object-cover"
@@ -57,7 +57,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
         />
       </div>
 
-      <div className="z-10 flex flex-1 w-full flex-col justify-between">
+      <div className="z-10 flex w-full flex-1 flex-col justify-between">
         {!isConnected && !statusName ? (
           <div className="flex h-full w-full flex-1 flex-col items-center justify-center">
             <Loader className="h-30" />

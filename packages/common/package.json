@@ -2,7 +2,9 @@
   "name": "@rahoot/common",
   "type": "module",
   "scripts": {
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "dependencies": {
     "socket.io": "^4.8.3",
@@ -14,6 +16,7 @@
     "eslint": "^9.39.4",
     "globals": "^17.4.0",
     "typescript": "^6.0.2",
+    "prettier": "^3.8.1",
     "typescript-eslint": "^8.58.0"
   }
 }

@@ -5,6 +5,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
     "start": "vite preview",
     "preview": "vite preview"
   },

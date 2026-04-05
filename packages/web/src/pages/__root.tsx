@@ -23,7 +23,7 @@ const GameLayout = () => {
   }, [])
 
   return (
-    <div className="antialiased bg-secondary">
+    <div className="bg-secondary antialiased">
       <Outlet />
     </div>
   )

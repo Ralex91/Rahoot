@@ -1,7 +1,7 @@
 import { STATUS } from "@rahoot/common/types/game/status"
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
+import Button from "@rahoot/web/components/Button"
+import Card from "@rahoot/web/components/Card"
+import Input from "@rahoot/web/components/Input"
 import {
   useEvent,
   useSocket,
@@ -39,14 +39,14 @@ const Username = () => {
   })
 
   return (
-    <Form>
+    <Card>
       <Input
         onChange={(e) => setUsername(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Username here"
       />
       <Button onClick={handleLogin}>Submit</Button>
-    </Form>
+    </Card>
   )
 }
 

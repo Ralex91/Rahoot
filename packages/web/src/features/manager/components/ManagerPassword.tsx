@@ -1,6 +1,6 @@
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
+import Button from "@rahoot/web/components/Button"
+import Card from "@rahoot/web/components/Card"
+import Input from "@rahoot/web/components/Input"
 import { useEvent } from "@rahoot/web/features/game/contexts/socketProvider"
 import { type KeyboardEvent, useState } from "react"
 import toast from "react-hot-toast"
@@ -27,7 +27,7 @@ const ManagerPassword = ({ onSubmit }: Props) => {
   })
 
   return (
-    <Form>
+    <Card>
       <Input
         type="password"
         onChange={(e) => setPassword(e.target.value)}
@@ -35,7 +35,7 @@ const ManagerPassword = ({ onSubmit }: Props) => {
         placeholder="Manager password"
       />
       <Button onClick={handleSubmit}>Submit</Button>
-    </Form>
+    </Card>
   )
 }
 

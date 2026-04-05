@@ -1,4 +1,4 @@
-import Toaster from "@rahoot/web/features/game/components/Toaster"
+import Toaster from "@rahoot/web/components/Toaster"
 import "@rahoot/web/index.css"
 import { routeTree } from "@rahoot/web/route.gen"
 import { RouterProvider, createRouter } from "@tanstack/react-router"

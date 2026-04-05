@@ -10,11 +10,7 @@ import {
   MANAGER_SKIP_EVENTS,
   isKeyOf,
 } from "@rahoot/web/features/game/utils/constants"
-import {
-  createFileRoute,
-  useNavigate,
-  useParams,
-} from "@tanstack/react-router"
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import toast from "react-hot-toast"
 
 const ManagerGamePage = () => {

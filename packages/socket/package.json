@@ -5,7 +5,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "node esbuild.config.js",
     "start": "node dist/index.cjs",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "license": "ISC",
   "dependencies": {
@@ -23,6 +25,7 @@
     "eslint": "^9.39.4",
     "globals": "^17.4.0",
     "tsx": "^4.21.0",
+    "prettier": "^3.8.1",
     "typescript-eslint": "^8.58.0"
   }
 }
