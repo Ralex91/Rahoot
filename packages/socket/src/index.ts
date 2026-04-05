@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import { Server } from "@rahoot/common/types/game/socket"
 import { inviteCodeValidator } from "@rahoot/common/validators/auth"
 import Config from "@rahoot/socket/services/config"
@@ -23,7 +24,7 @@ io.on("connection", (socket) => {
     `A user connected: socketId: ${socket.id}, clientId: ${socket.handshake.auth.clientId}`,
   )
 
-  socket.on("player:reconnect", ({ gameId }) => {
+  socket.on(EVENTS.PLAYER.RECONNECT, ({ gameId }) => {
     const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId)
 
     if (game) {
@@ -32,10 +33,10 @@ io.on("connection", (socket) => {
       return
     }
 
-    socket.emit("game:reset", "Game not found")
+    socket.emit(EVENTS.GAME.RESET, "Game not found")
   })
 
-  socket.on("manager:reconnect", ({ gameId }) => {
+  socket.on(EVENTS.MANAGER.RECONNECT, ({ gameId }) => {
     const game = registry.getManagerGame(gameId, socket.handshake.auth.clientId)
 
     if (game) {
@@ -44,16 +45,16 @@ io.on("connection", (socket) => {
       return
     }
 
-    socket.emit("game:reset", "Game expired")
+    socket.emit(EVENTS.GAME.RESET, "Game expired")
   })
 
-  socket.on("manager:auth", (password) => {
+  socket.on(EVENTS.MANAGER.AUTH, (password) => {
     try {
       const config = Config.game()
 
       if (config.managerPassword === "PASSWORD") {
         socket.emit(
-          "manager:errorMessage",
+          EVENTS.MANAGER.ERROR_MESSAGE,
           "Manager password is not configured",
         )
 
@@ -61,24 +62,24 @@ io.on("connection", (socket) => {
       }
 
       if (password !== config.managerPassword) {
-        socket.emit("manager:errorMessage", "Invalid password")
+        socket.emit(EVENTS.MANAGER.ERROR_MESSAGE, "Invalid password")
 
         return
       }
 
-      socket.emit("manager:quizzList", Config.quizz())
+      socket.emit(EVENTS.MANAGER.QUIZZ_LIST, Config.quizz())
     } catch (error) {
       console.error("Failed to read game config:", error)
-      socket.emit("manager:errorMessage", "Failed to read game config")
+      socket.emit(EVENTS.MANAGER.ERROR_MESSAGE, "Failed to read game config")
     }
   })
 
-  socket.on("game:create", (quizzId) => {
+  socket.on(EVENTS.GAME.CREATE, (quizzId) => {
     const quizzList = Config.quizz()
     const quizz = quizzList.find((q) => q.id === quizzId)
 
     if (!quizz) {
-      socket.emit("game:errorMessage", "Quizz not found")
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "Quizz not found")
 
       return
     }
@@ -87,11 +88,11 @@ io.on("connection", (socket) => {
     registry.addGame(game)
   })
 
-  socket.on("player:join", (inviteCode) => {
+  socket.on(EVENTS.PLAYER.JOIN, (inviteCode) => {
     const result = inviteCodeValidator.safeParse(inviteCode)
 
     if (result.error) {
-      socket.emit("game:errorMessage", result.error.issues[0].message)
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, result.error.issues[0].message)
 
       return
     }
@@ -99,41 +100,41 @@ io.on("connection", (socket) => {
     const game = registry.getGameByInviteCode(inviteCode)
 
     if (!game) {
-      socket.emit("game:errorMessage", "Game not found")
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "Game not found")
 
       return
     }
 
-    socket.emit("game:successRoom", game.gameId)
+    socket.emit(EVENTS.GAME.SUCCESS_ROOM, game.gameId)
   })
 
-  socket.on("player:login", ({ gameId, data }) =>
+  socket.on(EVENTS.PLAYER.LOGIN, ({ gameId, data }) =>
     withGame(gameId, socket, (game) => game.join(socket, data.username)),
   )
 
-  socket.on("manager:kickPlayer", ({ gameId, playerId }) =>
+  socket.on(EVENTS.MANAGER.KICK_PLAYER, ({ gameId, playerId }) =>
     withGame(gameId, socket, (game) => game.kickPlayer(socket, playerId)),
   )
 
-  socket.on("manager:startGame", ({ gameId }) =>
+  socket.on(EVENTS.MANAGER.START_GAME, ({ gameId }) =>
     withGame(gameId, socket, (game) => game.start(socket)),
   )
 
-  socket.on("player:selectedAnswer", ({ gameId, data }) =>
+  socket.on(EVENTS.PLAYER.SELECTED_ANSWER, ({ gameId, data }) =>
     withGame(gameId, socket, (game) =>
       game.selectAnswer(socket, data.answerKey),
     ),
   )
 
-  socket.on("manager:abortQuiz", ({ gameId }) =>
+  socket.on(EVENTS.MANAGER.ABORT_QUIZ, ({ gameId }) =>
     withGame(gameId, socket, (game) => game.abortRound(socket)),
   )
 
-  socket.on("manager:nextQuestion", ({ gameId }) =>
+  socket.on(EVENTS.MANAGER.NEXT_QUESTION, ({ gameId }) =>
     withGame(gameId, socket, (game) => game.nextRound(socket)),
   )
 
-  socket.on("manager:showLeaderboard", ({ gameId }) =>
+  socket.on(EVENTS.MANAGER.SHOW_LEADERBOARD, ({ gameId }) =>
     withGame(gameId, socket, (game) => game.showLeaderboard()),
   )
 
@@ -149,7 +150,10 @@ io.on("connection", (socket) => {
       if (!managerGame.started) {
         console.log("Reset game (manager disconnected)")
         managerGame.abortCooldown()
-        io.to(managerGame.gameId).emit("game:reset", "Manager disconnected")
+        io.to(managerGame.gameId).emit(
+          EVENTS.GAME.RESET,
+          "Manager disconnected",
+        )
         registry.removeGame(managerGame.gameId)
 
         return

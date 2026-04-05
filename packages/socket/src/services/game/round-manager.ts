@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import { Answer, Player, Quizz } from "@rahoot/common/types/game"
 import { Server, Socket } from "@rahoot/common/types/game/socket"
 import { Status, STATUS, StatusDataMap } from "@rahoot/common/types/game/status"
@@ -62,7 +63,7 @@ export class RoundManager {
     }
 
     if (this.opts.players.count() === 0) {
-      socket.emit("game:errorMessage", "No players connected")
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "No players connected")
 
       return
     }
@@ -76,7 +77,7 @@ export class RoundManager {
 
     await sleep(3)
 
-    this.opts.io.to(this.opts.gameId).emit("game:startCooldown")
+    this.opts.io.to(this.opts.gameId).emit(EVENTS.GAME.START_COOLDOWN)
     await this.opts.cooldown.start(3)
 
     void this.newQuestion()
@@ -91,7 +92,7 @@ export class RoundManager {
 
     this.opts.onNewQuestion()
 
-    this.opts.io.to(this.opts.gameId).emit("game:updateQuestion", {
+    this.opts.io.to(this.opts.gameId).emit(EVENTS.GAME.UPDATE_QUESTION, {
       current: this.currentQuestion + 1,
       total: this.opts.quizz.questions.length,
     })
@@ -232,7 +233,7 @@ export class RoundManager {
 
     socket
       .to(this.opts.gameId)
-      .emit("game:playerAnswer", this.playersAnswers.length)
+      .emit(EVENTS.GAME.PLAYER_ANSWER, this.playersAnswers.length)
     this.opts.players.broadcastCount()
 
     if (this.playersAnswers.length === this.opts.players.count()) {

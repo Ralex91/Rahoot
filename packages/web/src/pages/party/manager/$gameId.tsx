@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
 import {
   useEvent,
@@ -21,7 +22,7 @@ const ManagerGamePage = () => {
     useManagerStore()
   const { setQuestionStates } = useQuestionStore()
 
-  useEvent("game:status", ({ name, data }) => {
+  useEvent(EVENTS.GAME.STATUS, ({ name, data }) => {
     if (name in GAME_STATE_COMPONENTS_MANAGER) {
       setStatus(name, data)
     }
@@ -29,12 +30,12 @@ const ManagerGamePage = () => {
 
   useEvent("connect", () => {
     if (gameIdParam) {
-      socket?.emit("manager:reconnect", { gameId: gameIdParam })
+      socket?.emit(EVENTS.MANAGER.RECONNECT, { gameId: gameIdParam })
     }
   })
 
   useEvent(
-    "manager:successReconnect",
+    EVENTS.MANAGER.SUCCESS_RECONNECT,
     ({ gameId, status, players, currentQuestion }) => {
       setGameId(gameId)
       setStatus(status.name, status.data)
@@ -43,7 +44,7 @@ const ManagerGamePage = () => {
     },
   )
 
-  useEvent("game:reset", (message) => {
+  useEvent(EVENTS.GAME.RESET, (message) => {
     navigate({ to: "/manager" })
     reset()
     setQuestionStates(null)

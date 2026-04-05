@@ -1,10 +1,5 @@
 import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import {
-  SFX_PODIUM_FIRST,
-  SFX_PODIUM_SECOND,
-  SFX_PODIUM_THREE,
-  SFX_SNEAR_ROOL,
-} from "@rahoot/web/features/game/utils/constants"
+import { SFX } from "@rahoot/web/features/game/utils/constants"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -18,12 +13,12 @@ type Props = {
 const usePodiumAnimation = (topLength: number) => {
   const [apparition, setApparition] = useState(0)
 
-  const [sfxtThree] = useSound(SFX_PODIUM_THREE, { volume: 0.2 })
-  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, { volume: 0.2 })
-  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
+  const [sfxtThree] = useSound(SFX.PODIUM.THREE, { volume: 0.2 })
+  const [sfxSecond] = useSound(SFX.PODIUM.SECOND, { volume: 0.2 })
+  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX.PODIUM.SNEAR_ROOL, {
     volume: 0.2,
   })
-  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, { volume: 0.2 })
+  const [sfxFirst] = useSound(SFX.PODIUM.FIRST, { volume: 0.2 })
 
   useEffect(() => {
     const actions: Partial<Record<number, () => void>> = {

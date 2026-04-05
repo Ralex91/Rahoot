@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import type { Player } from "@rahoot/common/types/game"
 import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import {
@@ -20,19 +21,19 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   const [playerList, setPlayerList] = useState<Player[]>(players)
   const [totalPlayers, setTotalPlayers] = useState(0)
 
-  useEvent("manager:newPlayer", (player) => {
+  useEvent(EVENTS.MANAGER.NEW_PLAYER, (player) => {
     setPlayerList([...playerList, player])
   })
 
-  useEvent("manager:removePlayer", (playerId) => {
+  useEvent(EVENTS.MANAGER.REMOVE_PLAYER, (playerId) => {
     setPlayerList(playerList.filter((p) => p.id !== playerId))
   })
 
-  useEvent("manager:playerKicked", (playerId) => {
+  useEvent(EVENTS.MANAGER.PLAYER_KICKED, (playerId) => {
     setPlayerList(playerList.filter((p) => p.id !== playerId))
   })
 
-  useEvent("game:totalPlayers", (total) => {
+  useEvent(EVENTS.GAME.TOTAL_PLAYERS, (total) => {
     setTotalPlayers(total)
   })
 
@@ -41,7 +42,7 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
       return
     }
 
-    socket?.emit("manager:kickPlayer", {
+    socket?.emit(EVENTS.MANAGER.KICK_PLAYER, {
       gameId,
       playerId,
     })

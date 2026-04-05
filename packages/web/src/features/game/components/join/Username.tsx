@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import { STATUS } from "@rahoot/common/types/game/status"
 import Button from "@rahoot/web/components/Button"
 import Card from "@rahoot/web/components/Card"
@@ -22,7 +23,7 @@ const Username = () => {
       return
     }
 
-    socket?.emit("player:login", { gameId, data: { username } })
+    socket?.emit(EVENTS.PLAYER.LOGIN, { gameId, data: { username } })
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -31,7 +32,7 @@ const Username = () => {
     }
   }
 
-  useEvent("game:successJoin", (gameId) => {
+  useEvent(EVENTS.GAME.SUCCESS_JOIN, (gameId) => {
     setStatus(STATUS.WAIT, { text: "Waiting for the players" })
     login(username)
 

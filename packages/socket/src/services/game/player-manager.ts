@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import { Player } from "@rahoot/common/types/game"
 import { Server, Socket } from "@rahoot/common/types/game/socket"
 import { usernameValidator } from "@rahoot/common/validators/auth"
@@ -16,7 +17,7 @@ export class PlayerManager {
 
   join(socket: Socket, username: string): void {
     if (this.findByClientId(socket.handshake.auth.clientId)) {
-      socket.emit("game:errorMessage", "Player already connected")
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "Player already connected")
 
       return
     }
@@ -24,7 +25,7 @@ export class PlayerManager {
     const result = usernameValidator.safeParse(username)
 
     if (result.error) {
-      socket.emit("game:errorMessage", result.error.issues[0].message)
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, result.error.issues[0].message)
 
       return
     }
@@ -40,9 +41,9 @@ export class PlayerManager {
     }
 
     this.players.push(player)
-    this.io.to(this.getManagerId()).emit("manager:newPlayer", player)
-    this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)
-    socket.emit("game:successJoin", this.gameId)
+    this.io.to(this.getManagerId()).emit(EVENTS.MANAGER.NEW_PLAYER, player)
+    this.io.to(this.gameId).emit(EVENTS.GAME.TOTAL_PLAYERS, this.players.length)
+    socket.emit(EVENTS.GAME.SUCCESS_JOIN, this.gameId)
   }
 
   kick(socket: Socket, playerId: string): boolean {
@@ -61,9 +62,11 @@ export class PlayerManager {
     this.io.in(playerId).socketsLeave(this.gameId)
     this.io
       .to(player.id)
-      .emit("game:reset", "You have been kicked by the manager")
-    this.io.to(this.getManagerId()).emit("manager:playerKicked", player.id)
-    this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)
+      .emit(EVENTS.GAME.RESET, "You have been kicked by the manager")
+    this.io
+      .to(this.getManagerId())
+      .emit(EVENTS.MANAGER.PLAYER_KICKED, player.id)
+    this.io.to(this.gameId).emit(EVENTS.GAME.TOTAL_PLAYERS, this.players.length)
 
     return true
   }
@@ -117,6 +120,6 @@ export class PlayerManager {
   }
 
   broadcastCount(): void {
-    this.io.to(this.gameId).emit("game:totalPlayers", this.players.length)
+    this.io.to(this.gameId).emit(EVENTS.GAME.TOTAL_PLAYERS, this.players.length)
   }
 }

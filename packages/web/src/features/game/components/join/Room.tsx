@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import Button from "@rahoot/web/components/Button"
 import Card from "@rahoot/web/components/Card"
 import Input from "@rahoot/web/components/Input"
@@ -17,7 +18,7 @@ const Room = () => {
   const hasJoinedRef = useRef(false)
 
   const handleJoin = () => {
-    socket?.emit("player:join", invitation)
+    socket?.emit(EVENTS.PLAYER.JOIN, invitation)
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -26,7 +27,7 @@ const Room = () => {
     }
   }
 
-  useEvent("game:successRoom", (gameId) => {
+  useEvent(EVENTS.GAME.SUCCESS_ROOM, (gameId) => {
     join(gameId)
   })
 

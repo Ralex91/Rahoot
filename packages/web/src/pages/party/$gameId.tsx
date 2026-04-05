@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
 import {
   useEvent,
@@ -21,12 +22,12 @@ const PlayerGamePage = () => {
 
   useEvent("connect", () => {
     if (gameIdParam) {
-      socket?.emit("player:reconnect", { gameId: gameIdParam })
+      socket?.emit(EVENTS.PLAYER.RECONNECT, { gameId: gameIdParam })
     }
   })
 
   useEvent(
-    "player:successReconnect",
+    EVENTS.PLAYER.SUCCESS_RECONNECT,
     ({ gameId, status, player, currentQuestion }) => {
       setGameId(gameId)
       setStatus(status.name, status.data)
@@ -35,13 +36,13 @@ const PlayerGamePage = () => {
     },
   )
 
-  useEvent("game:status", ({ name, data }) => {
+  useEvent(EVENTS.GAME.STATUS, ({ name, data }) => {
     if (name in GAME_STATE_COMPONENTS) {
       setStatus(name, data)
     }
   })
 
-  useEvent("game:reset", (message) => {
+  useEvent(EVENTS.GAME.RESET, (message) => {
     navigate({ to: "/" })
     reset()
     setQuestionStates(null)

@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write .",
+    "lint": "tsc -b --noEmit && eslint",
+    "format": "prettier --check . --log-level warn",
+    "format:fix": "prettier --write . --log-level warn",
     "start": "vite preview",
     "preview": "vite preview"
   },

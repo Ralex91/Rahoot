@@ -2,7 +2,7 @@ import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
 import CricleCheck from "@rahoot/web/features/game/components/icons/CricleCheck"
 import CricleXmark from "@rahoot/web/features/game/components/icons/CricleXmark"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { SFX_RESULTS_SOUND } from "@rahoot/web/features/game/utils/constants"
+import { SFX } from "@rahoot/web/features/game/utils/constants"
 import { useEffect } from "react"
 import useSound from "use-sound"
 
@@ -15,7 +15,7 @@ const Result = ({
 }: Props) => {
   const player = usePlayerStore()
 
-  const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
+  const [sfxResults] = useSound(SFX.RESULTS_SOUND, {
     volume: 0.2,
   })
 

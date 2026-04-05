@@ -2,9 +2,9 @@
   "name": "@rahoot/common",
   "type": "module",
   "scripts": {
-    "lint": "eslint",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "lint": "tsc --noEmit && eslint",
+    "format": "prettier --check . --log-level warn",
+    "format:fix": "prettier --write . --log-level warn"
   },
   "dependencies": {
     "socket.io": "^4.8.3",

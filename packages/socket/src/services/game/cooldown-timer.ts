@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import { Server } from "@rahoot/common/types/game/socket"
 
 export class CooldownTimer {
@@ -28,7 +29,7 @@ export class CooldownTimer {
           return
         }
 
-        this.io.to(this.gameId).emit("game:cooldown", count)
+        this.io.to(this.gameId).emit(EVENTS.GAME.COOLDOWN, count)
         count -= 1
       }, 1000)
     })

@@ -5,9 +5,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "node esbuild.config.js",
     "start": "node dist/index.cjs",
-    "lint": "eslint",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "lint": "tsc --noEmit && eslint",
+    "format": "prettier --check . --log-level warn",
+    "format:fix": "prettier --write . --log-level warn"
   },
   "license": "ISC",
   "dependencies": {

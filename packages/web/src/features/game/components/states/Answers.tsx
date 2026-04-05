@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
 import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
 import {
@@ -8,8 +9,7 @@ import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
-  SFX_ANSWERS_MUSIC,
-  SFX_ANSWERS_SOUND,
+  SFX,
 } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -28,11 +28,11 @@ const Answers = ({
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
 
-  const [sfxPop] = useSound(SFX_ANSWERS_SOUND, {
+  const [sfxPop] = useSound(SFX.ANSWERS.SOUND, {
     volume: 0.1,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(SFX_ANSWERS_MUSIC, {
+  const [playMusic, { stop: stopMusic }] = useSound(SFX.ANSWERS.MUSIC, {
     volume: 0.2,
     interrupt: true,
     loop: true,
@@ -43,7 +43,7 @@ const Answers = ({
       return
     }
 
-    socket?.emit("player:selectedAnswer", {
+    socket?.emit(EVENTS.PLAYER.SELECTED_ANSWER, {
       gameId,
       data: {
         answerKey,
@@ -65,11 +65,11 @@ const Answers = ({
     }
   }, [playMusic])
 
-  useEvent("game:cooldown", (sec) => {
+  useEvent(EVENTS.GAME.COOLDOWN, (sec) => {
     setCooldown(sec)
   })
 
-  useEvent("game:playerAnswer", (count) => {
+  useEvent(EVENTS.GAME.PLAYER_ANSWER, (count) => {
     setTotalAnswer(count)
     sfxPop()
   })

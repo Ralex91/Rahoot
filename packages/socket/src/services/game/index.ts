@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import { Player, Quizz } from "@rahoot/common/types/game"
 import { Server, Socket } from "@rahoot/common/types/game/socket"
 import { STATUS, Status, StatusDataMap } from "@rahoot/common/types/game/status"
@@ -75,7 +76,7 @@ class Game {
     })
 
     socket.join(this.gameId)
-    socket.emit("manager:gameCreated", {
+    socket.emit(EVENTS.MANAGER.GAME_CREATED, {
       gameId: this.gameId,
       inviteCode: this.inviteCode,
     })
@@ -102,7 +103,7 @@ class Game {
   private broadcastStatus<T extends Status>(status: T, data: StatusDataMap[T]) {
     const statusData = { name: status, data }
     this.lastBroadcastStatus = statusData
-    this.io.to(this.gameId).emit("game:status", statusData)
+    this.io.to(this.gameId).emit(EVENTS.GAME.STATUS, statusData)
   }
 
   private sendStatus<T extends Status>(
@@ -118,7 +119,7 @@ class Game {
       this.playerStatus.set(target, statusData)
     }
 
-    this.io.to(target).emit("game:status", statusData)
+    this.io.to(target).emit(EVENTS.GAME.STATUS, statusData)
   }
 
   // Player actions
@@ -149,7 +150,7 @@ class Game {
 
   private reconnectManager(socket: Socket) {
     if (this._manager.connected) {
-      socket.emit("game:reset", "Manager already connected")
+      socket.emit(EVENTS.GAME.RESET, "Manager already connected")
 
       return
     }
@@ -164,13 +165,13 @@ class Game {
         data: { text: "Waiting for players" },
       }
 
-    socket.emit("manager:successReconnect", {
+    socket.emit(EVENTS.MANAGER.SUCCESS_RECONNECT, {
       gameId: this.gameId,
       currentQuestion: this.round.getReconnectInfo(),
       status,
       players: this.playerManager.getAll(),
     })
-    socket.emit("game:totalPlayers", this.playerManager.count())
+    socket.emit(EVENTS.GAME.TOTAL_PLAYERS, this.playerManager.count())
 
     registry.reactivateGame(this.gameId)
     console.log(`Manager reconnected to game ${this.inviteCode}`)
@@ -185,7 +186,7 @@ class Game {
     }
 
     if (player.connected) {
-      socket.emit("game:reset", "Player already connected")
+      socket.emit(EVENTS.GAME.RESET, "Player already connected")
 
       return
     }
@@ -208,13 +209,13 @@ class Game {
       this.playerStatus.set(socket.id, oldStatus)
     }
 
-    socket.emit("player:successReconnect", {
+    socket.emit(EVENTS.PLAYER.SUCCESS_RECONNECT, {
       gameId: this.gameId,
       currentQuestion: this.round.getReconnectInfo(),
       status,
       player: { username: player.username, points: player.points },
     })
-    socket.emit("game:totalPlayers", this.playerManager.count())
+    socket.emit(EVENTS.GAME.TOTAL_PLAYERS, this.playerManager.count())
 
     console.log(
       `Player ${player.username} reconnected to game ${this.inviteCode}`,
@@ -231,7 +232,7 @@ class Game {
     const player = this.playerManager.remove(socketId)
 
     if (player) {
-      this.io.to(this._manager.id).emit("manager:removePlayer", player.id)
+      this.io.to(this._manager.id).emit(EVENTS.MANAGER.REMOVE_PLAYER, player.id)
       this.playerManager.broadcastCount()
     }
 

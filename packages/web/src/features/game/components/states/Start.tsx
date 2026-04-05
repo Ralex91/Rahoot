@@ -1,6 +1,7 @@
+import { EVENTS } from "@rahoot/common/constants"
 import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
 import { useEvent } from "@rahoot/web/features/game/contexts/socketProvider"
-import { SFX_BOUMP_SOUND } from "@rahoot/web/features/game/utils/constants"
+import { SFX } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"
 import useSound from "use-sound"
@@ -13,16 +14,16 @@ const Start = ({ data: { time, subject } }: Props) => {
   const [showTitle, setShowTitle] = useState(true)
   const [cooldown, setCooldown] = useState(time)
 
-  const [sfxBoump] = useSound(SFX_BOUMP_SOUND, {
+  const [sfxBoump] = useSound(SFX.BOUMP_SOUND, {
     volume: 0.2,
   })
 
-  useEvent("game:startCooldown", () => {
+  useEvent(EVENTS.GAME.START_COOLDOWN, () => {
     sfxBoump()
     setShowTitle(false)
   })
 
-  useEvent("game:cooldown", (sec) => {
+  useEvent(EVENTS.GAME.COOLDOWN, (sec) => {
     sfxBoump()
     setCooldown(sec)
   })
