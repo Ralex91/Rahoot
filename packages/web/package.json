@@ -12,6 +12,7 @@
     "@rahoot/common": "workspace:*",
     "@rahoot/socket": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
+    "@tanstack/react-router": "^1.168.10",
     "clsx": "^2.1.1",
     "motion": "^12.38.0",
     "qrcode.react": "^4.2.0",
@@ -19,7 +20,6 @@
     "react-confetti": "^6.4.0",
     "react-dom": "^19.2.4",
     "react-hot-toast": "^2.6.0",
-    "react-router": "^7.14.0",
     "socket.io-client": "^4.8.3",
     "tailwindcss": "^4.2.2",
     "use-sound": "^5.0.0",
@@ -30,6 +30,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
+    "@tanstack/router-plugin": "^1.167.12",
     "@types/node": "^25.5.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

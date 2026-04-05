@@ -13,7 +13,6 @@ import {
 } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router"
 import useSound from "use-sound"
 
 type Props = {
@@ -23,9 +22,8 @@ type Props = {
 const Answers = ({
   data: { question, answers, image, audio, video, time, totalPlayer },
 }: Props) => {
-  const { gameId }: { gameId?: string } = useParams()
   const { socket } = useSocket()
-  const { player } = usePlayerStore()
+  const { player, gameId } = usePlayerStore()
 
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
@@ -41,7 +39,7 @@ const Answers = ({
   })
 
   const handleAnswer = (answerKey: number) => () => {
-    if (!player) {
+    if (!player || !gameId) {
       return
     }
 

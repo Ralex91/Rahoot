@@ -8,8 +8,8 @@ import {
 } from "@rahoot/web/features/game/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 
+import { useNavigate } from "@tanstack/react-router"
 import { type KeyboardEvent, useState } from "react"
-import { useNavigate } from "react-router"
 
 const Username = () => {
   const { socket } = useSocket()
@@ -35,7 +35,7 @@ const Username = () => {
     setStatus(STATUS.WAIT, { text: "Waiting for the players" })
     login(username)
 
-    navigate(`/party/${gameId}`)
+    navigate({ to: "/party/$gameId", params: { gameId } })
   })
 
   return (

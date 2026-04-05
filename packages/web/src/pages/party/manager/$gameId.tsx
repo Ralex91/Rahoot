@@ -10,12 +10,16 @@ import {
   MANAGER_SKIP_EVENTS,
   isKeyOf,
 } from "@rahoot/web/features/game/utils/constants"
+import {
+  createFileRoute,
+  useNavigate,
+  useParams,
+} from "@tanstack/react-router"
 import toast from "react-hot-toast"
-import { useNavigate, useParams } from "react-router"
 
 const ManagerGamePage = () => {
   const navigate = useNavigate()
-  const { gameId: gameIdParam }: { gameId?: string } = useParams()
+  const { gameId: gameIdParam } = useParams({ from: "/party/manager/$gameId" })
   const { socket } = useSocket()
   const { gameId, status, setGameId, setStatus, setPlayers, reset } =
     useManagerStore()
@@ -44,7 +48,7 @@ const ManagerGamePage = () => {
   )
 
   useEvent("game:reset", (message) => {
-    navigate("/manager")
+    navigate({ to: "/manager" })
     reset()
     setQuestionStates(null)
     toast.error(message)
@@ -72,4 +76,6 @@ const ManagerGamePage = () => {
   )
 }
 
-export default ManagerGamePage
+export const Route = createFileRoute("/party/manager/$gameId")({
+  component: ManagerGamePage,
+})

@@ -6,14 +6,14 @@ import {
   useSocket,
 } from "@rahoot/web/features/game/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+import { useSearch } from "@tanstack/react-router"
 import { type KeyboardEvent, useEffect, useRef, useState } from "react"
-import { useSearchParams } from "react-router"
 
 const Room = () => {
   const { socket, isConnected } = useSocket()
   const { join } = usePlayerStore()
   const [invitation, setInvitation] = useState("")
-  const [searchParams] = useSearchParams()
+  const { pin } = useSearch({ from: "/(auth)/" })
   const hasJoinedRef = useRef(false)
 
   const handleJoin = () => {
@@ -31,15 +31,13 @@ const Room = () => {
   })
 
   useEffect(() => {
-    const pinCode = searchParams.get("pin")
-
-    if (!isConnected || !pinCode || hasJoinedRef.current) {
+    if (!isConnected || !pin || hasJoinedRef.current) {
       return
     }
 
-    socket?.emit("player:join", pinCode)
+    socket?.emit("player:join", pin)
     hasJoinedRef.current = true
-  }, [searchParams, isConnected, socket])
+  }, [pin, isConnected, socket])
 
   return (
     <Form>

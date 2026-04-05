@@ -1,10 +1,20 @@
 import tailwindcss from "@tailwindcss/vite"
+import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import react from "@vitejs/plugin-react"
 import { fileURLToPath } from "url"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    tanstackRouter({
+      target: "react",
+      routeToken: "layout",
+      routesDirectory: "./src/pages",
+      generatedRouteTree: "./src/route.gen.ts",
+    }),
+    react(),
+    tailwindcss(),
+  ],
   resolve: {
     alias: {
       "@rahoot/web": fileURLToPath(new URL("./src", import.meta.url)),

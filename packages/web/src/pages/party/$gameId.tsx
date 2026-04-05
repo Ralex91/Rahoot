@@ -9,13 +9,13 @@ import {
   GAME_STATE_COMPONENTS,
   isKeyOf,
 } from "@rahoot/web/features/game/utils/constants"
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import toast from "react-hot-toast"
-import { useNavigate, useParams } from "react-router"
 
 const PlayerGamePage = () => {
   const navigate = useNavigate()
   const { socket } = useSocket()
-  const { gameId: gameIdParam }: { gameId?: string } = useParams()
+  const { gameId: gameIdParam } = useParams({ from: "/party/$gameId" })
   const { status, setPlayer, setGameId, setStatus, reset } = usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
 
@@ -42,7 +42,7 @@ const PlayerGamePage = () => {
   })
 
   useEvent("game:reset", (message) => {
-    navigate("/")
+    navigate({ to: "/" })
     reset()
     setQuestionStates(null)
     toast.error(message)
@@ -64,4 +64,6 @@ const PlayerGamePage = () => {
   )
 }
 
-export default PlayerGamePage
+export const Route = createFileRoute("/party/$gameId")({
+  component: PlayerGamePage,
+})

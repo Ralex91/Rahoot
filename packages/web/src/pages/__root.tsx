@@ -2,11 +2,12 @@ import {
   SocketProvider,
   useSocket,
 } from "@rahoot/web/features/game/contexts/socketProvider"
+import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { useEffect } from "react"
-import { Outlet } from "react-router"
 
-const GameLayoutWrapped = () => {
+const GameLayout = () => {
   const { isConnected, connect } = useSocket()
+
   useEffect(() => {
     if (!isConnected) {
       connect()
@@ -28,8 +29,10 @@ const GameLayoutWrapped = () => {
   )
 }
 
-export const GameLayout = () => (
-  <SocketProvider>
-    <GameLayoutWrapped />
-  </SocketProvider>
-)
+export const Route = createRootRoute({
+  component: () => (
+    <SocketProvider>
+      <GameLayout />
+    </SocketProvider>
+  ),
+})
