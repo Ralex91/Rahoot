@@ -1,7 +1,11 @@
 import { EVENTS } from "@rahoot/common/constants"
-import { Player, Quizz } from "@rahoot/common/types/game"
-import { Server, Socket } from "@rahoot/common/types/game/socket"
-import { STATUS, Status, StatusDataMap } from "@rahoot/common/types/game/status"
+import type { Player, Quizz } from "@rahoot/common/types/game"
+import type { Server, Socket } from "@rahoot/common/types/game/socket"
+import {
+  STATUS,
+  type Status,
+  type StatusDataMap,
+} from "@rahoot/common/types/game/status"
 import { CooldownTimer } from "@rahoot/socket/services/game/cooldown-timer"
 import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
 import { RoundManager } from "@rahoot/socket/services/game/round-manager"

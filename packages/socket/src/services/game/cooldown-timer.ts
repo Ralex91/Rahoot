@@ -1,5 +1,5 @@
 import { EVENTS } from "@rahoot/common/constants"
-import { Server } from "@rahoot/common/types/game/socket"
+import type { Server } from "@rahoot/common/types/game/socket"
 
 export class CooldownTimer {
   private readonly io: Server

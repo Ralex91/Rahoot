@@ -3,7 +3,7 @@ import Username from "@rahoot/web/features/game/components/join/Username"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect } from "react"

@@ -1,7 +1,7 @@
 import {
   SocketProvider,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { useEffect } from "react"
 

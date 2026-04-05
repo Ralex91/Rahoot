@@ -6,7 +6,7 @@ import Input from "@rahoot/web/components/Input"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 
 import { useNavigate } from "@tanstack/react-router"
@@ -42,11 +42,14 @@ const Username = () => {
   return (
     <Card>
       <Input
+        className="text-center"
         onChange={(e) => setUsername(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Username here"
       />
-      <Button onClick={handleLogin}>Submit</Button>
+      <Button className="mt-4" onClick={handleLogin}>
+        Submit
+      </Button>
     </Card>
   )
 }

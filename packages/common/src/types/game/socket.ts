@@ -1,3 +1,4 @@
+import { EVENTS } from "@rahoot/common/constants"
 import type {
   GameUpdateQuestion,
   Player,
@@ -28,61 +29,75 @@ export interface ServerToClientEvents {
   connect: () => void
 
   // Game events
-  "game:status": (_data: { name: Status; data: StatusDataMap[Status] }) => void
-  "game:successRoom": (_data: string) => void
-  "game:successJoin": (_gameId: string) => void
-  "game:totalPlayers": (_count: number) => void
-  "game:errorMessage": (_message: string) => void
-  "game:startCooldown": () => void
-  "game:cooldown": (_count: number) => void
-  "game:reset": (_message: string) => void
-  "game:updateQuestion": (_data: { current: number; total: number }) => void
-  "game:playerAnswer": (_count: number) => void
+  [EVENTS.GAME.STATUS]: (_data: {
+    name: Status
+    data: StatusDataMap[Status]
+  }) => void
+  [EVENTS.GAME.SUCCESS_ROOM]: (_data: string) => void
+  [EVENTS.GAME.SUCCESS_JOIN]: (_gameId: string) => void
+  [EVENTS.GAME.TOTAL_PLAYERS]: (_count: number) => void
+  [EVENTS.GAME.ERROR_MESSAGE]: (_message: string) => void
+  [EVENTS.GAME.START_COOLDOWN]: () => void
+  [EVENTS.GAME.COOLDOWN]: (_count: number) => void
+  [EVENTS.GAME.RESET]: (_message: string) => void
+  [EVENTS.GAME.UPDATE_QUESTION]: (_data: {
+    current: number
+    total: number
+  }) => void
+  [EVENTS.GAME.PLAYER_ANSWER]: (_count: number) => void
 
   // Player events
-  "player:successReconnect": (_data: {
+  [EVENTS.PLAYER.SUCCESS_RECONNECT]: (_data: {
     gameId: string
     status: { name: Status; data: StatusDataMap[Status] }
     player: { username: string; points: number }
     currentQuestion: GameUpdateQuestion
   }) => void
-  "player:updateLeaderboard": (_data: { leaderboard: Player[] }) => void
+  [EVENTS.PLAYER.UPDATE_LEADERBOARD]: (_data: { leaderboard: Player[] }) => void
 
   // Manager events
-  "manager:successReconnect": (_data: {
+  [EVENTS.MANAGER.SUCCESS_RECONNECT]: (_data: {
     gameId: string
     status: { name: Status; data: StatusDataMap[Status] }
     players: Player[]
     currentQuestion: GameUpdateQuestion
   }) => void
-  "manager:quizzList": (_quizzList: QuizzWithId[]) => void
-  "manager:gameCreated": (_data: { gameId: string; inviteCode: string }) => void
-  "manager:statusUpdate": (_data: {
+  [EVENTS.MANAGER.CONFIG]: (_config: { quizz: QuizzWithId[] }) => void
+  [EVENTS.MANAGER.GAME_CREATED]: (_data: {
+    gameId: string
+    inviteCode: string
+  }) => void
+  [EVENTS.MANAGER.STATUS_UPDATE]: (_data: {
     status: Status
     data: StatusDataMap[Status]
   }) => void
-  "manager:newPlayer": (_player: Player) => void
-  "manager:removePlayer": (_playerId: string) => void
-  "manager:errorMessage": (_message: string) => void
-  "manager:playerKicked": (_playerId: string) => void
+  [EVENTS.MANAGER.NEW_PLAYER]: (_player: Player) => void
+  [EVENTS.MANAGER.REMOVE_PLAYER]: (_playerId: string) => void
+  [EVENTS.MANAGER.ERROR_MESSAGE]: (_message: string) => void
+  [EVENTS.MANAGER.PLAYER_KICKED]: (_playerId: string) => void
 }
 
 export interface ClientToServerEvents {
   // Manager actions
-  "game:create": (_quizzId: string) => void
-  "manager:auth": (_password: string) => void
-  "manager:reconnect": (_message: { gameId: string }) => void
-  "manager:kickPlayer": (_message: { gameId: string; playerId: string }) => void
-  "manager:startGame": (_message: MessageGameId) => void
-  "manager:abortQuiz": (_message: MessageGameId) => void
-  "manager:nextQuestion": (_message: MessageGameId) => void
-  "manager:showLeaderboard": (_message: MessageGameId) => void
+  [EVENTS.GAME.CREATE]: (_quizzId: string) => void
+  [EVENTS.MANAGER.AUTH]: (_password: string) => void
+  [EVENTS.MANAGER.RECONNECT]: (_message: { gameId: string }) => void
+  [EVENTS.MANAGER.KICK_PLAYER]: (_message: {
+    gameId: string
+    playerId: string
+  }) => void
+  [EVENTS.MANAGER.START_GAME]: (_message: MessageGameId) => void
+  [EVENTS.MANAGER.ABORT_QUIZ]: (_message: MessageGameId) => void
+  [EVENTS.MANAGER.NEXT_QUESTION]: (_message: MessageGameId) => void
+  [EVENTS.MANAGER.SHOW_LEADERBOARD]: (_message: MessageGameId) => void
 
   // Player actions
-  "player:join": (_inviteCode: string) => void
-  "player:login": (_message: MessageWithoutStatus<{ username: string }>) => void
-  "player:reconnect": (_message: { gameId: string }) => void
-  "player:selectedAnswer": (
+  [EVENTS.PLAYER.JOIN]: (_inviteCode: string) => void
+  [EVENTS.PLAYER.LOGIN]: (
+    _message: MessageWithoutStatus<{ username: string }>,
+  ) => void
+  [EVENTS.PLAYER.RECONNECT]: (_message: { gameId: string }) => void
+  [EVENTS.PLAYER.SELECTED_ANSWER]: (
     _message: MessageWithoutStatus<{ answerKey: number }>,
   ) => void
 

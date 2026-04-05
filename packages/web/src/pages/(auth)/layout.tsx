@@ -1,6 +1,6 @@
 import logo from "@rahoot/web/assets/logo.svg"
 import Loader from "@rahoot/web/components/Loader"
-import { useSocket } from "@rahoot/web/features/game/contexts/socketProvider"
+import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 import { z } from "zod"
 

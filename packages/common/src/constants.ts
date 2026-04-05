@@ -22,7 +22,7 @@ export const EVENTS = {
   },
   MANAGER: {
     SUCCESS_RECONNECT: "manager:successReconnect",
-    QUIZZ_LIST: "manager:quizzList",
+    CONFIG: "manager:config",
     GAME_CREATED: "manager:gameCreated",
     STATUS_UPDATE: "manager:statusUpdate",
     NEW_PLAYER: "manager:newPlayer",

@@ -6,7 +6,7 @@ import Loader from "@rahoot/web/components/Loader"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/features/game/utils/constants"

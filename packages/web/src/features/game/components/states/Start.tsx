@@ -1,6 +1,6 @@
 import { EVENTS } from "@rahoot/common/constants"
 import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { useEvent } from "@rahoot/web/features/game/contexts/socketProvider"
+import { useEvent } from "@rahoot/web/features/game/contexts/socket-context"
 import { SFX } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"

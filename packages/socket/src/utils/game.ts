@@ -1,4 +1,4 @@
-import { Socket } from "@rahoot/common/types/game/socket"
+import type { Socket } from "@rahoot/common/types/game/socket"
 import Game from "@rahoot/socket/services/game"
 import Registry from "@rahoot/socket/services/registry"
 

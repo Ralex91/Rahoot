@@ -1,6 +1,6 @@
 import { EVENTS } from "@rahoot/common/constants"
-import { Player } from "@rahoot/common/types/game"
-import { Server, Socket } from "@rahoot/common/types/game/socket"
+import type { Player } from "@rahoot/common/types/game"
+import type { Server, Socket } from "@rahoot/common/types/game/socket"
 import { usernameValidator } from "@rahoot/common/validators/auth"
 
 export class PlayerManager {

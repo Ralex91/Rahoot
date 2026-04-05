@@ -4,7 +4,7 @@ import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import {
   ANSWERS_COLORS,

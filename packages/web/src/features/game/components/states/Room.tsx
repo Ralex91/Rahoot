@@ -4,7 +4,7 @@ import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
 import { QRCodeSVG } from "qrcode.react"
 import { useState } from "react"

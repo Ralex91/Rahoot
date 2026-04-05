@@ -2,7 +2,7 @@ import { EVENTS } from "@rahoot/common/constants"
 import Button from "@rahoot/web/components/Button"
 import Card from "@rahoot/web/components/Card"
 import Input from "@rahoot/web/components/Input"
-import { useEvent } from "@rahoot/web/features/game/contexts/socketProvider"
+import { useEvent } from "@rahoot/web/features/game/contexts/socket-context"
 import { type KeyboardEvent, useState } from "react"
 import toast from "react-hot-toast"
 
@@ -35,7 +35,9 @@ const ManagerPassword = ({ onSubmit }: Props) => {
         onKeyDown={handleKeyDown}
         placeholder="Manager password"
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button className="mt-4" onClick={handleSubmit}>
+        Submit
+      </Button>
     </Card>
   )
 }

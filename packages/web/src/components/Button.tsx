@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import type { ButtonHTMLAttributes, PropsWithChildren } from "react"
+import { twMerge } from "tailwind-merge"
 
 type Size = "sm" | "md" | "lg"
 
@@ -16,10 +17,12 @@ const sizeClasses: Record<Size, string> = {
 
 const Button = ({ children, className, size = "md", ...otherProps }: Props) => (
   <button
-    className={clsx(
-      "btn-shadow bg-primary rounded-md font-semibold text-white",
-      sizeClasses[size],
-      className,
+    className={twMerge(
+      clsx(
+        "btn-shadow bg-primary rounded-md font-semibold text-white",
+        sizeClasses[size],
+        className,
+      ),
     )}
     {...otherProps}
   >

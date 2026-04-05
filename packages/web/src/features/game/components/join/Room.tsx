@@ -5,7 +5,7 @@ import Input from "@rahoot/web/components/Input"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import { useSearch } from "@tanstack/react-router"
 import { type KeyboardEvent, useEffect, useRef, useState } from "react"
@@ -43,11 +43,14 @@ const Room = () => {
   return (
     <Card>
       <Input
+        className="text-center"
         onChange={(e) => setInvitation(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="PIN Code here"
       />
-      <Button onClick={handleJoin}>Submit</Button>
+      <Button className="mt-4" onClick={handleJoin}>
+        Submit
+      </Button>
     </Card>
   )
 }

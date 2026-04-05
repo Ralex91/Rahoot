@@ -1,13 +1,13 @@
 import { EVENTS } from "@rahoot/common/constants"
-import type { QuizzWithId } from "@rahoot/common/types/game"
 import { STATUS } from "@rahoot/common/types/game/status"
+import type { ManagerConfig } from "@rahoot/common/types/manager"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+import Configurations from "@rahoot/web/features/manager/components/configurations"
 import ManagerPassword from "@rahoot/web/features/manager/components/ManagerPassword"
-import SelectQuizz from "@rahoot/web/features/manager/components/SelectQuizz"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 
@@ -17,11 +17,11 @@ const ManagerAuthPage = () => {
   const { socket } = useSocket()
 
   const [isAuth, setIsAuth] = useState(false)
-  const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
+  const [config, setConfig] = useState<ManagerConfig>()
 
-  useEvent(EVENTS.MANAGER.QUIZZ_LIST, (quizzList) => {
+  useEvent(EVENTS.MANAGER.CONFIG, (config) => {
     setIsAuth(true)
-    setQuizzList(quizzList)
+    setConfig(config)
   })
 
   useEvent(EVENTS.MANAGER.GAME_CREATED, ({ gameId, inviteCode }) => {
@@ -36,15 +36,12 @@ const ManagerAuthPage = () => {
   const handleAuth = (password: string) => {
     socket?.emit(EVENTS.MANAGER.AUTH, password)
   }
-  const handleCreate = (quizzId: string) => {
-    socket?.emit(EVENTS.GAME.CREATE, quizzId)
-  }
 
-  if (!isAuth) {
+  if (!isAuth || !config) {
     return <ManagerPassword onSubmit={handleAuth} />
   }
 
-  return <SelectQuizz quizzList={quizzList} onSelect={handleCreate} />
+  return <Configurations data={config} />
 }
 
 export const Route = createFileRoute("/(auth)/manager/")({
