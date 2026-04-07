@@ -3,26 +3,26 @@
 import type {
   ClientToServerEvents,
   ServerToClientEvents,
-} from "@rahoot/common/types/game/socket"
+} from "@rahoot/common/types/game/socket";
 import React, {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
-} from "react"
-import { io, Socket } from "socket.io-client"
-import { v7 as uuid } from "uuid"
+} from "react";
+import { io, Socket } from "socket.io-client";
+import { v7 as uuid } from "uuid";
 
-type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
+type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 interface SocketContextValue {
-  socket: TypedSocket | null
-  isConnected: boolean
-  clientId: string
-  connect: () => void
-  disconnect: () => void
-  reconnect: () => void
+  socket: TypedSocket | null;
+  isConnected: boolean;
+  clientId: string;
+  connect: () => void;
+  disconnect: () => void;
+  reconnect: () => void;
 }
 
 const SocketContext = createContext<SocketContextValue>({
@@ -32,36 +32,36 @@ const SocketContext = createContext<SocketContextValue>({
   connect: () => {},
   disconnect: () => {},
   reconnect: () => {},
-})
+});
 
 const getClientId = (): string => {
   try {
-    const stored = localStorage.getItem("client_id")
+    const stored = localStorage.getItem("client_id");
 
     if (stored) {
-      return stored
+      return stored;
     }
 
-    const newId = uuid()
-    localStorage.setItem("client_id", newId)
+    const newId = uuid();
+    localStorage.setItem("client_id", newId);
 
-    return newId
+    return newId;
   } catch {
-    return uuid()
+    return uuid();
   }
-}
+};
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState<TypedSocket | null>(null)
-  const [isConnected, setIsConnected] = useState(false)
-  const [clientId] = useState<string>(() => getClientId())
+  const [socket, setSocket] = useState<TypedSocket | null>(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [clientId] = useState<string>(() => getClientId());
 
   useEffect(() => {
     if (socket) {
-      return
+      return;
     }
 
-    let socketClient: TypedSocket | null = null
+    let socketClient: TypedSocket | null = null;
 
     try {
       socketClient = io("/", {
@@ -73,49 +73,49 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         auth: {
           clientId,
         },
-      })
+      });
 
-      setSocket(socketClient)
+      setSocket(socketClient);
 
       socketClient.on("connect", () => {
-        setIsConnected(true)
-      })
+        setIsConnected(true);
+      });
 
       socketClient.on("disconnect", () => {
-        setIsConnected(false)
-      })
+        setIsConnected(false);
+      });
 
       socketClient.on("connect_error", (err) => {
-        console.error("Connection error:", err.message)
-      })
+        console.error("Socket connection error:", err);
+      });
     } catch (error) {
-      console.error("Failed to initialize socket:", error)
+      console.error("Socket initialization error:", error);
     }
 
     // eslint-disable-next-line consistent-return
     return () => {
-      socketClient?.disconnect()
-    }
-  }, [clientId])
+      socketClient?.disconnect();
+    };
+  }, [clientId]);
 
   const connect = useCallback(() => {
     if (socket && !socket.connected) {
-      socket.connect()
+      socket.connect();
     }
-  }, [socket])
+  }, [socket]);
 
   const disconnect = useCallback(() => {
     if (socket && socket.connected) {
-      socket.disconnect()
+      socket.disconnect();
     }
-  }, [socket])
+  }, [socket]);
 
   const reconnect = useCallback(() => {
     if (socket) {
-      socket.disconnect()
-      socket.connect()
+      socket.disconnect();
+      socket.connect();
     }
-  }, [socket])
+  }, [socket]);
 
   return (
     <SocketContext.Provider
@@ -130,27 +130,27 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
     </SocketContext.Provider>
-  )
-}
+  );
+};
 
-export const useSocket = () => useContext(SocketContext)
+export const useSocket = () => useContext(SocketContext);
 
 export const useEvent = <E extends keyof ServerToClientEvents>(
   event: E,
   callback: ServerToClientEvents[E],
 ) => {
-  const { socket } = useSocket()
+  const { socket } = useSocket();
 
   useEffect(() => {
     if (!socket) {
-      return
+      return;
     }
 
-    socket.on(event, callback as any)
+    socket.on(event, callback as any);
 
     // eslint-disable-next-line consistent-return
     return () => {
-      socket.off(event, callback as any)
-    }
-  }, [socket, event, callback])
-}
+      socket.off(event, callback as any);
+    };
+  }, [socket, event, callback]);
+};

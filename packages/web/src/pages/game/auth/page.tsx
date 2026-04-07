@@ -8,6 +8,8 @@ import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
+import { translateServerMessage } from "@rahoot/web/features/game/utils/translateServerMessage"
+
 const PlayerAuthPage = () => {
   const { isConnected, connect } = useSocket()
   const { player } = usePlayerStore()
@@ -19,7 +21,7 @@ const PlayerAuthPage = () => {
   }, [connect, isConnected])
 
   useEvent("game:errorMessage", (message) => {
-    toast.error(message)
+    toast.error(translateServerMessage(message))
   })
 
   if (player) {

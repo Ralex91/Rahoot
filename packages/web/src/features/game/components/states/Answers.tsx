@@ -1,48 +1,50 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
+import type { CommonStatusDataMap } from "@rahoot/common/types/game/status";
+import AnswerButton from "@rahoot/web/features/game/components/AnswerButton";
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@rahoot/web/features/game/contexts/socketProvider";
+import { usePlayerStore } from "@rahoot/web/features/game/stores/player";
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
   SFX_ANSWERS_MUSIC,
   SFX_ANSWERS_SOUND,
-} from "@rahoot/web/features/game/utils/constants"
-import clsx from "clsx"
-import { useEffect, useState } from "react"
-import { useParams } from "react-router"
-import useSound from "use-sound"
+} from "@rahoot/web/features/game/utils/constants";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import useSound from "use-sound";
+import { useTranslation } from "@rahoot/web/hooks/useTranslation";
 
 type Props = {
-  data: CommonStatusDataMap["SELECT_ANSWER"]
-}
+  data: CommonStatusDataMap["SELECT_ANSWER"];
+};
 
 const Answers = ({
   data: { question, answers, image, audio, video, time, totalPlayer },
 }: Props) => {
-  const { gameId }: { gameId?: string } = useParams()
-  const { socket } = useSocket()
-  const { player } = usePlayerStore()
+  const { gameId }: { gameId?: string } = useParams();
+  const { socket } = useSocket();
+  const { player } = usePlayerStore();
+  const { t } = useTranslation();
 
-  const [cooldown, setCooldown] = useState(time)
-  const [totalAnswer, setTotalAnswer] = useState(0)
+  const [cooldown, setCooldown] = useState(time);
+  const [totalAnswer, setTotalAnswer] = useState(0);
 
   const [sfxPop] = useSound(SFX_ANSWERS_SOUND, {
     volume: 0.1,
-  })
+  });
 
   const [playMusic, { stop: stopMusic }] = useSound(SFX_ANSWERS_MUSIC, {
     volume: 0.2,
     interrupt: true,
     loop: true,
-  })
+  });
 
   const handleAnswer = (answerKey: number) => () => {
     if (!player) {
-      return
+      return;
     }
 
     socket?.emit("player:selectedAnswer", {
@@ -50,31 +52,31 @@ const Answers = ({
       data: {
         answerKey,
       },
-    })
-    sfxPop()
-  }
+    });
+    sfxPop();
+  };
 
   useEffect(() => {
     if (video || audio) {
-      return
+      return;
     }
 
-    playMusic()
+    playMusic();
 
     // eslint-disable-next-line consistent-return
     return () => {
-      stopMusic()
-    }
-  }, [playMusic])
+      stopMusic();
+    };
+  }, [playMusic]);
 
   useEvent("game:cooldown", (sec) => {
-    setCooldown(sec)
-  })
+    setCooldown(sec);
+  });
 
   useEvent("game:playerAnswer", (count) => {
-    setTotalAnswer(count)
-    sfxPop()
-  })
+    setTotalAnswer(count);
+    sfxPop();
+  });
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between">
@@ -113,11 +115,15 @@ const Answers = ({
       <div>
         <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
           <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
-            <span className="translate-y-1 text-sm">Time</span>
+            <span className="translate-y-1 text-sm">
+              {t("answers.timeLabel")}
+            </span>
             <span>{cooldown}</span>
           </div>
           <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
-            <span className="translate-y-1 text-sm">Answers</span>
+            <span className="translate-y-1 text-sm">
+              {t("answers.answersLabel")}
+            </span>
             <span>
               {totalAnswer}/{totalPlayer}
             </span>
@@ -138,7 +144,7 @@ const Answers = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Answers
+export default Answers;

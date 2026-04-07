@@ -1,29 +1,42 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import CricleCheck from "@rahoot/web/features/game/components/icons/CricleCheck"
-import CricleXmark from "@rahoot/web/features/game/components/icons/CricleXmark"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { SFX_RESULTS_SOUND } from "@rahoot/web/features/game/utils/constants"
-import { useEffect } from "react"
-import useSound from "use-sound"
+import type { CommonStatusDataMap } from "@rahoot/common/types/game/status";
+import CricleCheck from "@rahoot/web/features/game/components/icons/CricleCheck";
+import CricleXmark from "@rahoot/web/features/game/components/icons/CricleXmark";
+import { usePlayerStore } from "@rahoot/web/features/game/stores/player";
+import { SFX_RESULTS_SOUND } from "@rahoot/web/features/game/utils/constants";
+import { useEffect } from "react";
+import useSound from "use-sound";
+import { useTranslation } from "@rahoot/web/hooks/useTranslation";
 
 type Props = {
-  data: CommonStatusDataMap["SHOW_RESULT"]
-}
+  data: CommonStatusDataMap["SHOW_RESULT"];
+};
 
 const Result = ({
-  data: { correct, message, points, myPoints, rank, aheadOfMe },
+  data: { correct, points, myPoints, rank, aheadOfMe },
 }: Props) => {
-  const player = usePlayerStore()
+  const player = usePlayerStore();
+  const { t } = useTranslation();
 
   const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
     volume: 0.2,
-  })
+  });
 
   useEffect(() => {
-    player.updatePoints(myPoints)
+    player.updatePoints(myPoints);
+    sfxResults();
+  }, [sfxResults]);
 
-    sfxResults()
-  }, [sfxResults])
+  const message = correct ? t("result.correct") : t("result.wrong");
+
+  const rankText =
+    rank === 1
+      ? t("result.rankFirst")
+      : aheadOfMe
+        ? t("result.rankWithAhead", {
+            rank: String(rank),
+            ahead: aheadOfMe,
+          })
+        : t("result.rankAlone", { rank: String(rank) });
 
   return (
     <section className="anim-show relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
@@ -36,7 +49,7 @@ const Result = ({
         {message}
       </h2>
       <p className="mt-1 text-xl font-bold text-white drop-shadow-lg">
-        {`You are top ${rank}${aheadOfMe ? `, behind ${aheadOfMe}` : ""}`}
+        {rankText}
       </p>
       {correct && (
         <span className="mt-2 rounded bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
@@ -44,7 +57,7 @@ const Result = ({
         </span>
       )}
     </section>
-  )
-}
+  );
+};
 
-export default Result
+export default Result;

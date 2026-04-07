@@ -12,6 +12,8 @@ import {
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router"
 
+import { translateServerMessage } from "@rahoot/web/features/game/utils/translateServerMessage"
+
 const PlayerGamePage = () => {
   const navigate = useNavigate()
   const { socket } = useSocket()
@@ -45,7 +47,7 @@ const PlayerGamePage = () => {
     navigate("/")
     reset()
     setQuestionStates(null)
-    toast.error(message)
+    toast.error(translateServerMessage(message))
   })
 
   if (!gameIdParam) {

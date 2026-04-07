@@ -1,70 +1,82 @@
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status";
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,
   SFX_PODIUM_THREE,
   SFX_SNEAR_ROOL,
-} from "@rahoot/web/features/game/utils/constants"
-import useScreenSize from "@rahoot/web/hooks/useScreenSize"
-import clsx from "clsx"
-import { useEffect, useState } from "react"
-import ReactConfetti from "react-confetti"
-import useSound from "use-sound"
+} from "@rahoot/web/features/game/utils/constants";
+import useScreenSize from "@rahoot/web/hooks/useScreenSize";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import ReactConfetti from "react-confetti";
+import useSound from "use-sound";
+import Button from "@rahoot/web/features/game/components/Button";
+import { useTranslation } from "@rahoot/web/hooks/useTranslation";
 
 type Props = {
-  data: ManagerStatusDataMap["FINISHED"]
-}
+  data: ManagerStatusDataMap["FINISHED"];
+};
 
 const usePodiumAnimation = (topLength: number) => {
-  const [apparition, setApparition] = useState(0)
+  const [apparition, setApparition] = useState(0);
 
-  const [sfxtThree] = useSound(SFX_PODIUM_THREE, { volume: 0.2 })
-  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, { volume: 0.2 })
+  const [sfxtThree] = useSound(SFX_PODIUM_THREE, { volume: 0.2 });
+  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, { volume: 0.2 });
   const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
     volume: 0.2,
-  })
-  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, { volume: 0.2 })
+  });
+  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, { volume: 0.2 });
 
   useEffect(() => {
     const actions: Partial<Record<number, () => void>> = {
       4: () => {
-        sfxRoolStop()
-        sfxFirst()
+        sfxRoolStop();
+        sfxFirst();
       },
       3: sfxRool,
       2: sfxSecond,
       1: sfxtThree,
-    }
+    };
 
-    actions[apparition]?.()
-  }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool, sfxRoolStop])
+    actions[apparition]?.();
+  }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool, sfxRoolStop]);
 
   useEffect(() => {
     if (topLength < 3) {
-      setApparition(4)
-
-      return
+      setApparition(4);
+      return;
     }
 
     if (apparition >= 4) {
-      return
+      return;
     }
 
     const interval = setInterval(() => {
-      setApparition((value) => value + 1)
-    }, 2000)
+      setApparition((value) => value + 1);
+    }, 2000);
 
-    // eslint-disable-next-line consistent-return
-    return () => clearInterval(interval)
-  }, [apparition, topLength])
+    return () => clearInterval(interval);
+  }, [apparition, topLength]);
 
-  return apparition
-}
+  return apparition;
+};
+
+const PODIUM_HEIGHTS = ["h-[60%]", "h-[50%]", "h-[40%]"];
+const PODIUM_Z = ["z-30", "z-20", "z-10"];
+const MEDAL_COLORS = [
+  "border-amber-400 bg-amber-300",
+  "border-zinc-400 bg-zinc-500",
+  "border-amber-800 bg-amber-700",
+];
+const MEDAL_ORDER = [1, 0, 2]; // Display order: silver, gold, bronze
 
 const Podium = ({ data: { subject, top } }: Props) => {
-  const apparition = usePodiumAnimation(top.length)
+  const apparition = usePodiumAnimation(top.length);
+  const { t } = useTranslation();
+  const { width, height } = useScreenSize();
 
-  const { width, height } = useScreenSize()
+  const showOrder =
+    top.length >= 3 ? MEDAL_ORDER : top.map((_, i) => i);
 
   return (
     <>
@@ -72,7 +84,10 @@ const Podium = ({ data: { subject, top } }: Props) => {
         <ReactConfetti
           width={width}
           height={height}
-          className="h-full w-full"
+          recycle={false}
+          numberOfPieces={500}
+          gravity={0.12}
+          className="fixed top-0 left-0 pointer-events-none"
         />
       )}
 
@@ -81,106 +96,102 @@ const Podium = ({ data: { subject, top } }: Props) => {
           <div className="spotlight"></div>
         </div>
       )}
-      <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-between">
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
-          {subject}
-        </h2>
 
+      <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-between py-4">
+        {/* Title */}
+        <div className="text-center mb-4">
+          <h2 className="anim-show text-3xl font-extrabold text-white drop-shadow-lg md:text-5xl mb-1">
+            {t("finished.gameOver")}
+          </h2>
+          <p className="text-xl text-white/70 font-medium">{subject}</p>
+        </div>
+
+        {/* Podium bars */}
         <div
           style={{ gridTemplateColumns: `repeat(${top.length}, 1fr)` }}
-          className={`grid w-full max-w-200 flex-1 items-end justify-center justify-self-end overflow-x-visible overflow-y-hidden`}
+          className="grid w-full max-w-200 flex-1 items-end justify-center overflow-x-visible overflow-y-hidden"
         >
-          {top[1] && (
-            <div
-              className={clsx(
-                "z-20 flex h-[50%] w-full translate-y-full flex-col items-center justify-center gap-3 opacity-0 transition-all",
-                { "translate-y-0! opacity-100": apparition >= 2 },
-              )}
-            >
-              <p
+          {showOrder.map((playerIdx) => {
+            const player = top[playerIdx];
+            if (!player) return null;
+
+            const apparitionThreshold =
+              playerIdx === 0 ? 3 : playerIdx === 1 ? 2 : 1;
+
+            return (
+              <div
+                key={player.id}
                 className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                  `${PODIUM_Z[playerIdx]} flex ${PODIUM_HEIGHTS[playerIdx]} w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all duration-700`,
                   {
-                    "anim-balanced": apparition >= 4,
+                    "translate-y-0! opacity-100":
+                      apparition >= apparitionThreshold,
                   },
+                  { "md:min-w-64": top.length < 2 && playerIdx === 0 },
                 )}
               >
-                {top[1].username}
-              </p>
-              <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
-                <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-zinc-400 bg-zinc-500 text-3xl font-bold text-white drop-shadow-lg">
-                  <span className="drop-shadow-md">2</span>
+                <p
+                  className={clsx(
+                    "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                    apparition >= 4
+                      ? "anim-balanced opacity-100"
+                      : playerIdx === 0
+                        ? "opacity-0"
+                        : "",
+                  )}
+                >
+                  {player.avatar && (
+                    <span className="mr-2 text-3xl md:text-4xl">
+                      {player.avatar}
+                    </span>
+                  )}
+                  {player.username}
                 </p>
-                <p className="text-2xl font-bold text-white drop-shadow-lg">
-                  {top[1].points}
-                </p>
-              </div>
-            </div>
-          )}
 
-          <div
-            className={clsx(
-              "z-30 flex h-[60%] w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all",
-              {
-                "translate-y-0! opacity-100": apparition >= 3,
-              },
-              {
-                "md:min-w-64": top.length < 2,
-              },
-            )}
+                <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
+                  <p
+                    className={clsx(
+                      "flex aspect-square h-14 items-center justify-center rounded-full border-4 text-3xl font-bold text-white drop-shadow-lg",
+                      MEDAL_COLORS[playerIdx],
+                    )}
+                  >
+                    <span className="drop-shadow-md">{playerIdx + 1}</span>
+                  </p>
+                  <p className="text-2xl font-bold text-white drop-shadow-lg">
+                    {player.points}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom actions — visible after animation */}
+        <div
+          className={clsx(
+            "mt-4 flex gap-3 transition-all duration-500",
+            apparition >= 4
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-4",
+          )}
+        >
+          <Button
+            onClick={() => (window.location.href = "/manager")}
+            className="px-8 py-3 text-lg"
           >
-            <p
-              className={clsx(
-                "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
-                { "anim-balanced opacity-100": apparition >= 4 },
-              )}
-            >
-              {top[0].username}
-            </p>
-            <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
-              <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-400 bg-amber-300 text-3xl font-bold text-white drop-shadow-lg">
-                <span className="drop-shadow-md">1</span>
-              </p>
-              <p className="text-2xl font-bold text-white drop-shadow-lg">
-                {top[0].points}
-              </p>
-            </div>
-          </div>
-
-          {top[2] && (
-            <div
-              className={clsx(
-                "z-10 flex h-[40%] w-full translate-y-full flex-col items-center gap-3 opacity-0 transition-all",
-                {
-                  "translate-y-0! opacity-100": apparition >= 1,
-                },
-              )}
-            >
-              <p
-                className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
-                  {
-                    "anim-balanced": apparition >= 4,
-                  },
-                )}
-              >
-                {top[2].username}
-              </p>
-              <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
-                <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
-                  <span className="drop-shadow-md">3</span>
-                </p>
-
-                <p className="text-2xl font-bold text-white drop-shadow-lg">
-                  {top[2].points}
-                </p>
-              </div>
-            </div>
-          )}
+            {t("finished.newQuiz")}
+          </Button>
+          <Button
+            onClick={() => (window.location.href = "/")}
+            variant="secondary"
+            className="px-8 py-3 text-lg"
+          >
+            {t("game.returnHome")}
+          </Button>
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default Podium
+export default Podium;
