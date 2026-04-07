@@ -125,7 +125,7 @@
     "gameExpired": "Partida expirada",
     "quizNotFound": "Quiz no encontrado",
     "notAuthenticated": "No autenticado como administrador",
-    "passwordNotConfigured": "La contraseña de administrador no está configurada",
+    "passwordNotConfigured": "La contraseña de administrador no está configurada. Edite config/game.json y defina un valor personalizado para \"managerPassword\".",
     "invalidPassword": "Contraseña incorrecta",
     "failedReadConfig": "Error al leer la configuración",
     "managerDisconnected": "El administrador se ha desconectado",

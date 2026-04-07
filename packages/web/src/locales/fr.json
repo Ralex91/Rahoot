@@ -125,7 +125,7 @@
     "gameExpired": "Partie expirée",
     "quizNotFound": "Quiz introuvable",
     "notAuthenticated": "Non authentifié en tant que manager",
-    "passwordNotConfigured": "Le mot de passe manager n'est pas configuré",
+    "passwordNotConfigured": "Le mot de passe manager n'est pas configuré. Modifiez config/game.json et définissez une valeur personnalisée pour \"managerPassword\".",
     "invalidPassword": "Mot de passe incorrect",
     "failedReadConfig": "Erreur de lecture de la configuration",
     "managerDisconnected": "Le manager s'est déconnecté",

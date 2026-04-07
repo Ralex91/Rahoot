@@ -125,7 +125,7 @@
     "gameExpired": "Game expired",
     "quizNotFound": "Quiz not found",
     "notAuthenticated": "Not authenticated as manager",
-    "passwordNotConfigured": "Manager password is not configured",
+    "passwordNotConfigured": "Manager password is not configured. Edit config/game.json and set a custom \"managerPassword\" value.",
     "invalidPassword": "Invalid password",
     "failedReadConfig": "Failed to read game config",
     "managerDisconnected": "Manager disconnected",
