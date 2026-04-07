@@ -15,7 +15,8 @@ type Props = {
   onSelect: (_id: string) => void;
 };
 
-const SelectQuizz = ({ quizzList, onSelect }: Props) => {
+const SelectQuizz = ({ quizzList: initialQuizzList, onSelect }: Props) => {
+  const [quizzes, setQuizzes] = useState<QuizzWithId[]>(initialQuizzList);
   const [selected, setSelected] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newQuizSubject, setNewQuizSubject] = useState("");
@@ -27,6 +28,7 @@ const SelectQuizz = ({ quizzList, onSelect }: Props) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [editingQuizId, setEditingQuizId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const { t } = useTranslation();
   const { socket } = useSocket();
@@ -77,6 +79,18 @@ const SelectQuizz = ({ quizzList, onSelect }: Props) => {
     }
   });
 
+  // Gérer la suppression de quiz
+  useEvent("manager:quizDeleted", ({ success, error }) => {
+    if (success) {
+      setQuizzes(quizzes.filter((q) => q.id !== deleteConfirmId));
+      if (selected === deleteConfirmId) setSelected(null);
+      toast.success(t("selectQuiz.quizDeletedSuccess"));
+    } else {
+      toast.error(translateServerMessage(error) || t("selectQuiz.quizDeletedError"));
+    }
+    setDeleteConfirmId(null);
+  });
+
   const handleSelect = (id: string) => () => {
     setSelected(selected === id ? null : id);
   };
@@ -98,6 +112,16 @@ const SelectQuizz = ({ quizzList, onSelect }: Props) => {
     );
     setEditingQuizId(quiz.id);
     setShowCreateModal(true);
+  };
+
+  const handleDeleteQuiz = (id: string) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeleteConfirmId(id);
+  };
+
+  const confirmDelete = () => {
+    if (!deleteConfirmId) return;
+    socket?.emit("manager:deleteQuiz", deleteConfirmId);
   };
 
   const handleSubmit = () => {
@@ -242,35 +266,49 @@ const SelectQuizz = ({ quizzList, onSelect }: Props) => {
           {t("selectQuiz.title")}
         </h2>
         <div className="space-y-2">
-          {quizzList.map((quiz) => (
+          {quizzes.map((quiz) => (
             <div
               key={quiz.id}
               className={clsx(
                 "p-3 rounded-md cursor-pointer border-2 transition-all",
                 selected === quiz.id
-                  ? "border-primary bg-primary/20"
+                  ? "border-primary bg-primary/20 shadow-lg scale-[1.02]"
                   : "border-gray-300 bg-white hover:border-primary hover:bg-primary/10",
               )}
               onClick={handleSelect(quiz.id)}
             >
               <div className="flex justify-between items-center">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <p className="font-semibold text-gray-800">{quiz.subject}</p>
                   <p className="text-sm text-gray-600">
                     {quiz.questions.length} {t("selectQuiz.questionsCount")}
                   </p>
                 </div>
-                <Button
-                  onClick={handleEditQuiz(quiz)}
-                  variant="secondary"
-                  size="sm"
-                  className="ml-2"
-                >
-                  {t("selectQuiz.editQuiz")}
-                </Button>
+                <div className="flex items-center gap-1 ml-2 shrink-0">
+                  <Button
+                    onClick={handleEditQuiz(quiz)}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    {t("selectQuiz.editQuiz")}
+                  </Button>
+                  <button
+                    onClick={handleDeleteQuiz(quiz.id)}
+                    className="text-gray-400 hover:text-red-500 transition-colors px-2 py-1 text-lg"
+                    title={t("selectQuiz.deleteQuiz")}
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
             </div>
           ))}
+
+          {quizzes.length === 0 && (
+            <p className="text-center text-white/60 py-4 italic">
+              {t("selectQuiz.noQuizzes")}
+            </p>
+          )}
         </div>
       </div>
 
@@ -293,10 +331,15 @@ const SelectQuizz = ({ quizzList, onSelect }: Props) => {
 
       <Button
         onClick={handleSubmit}
-        className="w-full mt-4"
+        className={clsx(
+          "w-full mt-4 text-lg py-3 transition-all",
+          selected
+            ? ""
+            : "opacity-50 cursor-not-allowed",
+        )}
         disabled={!selected}
       >
-        {t("selectQuiz.submit")}
+        {selected ? `▶ ${t("game.startGame")}` : t("selectQuiz.selectQuiz")}
       </Button>
 
       {showCreateModal && (
@@ -604,6 +647,34 @@ const SelectQuizz = ({ quizzList, onSelect }: Props) => {
                   setShowOverwriteModal(false);
                   setExistingQuizData(null);
                 }}
+                variant="secondary"
+                className="flex-1"
+              >
+                {t("common.cancel")}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteConfirmId && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-sm mx-4 shadow-xl">
+            <p className="text-lg font-bold text-gray-800 mb-2">
+              {t("selectQuiz.confirmDelete")}
+            </p>
+            <p className="text-sm text-gray-600 mb-4">
+              {quizzes.find((q) => q.id === deleteConfirmId)?.subject}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                onClick={confirmDelete}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+              >
+                {t("common.remove")}
+              </Button>
+              <Button
+                onClick={() => setDeleteConfirmId(null)}
                 variant="secondary"
                 className="flex-1"
               >

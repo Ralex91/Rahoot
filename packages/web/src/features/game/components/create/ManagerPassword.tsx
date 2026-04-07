@@ -1,30 +1,26 @@
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
-import { useEvent } from "@rahoot/web/features/game/contexts/socketProvider"
-import { type KeyboardEvent, useState } from "react"
-import toast from "react-hot-toast"
+import Button from "@rahoot/web/features/game/components/Button";
+import Form from "@rahoot/web/features/game/components/Form";
+import Input from "@rahoot/web/features/game/components/Input";
+import { type KeyboardEvent, useState } from "react";
+import { useTranslation } from "@rahoot/web/hooks/useTranslation";
 
 type Props = {
-  onSubmit: (_password: string) => void
-}
+  onSubmit: (_password: string) => void;
+};
 
 const ManagerPassword = ({ onSubmit }: Props) => {
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("");
+  const { t } = useTranslation();
 
   const handleSubmit = () => {
-    onSubmit(password)
-  }
+    onSubmit(password);
+  };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
-      handleSubmit()
+      handleSubmit();
     }
-  }
-
-  useEvent("manager:errorMessage", (message) => {
-    toast.error(message)
-  })
+  };
 
   return (
     <Form>
@@ -32,11 +28,11 @@ const ManagerPassword = ({ onSubmit }: Props) => {
         type="password"
         onChange={(e) => setPassword(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Manager password"
+        placeholder={t("managerPassword.placeholder")}
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={handleSubmit}>{t("managerPassword.submit")}</Button>
     </Form>
-  )
-}
+  );
+};
 
-export default ManagerPassword
+export default ManagerPassword;

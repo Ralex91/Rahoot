@@ -96,7 +96,12 @@
     "time": "Time (sec)",
     "solution": "Correct answer",
     "questions": "Questions",
-    "addAnswer": "+ Add answer"
+    "addAnswer": "+ Add answer",
+    "deleteQuiz": "Delete",
+    "confirmDelete": "Delete this quiz?",
+    "quizDeletedSuccess": "Quiz deleted!",
+    "quizDeletedError": "Failed to delete quiz",
+    "noQuizzes": "No quizzes yet. Create one!"
   },
   "result": {
     "correct": "Nice!",

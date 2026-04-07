@@ -96,7 +96,12 @@
     "time": "Tiempo (seg)",
     "solution": "Respuesta correcta",
     "questions": "Preguntas",
-    "addAnswer": "+ Agregar respuesta"
+    "addAnswer": "+ Agregar respuesta",
+    "deleteQuiz": "Eliminar",
+    "confirmDelete": "¿Eliminar este quiz?",
+    "quizDeletedSuccess": "¡Quiz eliminado!",
+    "quizDeletedError": "Error al eliminar el quiz",
+    "noQuizzes": "Sin quizzes. ¡Crea uno!"
   },
   "result": {
     "correct": "¡Genial!",

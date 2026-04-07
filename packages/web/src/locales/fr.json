@@ -96,7 +96,12 @@
     "solution": "Bonne réponse",
     "questions": "Questions",
     "addAnswer": "+ Ajouter une réponse",
-    "createQuiz": "Créer un Quiz"
+    "createQuiz": "Créer un Quiz",
+    "deleteQuiz": "Supprimer",
+    "confirmDelete": "Supprimer ce quiz ?",
+    "quizDeletedSuccess": "Quiz supprimé !",
+    "quizDeletedError": "Erreur lors de la suppression du quiz",
+    "noQuizzes": "Aucun quiz. Créez-en un !"
   },
   "result": {
     "correct": "Bravo !",
