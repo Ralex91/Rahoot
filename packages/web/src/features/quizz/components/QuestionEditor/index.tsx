@@ -1,3 +1,4 @@
+import background from "@rahoot/web/assets/background.webp"
 import QuestionEditorAnswers from "@rahoot/web/features/quizz/components/QuestionEditor/QuestionEditorAnswers"
 import QuestionEditorConfig from "@rahoot/web/features/quizz/components/QuestionEditor/QuestionEditorConfig"
 import QuestionEditorMedia from "@rahoot/web/features/quizz/components/QuestionEditor/QuestionEditorMedia"
@@ -17,6 +18,14 @@ const QuestionEditor = () => {
         <QuestionEditorTitle />
         <QuestionEditorMedia />
         <QuestionEditorAnswers />
+
+        <div className="fixed top-0 left-0 h-full w-full">
+          <img
+            className="pointer-events-none h-full w-full object-cover"
+            src={background}
+            alt="background"
+          />
+        </div>
       </main>
       <QuestionEditorConfig />
     </div>

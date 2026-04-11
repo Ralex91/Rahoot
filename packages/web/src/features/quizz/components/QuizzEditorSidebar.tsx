@@ -47,7 +47,7 @@ const QuizzEditorSidebar = () => {
   }
 
   return (
-    <aside className="flex w-72 shrink-0 flex-col gap-2 overflow-auto bg-white p-3">
+    <aside className="z-10 flex w-72 shrink-0 flex-col gap-2 overflow-auto bg-white p-3 shadow-sm">
       <DragDropContext
         onDragStart={() => {
           isDragging.current = true

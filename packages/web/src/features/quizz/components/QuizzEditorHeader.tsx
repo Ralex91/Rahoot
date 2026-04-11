@@ -42,7 +42,7 @@ const QuizzEditorHeader = () => {
   })
 
   return (
-    <header className="z-10 flex h-14 items-center justify-between gap-4 bg-white px-4 shadow-sm">
+    <header className="z-20 flex h-14 items-center justify-between gap-4 bg-white px-4 shadow-sm">
       <div className="flex items-center gap-6">
         <img src={logo} className="h-8" alt="logo" />
 

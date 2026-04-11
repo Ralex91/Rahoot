@@ -1,6 +1,7 @@
 import type { QuestionMediaType } from "@rahoot/common/types/game"
 import { questionMediaValidator } from "@rahoot/common/validators/quizz"
 import Button from "@rahoot/web/components/Button"
+import Card from "@rahoot/web/components/Card"
 import QuestionMedia from "@rahoot/web/components/QuestionMedia"
 import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
 import { Image, ImageOff, Music, Video } from "lucide-react"
@@ -41,13 +42,13 @@ const QuestionEditorMedia = () => {
   }
 
   return (
-    <div className="relative flex flex-1 flex-col items-center justify-center gap-3 p-4">
+    <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-3 p-4">
       <QuestionMedia media={currentQuestion.media} alt="Question Media" />
 
       {!questionMedia?.type && (
-        <div className="flex flex-1 flex-col items-center justify-center gap-2">
-          <ImageOff className="size-16 stroke-gray-400" />
-          <p className="text-center text-sm text-gray-400">
+        <Card className="my-14 flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-2 bg-white">
+          <ImageOff className="size-16 stroke-gray-600" />
+          <p className="text-center text-sm text-gray-600">
             Add an image, video or audio to your question
           </p>
           <input
@@ -85,7 +86,7 @@ const QuestionEditorMedia = () => {
               </div>
             </Button>
           </div>
-        </div>
+        </Card>
       )}
 
       {questionMedia?.type && (

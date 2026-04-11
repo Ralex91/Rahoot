@@ -64,11 +64,11 @@ const QuestionEditorAnswers = () => {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="z-10 flex flex-col gap-3">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm font-semibold text-gray-500">
+        <div className="rounded bg-white px-2 py-1 text-sm font-semibold text-gray-500">
           {currentQuestion.answers.length} answers
-        </span>
+        </div>
         <div className="flex gap-2">
           <button
             onClick={removeAnswer}

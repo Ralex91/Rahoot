@@ -12,7 +12,7 @@ const QuestionEditorConfig = () => {
   }
 
   return (
-    <aside className="flex w-68 shrink-0 flex-col gap-6 overflow-auto bg-white p-4 shadow-sm">
+    <aside className="z-10 flex w-68 shrink-0 flex-col gap-6 overflow-auto bg-white p-4 shadow-sm">
       <ConfigSection title="Timings">
         <ConfigField>
           <ConfigField.Label
