@@ -39,7 +39,7 @@ export type CommonStatusDataMap = {
     aheadOfMe: string | null
   }
   WAIT: { text: string }
-  FINISHED: { subject: string; top: Player[] }
+  FINISHED: { subject: string; top: Player[]; rank?: number }
 }
 
 type ManagerExtraStatus = {

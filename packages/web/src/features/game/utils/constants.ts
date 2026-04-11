@@ -1,6 +1,7 @@
 import { EVENTS } from "@rahoot/common/constants"
 import Answers from "@rahoot/web/features/game/components/states/Answers"
 import Leaderboard from "@rahoot/web/features/game/components/states/Leaderboard"
+import PlayerFinished from "@rahoot/web/features/game/components/states/PlayerFinished"
 import Podium from "@rahoot/web/features/game/components/states/Podium"
 import Prepared from "@rahoot/web/features/game/components/states/Prepared"
 import Question from "@rahoot/web/features/game/components/states/Question"
@@ -43,6 +44,7 @@ export const GAME_STATE_COMPONENTS = {
   [STATUS.SHOW_START]: Start,
   [STATUS.SHOW_RESULT]: Result,
   [STATUS.SHOW_PREPARED]: Prepared,
+  [STATUS.FINISHED]: PlayerFinished,
 }
 
 export const GAME_STATE_COMPONENTS_MANAGER = {
@@ -94,6 +96,6 @@ export const MANAGER_SKIP_BTN = {
   [STATUS.SHOW_RESULT]: null,
   [STATUS.SHOW_RESPONSES]: "Next",
   [STATUS.SHOW_LEADERBOARD]: "Next",
-  [STATUS.FINISHED]: null,
+  [STATUS.FINISHED]: "Exit",
   [STATUS.WAIT]: null,
 }

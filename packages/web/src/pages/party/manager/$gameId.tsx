@@ -1,4 +1,5 @@
 import { EVENTS } from "@rahoot/common/constants"
+import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
 import {
   useEvent,
@@ -45,14 +46,26 @@ const ManagerGamePage = () => {
   )
 
   useEvent(EVENTS.GAME.RESET, (message) => {
-    navigate({ to: "/manager" })
+    navigate({ to: "/manager/config" })
     reset()
     setQuestionStates(null)
     toast.error(message)
   })
 
   const handleSkip = () => {
-    if (!gameId || !status) {
+    if (!status) {
+      return
+    }
+
+    if (status.name === STATUS.FINISHED) {
+      navigate({ to: "/manager/config" })
+      reset()
+      setQuestionStates(null)
+
+      return
+    }
+
+    if (!gameId) {
       return
     }
 

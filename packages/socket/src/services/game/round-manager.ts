@@ -282,9 +282,19 @@ export class RoundManager {
     if (isLastRound) {
       this.started = false
 
-      this.opts.broadcast(STATUS.FINISHED, {
+      const top = this.leaderboard.slice(0, 3)
+
+      this.opts.send(this.opts.getManagerId(), STATUS.FINISHED, {
         subject: this.opts.quizz.subject,
-        top: this.leaderboard.slice(0, 3),
+        top,
+      })
+
+      this.leaderboard.forEach((player, index) => {
+        this.opts.send(player.id, STATUS.FINISHED, {
+          subject: this.opts.quizz.subject,
+          top,
+          rank: index + 1,
+        })
       })
 
       return
