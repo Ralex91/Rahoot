@@ -1,18 +1,50 @@
 import { EVENTS } from "@rahoot/common/constants"
 import AlertDialog from "@rahoot/web/components/AlertDialog"
 import Button from "@rahoot/web/components/Button"
-import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
+import {
+  useEvent,
+  useSocket,
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
 import { useNavigate } from "@tanstack/react-router"
-import { SquarePen, Trash2 } from "lucide-react"
+import { SquarePen, Trash2, Upload } from "lucide-react"
+import { type ChangeEvent, useRef } from "react"
+import toast from "react-hot-toast"
 
 const ConfigManageQuizz = () => {
   const { quizz } = useConfig()
   const { socket } = useSocket()
   const navigate = useNavigate()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEvent(EVENTS.QUIZZ.ERROR, (message) => {
+    toast.error(message)
+  })
 
   const handleDelete = (id: string) => () => {
     socket?.emit(EVENTS.QUIZZ.DELETE, id)
+  }
+
+  const handleImport = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+
+    if (!file) {
+      return
+    }
+
+    const reader = new FileReader()
+
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string)
+        socket?.emit(EVENTS.QUIZZ.SAVE, data)
+      } catch {
+        toast.error("Invalid JSON file")
+      }
+    }
+
+    reader.readAsText(file)
+    e.target.value = ""
   }
 
   return (
@@ -24,6 +56,20 @@ const ConfigManageQuizz = () => {
         >
           Create Quizz
         </Button>
+        <Button
+          className="mb-4 bg-gray-100 px-3 text-gray-600"
+          onClick={() => fileInputRef.current?.click()}
+          title="Import quizz from JSON"
+        >
+          <Upload className="size-4" />
+        </Button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          className="hidden"
+          onChange={handleImport}
+        />
       </div>
       <div className="w-full space-y-2">
         {quizz.map((q) => (
@@ -60,7 +106,7 @@ const ConfigManageQuizz = () => {
           </div>
         ))}
         {quizz.length === 0 && (
-          <p className="text-center text-gray-500">No quizz created yet</p>
+          <p className="my-8 text-center text-gray-500">No quizz created yet</p>
         )}
       </div>
     </div>

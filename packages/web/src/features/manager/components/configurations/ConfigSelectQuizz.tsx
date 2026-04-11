@@ -52,10 +52,18 @@ const ConfigSelectQuizz = () => {
             ></div>
           </button>
         ))}
+        {!quizzList.length && (
+          <div className="my-8 text-center text-gray-500">
+            <p>No quizz found</p>
+            <p className="text-sm">Please create a quizz first</p>
+          </div>
+        )}
       </div>
-      <Button className="mt-4" onClick={handleSubmit}>
-        Start game
-      </Button>
+      {quizzList.length > 0 && (
+        <Button className="mt-4" onClick={handleSubmit}>
+          Start game
+        </Button>
+      )}
     </div>
   )
 }

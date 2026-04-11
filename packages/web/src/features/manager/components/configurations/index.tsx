@@ -1,12 +1,12 @@
 import { EVENTS } from "@rahoot/common/constants"
 import type { ManagerConfig } from "@rahoot/common/types/manager"
 import Card from "@rahoot/web/components/Card"
+import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
+import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
 import ConfigManageQuizz from "@rahoot/web/features/manager/components/configurations/ConfigManageQuizz"
 import ConfigSelectQuizz from "@rahoot/web/features/manager/components/configurations/ConfigSelectQuizz"
 import ConfigTabButton from "@rahoot/web/features/manager/components/configurations/ConfigTabButton"
 import { ConfigProvider } from "@rahoot/web/features/manager/contexts/config-context"
-import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
 import { LogOut } from "lucide-react"
 import { useState } from "react"
 
@@ -53,7 +53,7 @@ const Configurations = ({ data }: Props) => {
             <LogOut className="size-4" />
           </button>
         </div>
-        <div className="flex shrink-0 overflow-hidden rounded-md border border-gray-200">
+        <div className="flex shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
           {tabs.map((tab, index) => (
             <ConfigTabButton
               key={tab.name}
