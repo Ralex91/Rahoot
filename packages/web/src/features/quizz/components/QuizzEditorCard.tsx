@@ -45,7 +45,7 @@ const QuizzEditorCard = ({
     onClick={onClick}
     className={twMerge(
       clsx(
-        "group relative flex h-36 cursor-pointer flex-col justify-between gap-1 rounded-sm border-2 border-gray-200 bg-white px-4 py-2",
+        "group relative flex h-36 cursor-pointer flex-col justify-between gap-1 rounded-sm border-2 border-gray-200 bg-white px-6 py-2",
         {
           "border-primary": isActive,
         },
@@ -79,7 +79,7 @@ const QuizzEditorCard = ({
         trigger={
           <button
             onClick={(e) => e.stopPropagation()}
-            className="absolute top-1.5 right-1.5 hidden rounded-sm p-1 text-gray-400 group-hover:block hover:bg-red-50 hover:text-red-500"
+            className="absolute top-1.5 right-1.5 hidden rounded-sm bg-white p-1 text-gray-400 group-hover:block hover:bg-red-50 hover:text-red-500"
           >
             <Trash2 className="size-3.5" />
           </button>
