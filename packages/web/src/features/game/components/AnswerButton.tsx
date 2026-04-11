@@ -23,8 +23,8 @@ const AnswerButton = ({
     )}
     {...otherProps}
   >
-    <Icon className="h-6 w-6" />
-    <span className="drop-shadow-md">{children}</span>
+    <Icon className="h-6 w-6 shrink-0" />
+    <span className="w-full drop-shadow-md">{children}</span>
   </button>
 )
 

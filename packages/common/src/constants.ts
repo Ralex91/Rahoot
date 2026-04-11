@@ -36,5 +36,58 @@ export const EVENTS = {
     ABORT_QUIZ: "manager:abortQuiz",
     NEXT_QUESTION: "manager:nextQuestion",
     SHOW_LEADERBOARD: "manager:showLeaderboard",
+    GET_CONFIG: "manager:getConfig",
+    LOGOUT: "manager:logout",
+    UNAUTHORIZED: "manager:unauthorized",
   },
+  QUIZZ: {
+    GET: "quizz:get",
+    DATA: "quizz:data",
+    SAVE: "quizz:save",
+    SAVE_SUCCESS: "quizz:saveSuccess",
+    UPDATE: "quizz:update",
+    UPDATE_SUCCESS: "quizz:updateSuccess",
+    ERROR: "quizz:error",
+  },
+} as const
+
+export const MEDIA_TYPES = {
+  IMAGE: "image",
+  VIDEO: "video",
+  AUDIO: "audio",
+} as const
+
+export const EXAMPLE_QUIZZ = {
+  subject: "Example Quizz",
+  questions: [
+    {
+      question: "What is good answer ?",
+      answers: ["No", "Good answer", "No", "No"],
+      solution: 1,
+      cooldown: 5,
+      time: 15,
+    },
+    {
+      question: "What is good answer with image ?",
+      answers: ["No", "No", "No", "Good answer"],
+      media: {
+        type: MEDIA_TYPES.IMAGE,
+        url: "https://placehold.co/600x400.png",
+      },
+      solution: 3,
+      cooldown: 5,
+      time: 20,
+    },
+    {
+      question: "What is good answer with two answers ?",
+      answers: ["Good answer", "No"],
+      media: {
+        type: MEDIA_TYPES.IMAGE,
+        url: "https://placehold.co/600x400.png",
+      },
+      solution: 0,
+      cooldown: 5,
+      time: 20,
+    },
+  ],
 } as const

@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@rahoot/common": "workspace:*",
     "@rahoot/socket": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",

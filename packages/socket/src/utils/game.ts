@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid"
 import type { Socket } from "@rahoot/common/types/game/socket"
 import Game from "@rahoot/socket/services/game"
 import Registry from "@rahoot/socket/services/registry"
@@ -36,6 +37,21 @@ export const createInviteCode = (length = 6) => {
   }
 
   return result
+}
+
+export const normalizeFilename = (subject: string) => {
+  const slug = subject
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/gu, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/gu, "-")
+    .replace(/[^a-z0-9-]/gu, "")
+    .slice(0, 10)
+
+  const shortId = nanoid(8)
+
+  return `${slug}-${shortId}`
 }
 
 export const timeToPoint = (startTime: number, secondes: number): number => {

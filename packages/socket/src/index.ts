@@ -1,6 +1,7 @@
 import type { Server } from "@rahoot/common/types/game/socket"
 import { gameSocketHandlers } from "@rahoot/socket/handlers/game"
 import { managerSocketHandlers } from "@rahoot/socket/handlers/manager"
+import { quizzSocketHandlers } from "@rahoot/socket/handlers/quizz"
 import type { SocketHandler } from "@rahoot/socket/handlers/types"
 import Config from "@rahoot/socket/services/config"
 import Registry from "@rahoot/socket/services/registry"
@@ -18,6 +19,7 @@ io.listen(WS_PORT)
 
 const socketHandlers: SocketHandler[] = [
   managerSocketHandlers,
+  quizzSocketHandlers,
   gameSocketHandlers,
 ]
 

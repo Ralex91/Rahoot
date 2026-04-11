@@ -1,4 +1,4 @@
-import { EVENTS } from "@rahoot/common/constants"
+import { EVENTS, MEDIA_TYPES } from "@rahoot/common/constants"
 import type { Answer, Player, Quizz } from "@rahoot/common/types/game"
 import type { Server, Socket } from "@rahoot/common/types/game/socket"
 import {
@@ -6,10 +6,10 @@ import {
   STATUS,
   type StatusDataMap,
 } from "@rahoot/common/types/game/status"
+import { CooldownTimer } from "@rahoot/socket/services/game/cooldown-timer"
+import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
 import { timeToPoint } from "@rahoot/socket/utils/game"
 import sleep from "@rahoot/socket/utils/sleep"
-import { CooldownTimer } from "./cooldown-timer"
-import { PlayerManager } from "./player-manager"
 
 type BroadcastFn = <T extends Status>(
   _status: T,
@@ -112,9 +112,12 @@ export class RoundManager {
       return
     }
 
+    const imageMedia =
+      question.media?.type === MEDIA_TYPES.IMAGE ? question.media : undefined
+
     this.opts.broadcast(STATUS.SHOW_QUESTION, {
       question: question.question,
-      image: question.image,
+      media: imageMedia,
       cooldown: question.cooldown,
     })
 
@@ -129,9 +132,7 @@ export class RoundManager {
     this.opts.broadcast(STATUS.SELECT_ANSWER, {
       question: question.question,
       answers: question.answers,
-      image: question.image,
-      video: question.video,
-      audio: question.audio,
+      media: question.media,
       time: question.time,
       totalPlayer: this.opts.players.count(),
     })

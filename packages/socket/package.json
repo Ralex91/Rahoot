@@ -13,6 +13,7 @@
   "dependencies": {
     "@rahoot/common": "workspace:*",
     "dayjs": "^1.11.20",
+    "nanoid": "^5.1.7",
     "socket.io": "^4.8.3",
     "typescript": "^6.0.2",
     "uuid": "^13.0.0",
@@ -24,8 +25,8 @@
     "esbuild": "^0.28.0",
     "eslint": "^9.39.4",
     "globals": "^17.4.0",
-    "tsx": "^4.21.0",
     "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
     "typescript-eslint": "^8.58.0"
   }
 }

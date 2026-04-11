@@ -1,5 +1,7 @@
-import { EVENTS } from "@rahoot/common/constants"
+import { EVENTS, MEDIA_TYPES } from "@rahoot/common/constants"
+import type { QuestionMediaType } from "@rahoot/common/types/game"
 import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
+import QuestionMedia from "@rahoot/web/components/QuestionMedia"
 import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
 import {
   useEvent,
@@ -20,7 +22,7 @@ type Props = {
 }
 
 const Answers = ({
-  data: { question, answers, image, audio, video, time, totalPlayer },
+  data: { question, answers, media, time, totalPlayer },
 }: Props) => {
   const { socket } = useSocket()
   const { player, gameId } = usePlayerStore()
@@ -53,7 +55,12 @@ const Answers = ({
   }
 
   useEffect(() => {
-    if (video || audio) {
+    const disabledMusicMedia = [
+      MEDIA_TYPES.AUDIO,
+      MEDIA_TYPES.VIDEO,
+    ] as QuestionMediaType[]
+
+    if (disabledMusicMedia.includes(media?.type)) {
       return
     }
 
@@ -81,31 +88,7 @@ const Answers = ({
           {question}
         </h2>
 
-        {Boolean(audio) && !player && (
-          <audio
-            className="m-4 mb-2 w-auto rounded-md"
-            src={audio}
-            autoPlay
-            controls
-          />
-        )}
-
-        {Boolean(video) && !player && (
-          <video
-            className="m-4 mb-2 aspect-video max-h-60 w-auto rounded-md px-4 sm:max-h-100"
-            src={video}
-            autoPlay
-            controls
-          />
-        )}
-
-        {Boolean(image) && (
-          <img
-            alt={question}
-            src={image}
-            className="mb-2 max-h-60 w-auto rounded-md px-4 sm:max-h-100"
-          />
-        )}
+        <QuestionMedia media={media} alt={question} />
       </div>
 
       <div>

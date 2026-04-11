@@ -7,7 +7,6 @@ const Toaster = () => (
         toast={t}
         style={{
           ...t.style,
-          boxShadow: "rgba(0, 0, 0, 0.25) 0px -4px inset",
           fontWeight: 700,
         }}
       >

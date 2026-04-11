@@ -2,6 +2,8 @@ import { EVENTS } from "@rahoot/common/constants"
 import type {
   GameUpdateQuestion,
   Player,
+  Quizz,
+  QuizzMeta,
   QuizzWithId,
 } from "@rahoot/common/types/game"
 import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
@@ -62,7 +64,8 @@ export interface ServerToClientEvents {
     players: Player[]
     currentQuestion: GameUpdateQuestion
   }) => void
-  [EVENTS.MANAGER.CONFIG]: (_config: { quizz: QuizzWithId[] }) => void
+  [EVENTS.MANAGER.CONFIG]: (_config: { quizz: QuizzMeta[] }) => void
+  [EVENTS.QUIZZ.DATA]: (_quizz: QuizzWithId) => void
   [EVENTS.MANAGER.GAME_CREATED]: (_data: {
     gameId: string
     inviteCode: string
@@ -75,6 +78,12 @@ export interface ServerToClientEvents {
   [EVENTS.MANAGER.REMOVE_PLAYER]: (_playerId: string) => void
   [EVENTS.MANAGER.ERROR_MESSAGE]: (_message: string) => void
   [EVENTS.MANAGER.PLAYER_KICKED]: (_playerId: string) => void
+  [EVENTS.MANAGER.UNAUTHORIZED]: () => void
+
+  // Quizz events
+  [EVENTS.QUIZZ.SAVE_SUCCESS]: (_data: { id: string }) => void
+  [EVENTS.QUIZZ.UPDATE_SUCCESS]: (_data: { id: string }) => void
+  [EVENTS.QUIZZ.ERROR]: (_message: string) => void
 }
 
 export interface ClientToServerEvents {
@@ -90,6 +99,13 @@ export interface ClientToServerEvents {
   [EVENTS.MANAGER.ABORT_QUIZ]: (_message: MessageGameId) => void
   [EVENTS.MANAGER.NEXT_QUESTION]: (_message: MessageGameId) => void
   [EVENTS.MANAGER.SHOW_LEADERBOARD]: (_message: MessageGameId) => void
+  [EVENTS.MANAGER.GET_CONFIG]: () => void
+  [EVENTS.MANAGER.LOGOUT]: () => void
+
+  // Quizz actions
+  [EVENTS.QUIZZ.GET]: (_id: string) => void
+  [EVENTS.QUIZZ.SAVE]: (_quizz: Quizz) => void
+  [EVENTS.QUIZZ.UPDATE]: (_data: QuizzWithId) => void
 
   // Player actions
   [EVENTS.PLAYER.JOIN]: (_inviteCode: string) => void

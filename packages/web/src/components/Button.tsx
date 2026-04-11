@@ -7,6 +7,7 @@ type Size = "sm" | "md" | "lg"
 type Props = ButtonHTMLAttributes<HTMLButtonElement> &
   PropsWithChildren & {
     size?: Size
+    classNameContent?: string
   }
 
 const sizeClasses: Record<Size, string> = {
@@ -15,7 +16,13 @@ const sizeClasses: Record<Size, string> = {
   lg: "px-5 py-3 text-xl",
 }
 
-const Button = ({ children, className, size = "md", ...otherProps }: Props) => (
+const Button = ({
+  children,
+  className,
+  classNameContent,
+  size = "md",
+  ...otherProps
+}: Props) => (
   <button
     className={twMerge(
       clsx(
@@ -26,7 +33,16 @@ const Button = ({ children, className, size = "md", ...otherProps }: Props) => (
     )}
     {...otherProps}
   >
-    <span>{children}</span>
+    <div
+      className={twMerge(
+        clsx(
+          "btn-content flex items-center justify-center gap-2",
+          classNameContent,
+        ),
+      )}
+    >
+      {children}
+    </div>
   </button>
 )
 

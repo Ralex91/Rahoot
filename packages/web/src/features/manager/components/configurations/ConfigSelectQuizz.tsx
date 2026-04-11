@@ -1,14 +1,14 @@
 import { EVENTS } from "@rahoot/common/constants"
 import Button from "@rahoot/web/components/Button"
 import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
-import { useSettings } from "@rahoot/web/features/manager/contexts/settings-context"
+import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
 import clsx from "clsx"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
 const ConfigSelectQuizz = () => {
   const { socket } = useSocket()
-  const { quizz: quizzList } = useSettings()
+  const { quizz: quizzList } = useConfig()
   const [selected, setSelected] = useState<string | null>(null)
 
   const handleSelect = (id: string) => () => {
