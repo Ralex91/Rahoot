@@ -180,6 +180,7 @@ export class RoundManager {
           playerAnswer && isCorrect ? Math.round(playerAnswer.points) : 0
 
         player.points += points
+        player.streak = isCorrect ? player.streak + 1 : 0
 
         return { ...player, lastCorrect: isCorrect, lastPoints: points }
       })

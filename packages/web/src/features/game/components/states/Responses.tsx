@@ -88,6 +88,7 @@ const Responses = ({
                 "opacity-65": responses && !solutions.includes(key),
               })}
               icon={ANSWERS_ICONS[key]}
+              correct={solutions.includes(key)}
             >
               {answer}
             </AnswerButton>

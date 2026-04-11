@@ -85,10 +85,10 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
         {playerList.map((player) => (
           <div
             key={player.id}
-            className="shadow-inset bg-primary rounded-md px-4 py-3 font-bold text-white"
+            className="bg-primary rounded-md px-4 py-3 font-bold text-white"
             onClick={handleKick(player.id)}
           >
-            <span className="cursor-pointer text-3xl drop-shadow-md hover:line-through">
+            <span className="cursor-pointer text-3xl drop-shadow-sm hover:line-through">
               {player.username}
             </span>
           </div>

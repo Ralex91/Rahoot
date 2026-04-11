@@ -6,6 +6,7 @@ export type Player = {
   connected: boolean
   username: string
   points: number
+  streak: number
 }
 
 export type Answer = {
