@@ -40,6 +40,23 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
   )
 
   socket.on(
+    EVENTS.QUIZZ.DELETE,
+    withAuth(socket, (id) => {
+      try {
+        Config.deleteQuizz(id)
+
+        emitConfig(socket)
+      } catch (error) {
+        console.error("Failed to delete quizz:", error)
+        socket.emit(
+          EVENTS.QUIZZ.ERROR,
+          error instanceof Error ? error.message : "Failed to delete quizz",
+        )
+      }
+    }),
+  )
+
+  socket.on(
     EVENTS.QUIZZ.UPDATE,
     withAuth(socket, ({ id, ...data }) => {
       try {

@@ -47,6 +47,7 @@ export const EVENTS = {
     SAVE_SUCCESS: "quizz:saveSuccess",
     UPDATE: "quizz:update",
     UPDATE_SUCCESS: "quizz:updateSuccess",
+    DELETE: "quizz:delete",
     ERROR: "quizz:error",
   },
 } as const

@@ -139,6 +139,16 @@ class Config {
     return { id }
   }
 
+  static deleteQuizz(id: string): void {
+    const filePath = getPath(`quizz/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Quizz "${id}" not found`)
+    }
+
+    fs.unlinkSync(filePath)
+  }
+
   static saveQuizz(data: unknown): { id: string } {
     const result = quizzValidator.safeParse(data)
 

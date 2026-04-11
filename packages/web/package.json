@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
     "@rahoot/common": "workspace:*",
     "@rahoot/socket": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",

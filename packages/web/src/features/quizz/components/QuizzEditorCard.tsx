@@ -1,5 +1,6 @@
 import { MEDIA_TYPES } from "@rahoot/common/constants"
 import type { QuestionMedia } from "@rahoot/common/types/game"
+import AlertDialog from "@rahoot/web/components/AlertDialog"
 import { type QuestionWithId } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
 import clsx from "clsx"
 import { Music, Trash2, Video } from "lucide-react"
@@ -74,15 +75,20 @@ const QuizzEditorCard = ({
     </div>
 
     {canDelete && (
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          onDelete()
-        }}
-        className="absolute top-1.5 right-1.5 hidden rounded-sm p-1 text-gray-400 group-hover:block hover:bg-red-50 hover:text-red-500"
-      >
-        <Trash2 className="size-3.5" />
-      </button>
+      <AlertDialog
+        trigger={
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="absolute top-1.5 right-1.5 hidden rounded-sm p-1 text-gray-400 group-hover:block hover:bg-red-50 hover:text-red-500"
+          >
+            <Trash2 className="size-3.5" />
+          </button>
+        }
+        title="Delete question"
+        description="Are you sure you want to delete this question?"
+        confirmLabel="Delete"
+        onConfirm={onDelete}
+      />
     )}
   </div>
 )

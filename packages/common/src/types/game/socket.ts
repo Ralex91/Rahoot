@@ -106,6 +106,7 @@ export interface ClientToServerEvents {
   [EVENTS.QUIZZ.GET]: (_id: string) => void
   [EVENTS.QUIZZ.SAVE]: (_quizz: Quizz) => void
   [EVENTS.QUIZZ.UPDATE]: (_data: QuizzWithId) => void
+  [EVENTS.QUIZZ.DELETE]: (_id: string) => void
 
   // Player actions
   [EVENTS.PLAYER.JOIN]: (_inviteCode: string) => void
