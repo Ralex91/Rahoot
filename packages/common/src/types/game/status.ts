@@ -47,7 +47,7 @@ type ManagerExtraStatus = {
   SHOW_RESPONSES: {
     question: string
     responses: Record<number, number>
-    correct: number
+    solutions: number[]
     answers: string[]
     image?: string
     video?: string

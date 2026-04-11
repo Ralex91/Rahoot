@@ -30,7 +30,7 @@ const defaultQuestion = (): QuestionWithId => ({
   id: crypto.randomUUID(),
   question: "",
   answers: ["", ""],
-  solution: 0,
+  solutions: [0],
   cooldown: 5,
   time: 20,
 })

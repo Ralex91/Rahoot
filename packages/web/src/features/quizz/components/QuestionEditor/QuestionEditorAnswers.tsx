@@ -41,10 +41,24 @@ const QuestionEditorAnswers = () => {
     }
 
     const next = currentQuestion.answers.slice(0, -1)
+    const maxIndex = next.length - 1
+    const nextSolution = currentQuestion.solutions.filter((s) => s <= maxIndex)
+
     updateQuestion(currentIndex, {
       answers: next,
-      solution: Math.min(currentQuestion.solution, next.length - 1),
+      solutions: nextSolution.length > 0 ? nextSolution : [0],
     })
+  }
+
+  const toggleSolution = (index: number) => {
+    const current = currentQuestion.solutions
+
+    if (current.includes(index)) {
+      const next = current.filter((s) => s !== index)
+      updateQuestion(currentIndex, { solutions: next.length > 0 ? next : [index] })
+    } else {
+      updateQuestion(currentIndex, { solutions: [...current, index] })
+    }
   }
 
   return (
@@ -74,7 +88,7 @@ const QuestionEditorAnswers = () => {
       <div className="grid grid-cols-2 gap-3">
         {currentQuestion.answers.map((answer, i) => {
           const Icon = ANSWERS_ICONS[i]
-          const isSelected = currentQuestion.solution === i
+          const isSelected = currentQuestion.solutions.includes(i)
 
           return (
             <div
@@ -94,7 +108,7 @@ const QuestionEditorAnswers = () => {
                 />
                 <button
                   type="button"
-                  onClick={() => updateQuestion(currentIndex, { solution: i })}
+                  onClick={() => toggleSolution(i)}
                   className={clsx(
                     "flex size-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
                     isSelected

@@ -173,7 +173,7 @@ export class RoundManager {
         )
 
         const isCorrect = playerAnswer
-          ? playerAnswer.answerId === question.solution
+          ? question.solutions.includes(playerAnswer.answerId)
           : false
 
         const points =
@@ -204,7 +204,7 @@ export class RoundManager {
     this.opts.send(this.opts.getManagerId(), STATUS.SHOW_RESPONSES, {
       question: question.question,
       responses: totalType,
-      correct: question.solution,
+      solutions: question.solutions,
       answers: question.answers,
       image: question.image,
     })

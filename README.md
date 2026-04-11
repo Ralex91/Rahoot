@@ -123,10 +123,27 @@ Example quiz configuration (`config/quizz/example.json`):
     {
       "question": "What is the correct answer?",
       "answers": ["No", "Yes", "No", "No"],
-      "image": "https://images.unsplash.com/....",
-      "solution": 1,
+      "solutions": [1],
       "cooldown": 5,
       "time": 15
+    },
+    {
+      "question": "Which of these are primary colors?",
+      "answers": ["Red", "Green", "Blue", "Yellow"],
+      "solutions": [0, 2, 3],
+      "cooldown": 5,
+      "time": 20
+    },
+    {
+      "question": "What is the correct answer with an image?",
+      "answers": ["No", "Yes", "No", "No"],
+      "media": {
+        "type": "image",
+        "url": "https://placehold.co/600x400.png"
+      },
+      "solutions": [1],
+      "cooldown": 5,
+      "time": 20
     }
   ]
 }
@@ -138,12 +155,12 @@ Quiz Options:
 - `questions`: Array of question objects containing:
   - `question`: The question text
   - `answers`: Array of possible answers (2-4 options)
-  - `image`: Optional URL for an image displayed with the question
-  - `video`: Optional URL for a video displayed with the question
-  - `audio`: Optional URL for an audio played during the question
-  - `solution`: Index of correct answer (0-based)
-  - `cooldown`: Time in seconds before showing the question
-  - `time`: Time in seconds allowed to answer
+  - `media`: Optional media object displayed with the question:
+    - `type`: `"image"`, `"video"`, or `"audio"`
+    - `url`: URL of the media
+  - `solutions`: Array of correct answer indices (0-based). Use multiple indices for multi-answer questions
+  - `cooldown`: Time in seconds before answers are revealed (3-15)
+  - `time`: Time in seconds allowed to answer (5-120)
 
 ## 🎮 How to Play
 

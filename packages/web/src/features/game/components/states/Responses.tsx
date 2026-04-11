@@ -15,7 +15,7 @@ type Props = {
 }
 
 const Responses = ({
-  data: { question, answers, responses, correct },
+  data: { question, answers, responses, solutions },
 }: Props) => {
   const [percentages, setPercentages] = useState<Record<string, string>>({})
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
@@ -85,7 +85,7 @@ const Responses = ({
             <AnswerButton
               key={key}
               className={clsx(ANSWERS_COLORS[key], {
-                "opacity-65": responses && correct !== key,
+                "opacity-65": responses && !solutions.includes(key),
               })}
               icon={ANSWERS_ICONS[key]}
             >

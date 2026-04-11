@@ -15,7 +15,12 @@ const questionValidator = z.object({
     .array(z.string().min(1, "Answer cannot be empty"))
     .min(2, "A question must have at least 2 answers")
     .max(4, "A question cannot have more than 4 answers"),
-  solution: z.number().int().min(0, "Solution must be a valid answer index"),
+  solutions: z
+    .union([
+      z.number().int().min(0),
+      z.array(z.number().int().min(0)).min(1),
+    ])
+    .transform((v) => (Array.isArray(v) ? v : [v])),
   cooldown: z.number().int().min(3).max(15),
   time: z.number().int().min(5).max(120),
 })

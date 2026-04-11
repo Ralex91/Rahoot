@@ -27,7 +27,7 @@ export type Question = {
   question: string
   media?: QuestionMedia
   answers: string[]
-  solution: number
+  solutions: number[]
   cooldown: number
   time: number
 }
