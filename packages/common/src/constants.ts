@@ -50,6 +50,11 @@ export const EVENTS = {
     DELETE: "quizz:delete",
     ERROR: "quizz:error",
   },
+  RESULTS: {
+    GET: "results:get",
+    DATA: "results:data",
+    DELETE: "results:delete",
+  },
 } as const
 
 export const MEDIA_TYPES = {

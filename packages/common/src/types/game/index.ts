@@ -46,3 +46,38 @@ export type GameUpdateQuestion = {
   current: number
   total: number
 }
+
+export type PlayerAnswerRecord = {
+  playerName: string
+  answerId: number | null
+}
+
+export type QuestionResult = {
+  question: string
+  answers: string[]
+  solutions: number[]
+  media?: QuestionMedia
+  time: number
+  playerAnswers: PlayerAnswerRecord[]
+}
+
+export type GameResultPlayer = {
+  username: string
+  points: number
+  rank: number
+}
+
+export type GameResult = {
+  id: string
+  subject: string
+  date: string
+  players: GameResultPlayer[]
+  questions: QuestionResult[]
+}
+
+export type GameResultMeta = {
+  id: string
+  subject: string
+  date: string
+  playerCount: number
+}

@@ -2,6 +2,7 @@ import type { Server } from "@rahoot/common/types/game/socket"
 import { gameSocketHandlers } from "@rahoot/socket/handlers/game"
 import { managerSocketHandlers } from "@rahoot/socket/handlers/manager"
 import { quizzSocketHandlers } from "@rahoot/socket/handlers/quizz"
+import { resultsSocketHandlers } from "@rahoot/socket/handlers/results"
 import type { SocketHandler } from "@rahoot/socket/handlers/types"
 import Config from "@rahoot/socket/services/config"
 import Registry from "@rahoot/socket/services/registry"
@@ -21,6 +22,7 @@ const socketHandlers: SocketHandler[] = [
   managerSocketHandlers,
   quizzSocketHandlers,
   gameSocketHandlers,
+  resultsSocketHandlers,
 ]
 
 io.on("connection", (socket) => {

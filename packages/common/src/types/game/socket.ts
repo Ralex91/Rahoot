@@ -1,12 +1,13 @@
 import { EVENTS } from "@rahoot/common/constants"
 import type {
+  GameResult,
   GameUpdateQuestion,
   Player,
   Quizz,
-  QuizzMeta,
   QuizzWithId,
 } from "@rahoot/common/types/game"
 import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
+import type { ManagerConfig } from "@rahoot/common/types/manager"
 import { Server as ServerIO, Socket as SocketIO } from "socket.io"
 
 export type Server = ServerIO<ClientToServerEvents, ServerToClientEvents>
@@ -64,7 +65,7 @@ export interface ServerToClientEvents {
     players: Player[]
     currentQuestion: GameUpdateQuestion
   }) => void
-  [EVENTS.MANAGER.CONFIG]: (_config: { quizz: QuizzMeta[] }) => void
+  [EVENTS.MANAGER.CONFIG]: (_config: ManagerConfig) => void
   [EVENTS.QUIZZ.DATA]: (_quizz: QuizzWithId) => void
   [EVENTS.MANAGER.GAME_CREATED]: (_data: {
     gameId: string
@@ -84,6 +85,9 @@ export interface ServerToClientEvents {
   [EVENTS.QUIZZ.SAVE_SUCCESS]: (_data: { id: string }) => void
   [EVENTS.QUIZZ.UPDATE_SUCCESS]: (_data: { id: string }) => void
   [EVENTS.QUIZZ.ERROR]: (_message: string) => void
+
+  // Results events
+  [EVENTS.RESULTS.DATA]: (_result: GameResult) => void
 }
 
 export interface ClientToServerEvents {
@@ -117,6 +121,10 @@ export interface ClientToServerEvents {
   [EVENTS.PLAYER.SELECTED_ANSWER]: (
     _message: MessageWithoutStatus<{ answerKey: number }>,
   ) => void
+
+  // Results actions
+  [EVENTS.RESULTS.GET]: (_id: string) => void
+  [EVENTS.RESULTS.DELETE]: (_id: string) => void
 
   // Common
   disconnect: () => void

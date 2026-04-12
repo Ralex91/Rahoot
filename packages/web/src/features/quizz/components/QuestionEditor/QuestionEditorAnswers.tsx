@@ -101,9 +101,9 @@ const QuestionEditorAnswers = () => {
               )}
             >
               <Icon className="h-6 w-6 shrink-0 fill-white" />
-              <span className="flex w-full items-center justify-between gap-1.5 drop-shadow-md">
+              <div className="flex flex-1 items-center justify-between gap-1.5 drop-shadow-md">
                 <input
-                  className="min-w-0 flex-1 bg-transparent font-semibold text-white placeholder-white/70 outline-none"
+                  className="w-full bg-transparent font-semibold text-white placeholder-white/70 outline-none"
                   placeholder="Add an answer..."
                   value={answer}
                   onChange={(e) => updateAnswer(i, e.target.value)}
@@ -120,7 +120,7 @@ const QuestionEditorAnswers = () => {
                 >
                   {isSelected && <Checkmark />}
                 </button>
-              </span>
+              </div>
             </div>
           )
         })}

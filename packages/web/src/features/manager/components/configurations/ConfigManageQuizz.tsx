@@ -48,16 +48,16 @@ const ConfigManageQuizz = () => {
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="flex gap-2">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="mb-4 flex shrink-0 gap-2">
         <Button
-          className="mb-4 flex-1"
+          className="flex-1"
           onClick={() => navigate({ to: "/manager/quizz" })}
         >
           Create Quizz
         </Button>
         <Button
-          className="mb-4 bg-gray-100 px-3 text-gray-600"
+          className="bg-gray-100 px-3 text-gray-600"
           onClick={() => fileInputRef.current?.click()}
           title="Import quizz from JSON"
         >
@@ -71,7 +71,7 @@ const ConfigManageQuizz = () => {
           onChange={handleImport}
         />
       </div>
-      <div className="w-full space-y-2">
+      <div className="min-h-0 flex-1 space-y-2 overflow-auto p-0.5">
         {quizz.map((q) => (
           <div
             key={q.id}

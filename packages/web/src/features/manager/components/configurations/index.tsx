@@ -4,6 +4,7 @@ import Card from "@rahoot/web/components/Card"
 import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
 import ConfigManageQuizz from "@rahoot/web/features/manager/components/configurations/ConfigManageQuizz"
+import ConfigResults from "@rahoot/web/features/manager/components/configurations/ConfigResults"
 import ConfigSelectQuizz from "@rahoot/web/features/manager/components/configurations/ConfigSelectQuizz"
 import ConfigTabButton from "@rahoot/web/features/manager/components/configurations/ConfigTabButton"
 import { ConfigProvider } from "@rahoot/web/features/manager/contexts/config-context"
@@ -18,6 +19,10 @@ const tabs = [
   {
     name: "Quizz",
     component: ConfigManageQuizz,
+  },
+  {
+    name: "Results",
+    component: ConfigResults,
   },
 ]
 
@@ -42,7 +47,7 @@ const Configurations = ({ data }: Props) => {
 
   return (
     <ConfigProvider data={data}>
-      <Card className="max-h-[80svh] min-w-md">
+      <Card className="max-h-[80svh] w-full max-w-md">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-lg font-semibold">Configurations</p>
           <button
@@ -65,7 +70,7 @@ const Configurations = ({ data }: Props) => {
           ))}
         </div>
         <hr className="my-4 text-gray-100" />
-        <div className="overflow-auto p-1">
+        <div className="flex min-h-0 flex-1 flex-col">
           <TabComponent />
         </div>
       </Card>

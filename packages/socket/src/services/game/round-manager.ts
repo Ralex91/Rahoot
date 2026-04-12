@@ -1,5 +1,12 @@
 import { EVENTS, MEDIA_TYPES } from "@rahoot/common/constants"
-import type { Answer, Player, Quizz } from "@rahoot/common/types/game"
+import type {
+  Answer,
+  GameResult,
+  Player,
+  Question,
+  QuestionResult,
+  Quizz,
+} from "@rahoot/common/types/game"
 import type { Server, Socket } from "@rahoot/common/types/game/socket"
 import {
   type Status,
@@ -10,6 +17,7 @@ import { CooldownTimer } from "@rahoot/socket/services/game/cooldown-timer"
 import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
 import { timeToPoint } from "@rahoot/socket/utils/game"
 import sleep from "@rahoot/socket/utils/sleep"
+import { nanoid } from "nanoid"
 
 type BroadcastFn = <T extends Status>(
   _status: T,
@@ -31,6 +39,7 @@ export interface RoundManagerOptions {
   broadcast: BroadcastFn
   send: SendFn
   onNewQuestion: () => void
+  onGameFinished: (_result: GameResult) => void
 }
 
 export class RoundManager {
@@ -41,6 +50,7 @@ export class RoundManager {
   private startTime = 0
   private leaderboard: Player[] = []
   private tempOldLeaderboard: Player[] | null = null
+  private questionsHistory: QuestionResult[] = []
 
   constructor(opts: RoundManagerOptions) {
     this.opts = opts
@@ -146,7 +156,7 @@ export class RoundManager {
     this.showResults(question)
   }
 
-  private showResults(question: any): void {
+  private showResults(question: Question): void {
     const currentPlayers = this.opts.players.getAll()
 
     const oldLeaderboard = (() => {
@@ -207,7 +217,21 @@ export class RoundManager {
       responses: totalType,
       solutions: question.solutions,
       answers: question.answers,
-      image: question.image,
+      media: question.media,
+    })
+
+    this.questionsHistory.push({
+      question: question.question,
+      answers: question.answers,
+      solutions: question.solutions,
+      media: question.media,
+      time: question.time,
+      playerAnswers: currentPlayers.map((player) => ({
+        playerName: player.username,
+        answerId:
+          this.playersAnswers.find((a) => a.playerId === player.id)?.answerId ??
+          null,
+      })),
     })
 
     this.leaderboard = sortedPlayers
@@ -284,6 +308,18 @@ export class RoundManager {
       this.started = false
 
       const top = this.leaderboard.slice(0, 3)
+
+      this.opts.onGameFinished({
+        id: `${Date.now()}-${nanoid(8)}`,
+        subject: this.opts.quizz.subject,
+        date: new Date().toISOString(),
+        players: this.leaderboard.map((player, index) => ({
+          username: player.username,
+          points: player.points,
+          rank: index + 1,
+        })),
+        questions: this.questionsHistory,
+      })
 
       this.opts.send(this.opts.getManagerId(), STATUS.FINISHED, {
         subject: this.opts.quizz.subject,

@@ -1,5 +1,9 @@
 import { EXAMPLE_QUIZZ } from "@rahoot/common/constants"
-import type { QuizzWithId } from "@rahoot/common/types/game"
+import type {
+  GameResult,
+  GameResultMeta,
+  QuizzWithId,
+} from "@rahoot/common/types/game"
 import { quizzValidator } from "@rahoot/common/validators/quizz"
 import { normalizeFilename } from "@rahoot/socket/utils/game"
 import fs from "fs"
@@ -144,6 +148,80 @@ class Config {
 
     if (!fs.existsSync(filePath)) {
       throw new Error(`Quizz "${id}" not found`)
+    }
+
+    fs.unlinkSync(filePath)
+  }
+
+  static saveResult(data: GameResult): void {
+    try {
+      const resultsPath = getPath("results")
+
+      if (!fs.existsSync(resultsPath)) {
+        fs.mkdirSync(resultsPath)
+      }
+
+      fs.writeFileSync(
+        getPath(`results/${data.id}.json`),
+        JSON.stringify(data, null, 2),
+      )
+
+      console.log(`Saved result for "${data.subject}"`)
+    } catch (error) {
+      console.error("Failed to save result:", error)
+    }
+  }
+
+  static resultsMeta(): GameResultMeta[] {
+    const resultsPath = getPath("results")
+
+    if (!fs.existsSync(resultsPath)) {
+      return []
+    }
+
+    const readMeta = (file: string): GameResultMeta | null => {
+      try {
+        const data = fs.readFileSync(getPath(`results/${file}`), "utf-8")
+        const result = JSON.parse(data) as GameResult
+
+        return {
+          id: result.id,
+          subject: result.subject,
+          date: result.date,
+          playerCount: result.players.length,
+        }
+      } catch {
+        return null
+      }
+    }
+
+    try {
+      return fs
+        .readdirSync(resultsPath)
+        .filter((file) => file.endsWith(".json"))
+        .map(readMeta)
+        .filter((meta): meta is GameResultMeta => meta !== null)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    } catch {
+      return []
+    }
+  }
+
+  static resultById(id: string): GameResult {
+    const filePath = getPath(`results/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Result "${id}" not found`)
+    }
+
+    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as GameResult
+  }
+
+  static deleteResult(id: string): void {
+    const filePath = getPath(`results/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Result "${id}" not found`)
     }
 
     fs.unlinkSync(filePath)

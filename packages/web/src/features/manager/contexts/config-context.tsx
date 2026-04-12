@@ -1,17 +1,14 @@
-import type { QuizzMeta } from "@rahoot/common/types/game"
+import type { ManagerConfig } from "@rahoot/common/types/manager"
 import { createContext, useContext, type ReactNode } from "react"
 
-interface ConfigContextValue {
-  quizz: QuizzMeta[]
-}
-
-const ConfigContext = createContext<ConfigContextValue>({
+const ConfigContext = createContext<ManagerConfig>({
   quizz: [],
+  results: [],
 })
 
 type Props = {
   children: ReactNode
-  data: ConfigContextValue
+  data: ManagerConfig
 }
 
 export const ConfigProvider = ({ children, data }: Props) => (

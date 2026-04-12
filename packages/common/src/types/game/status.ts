@@ -49,8 +49,7 @@ type ManagerExtraStatus = {
     responses: Record<number, number>
     solutions: number[]
     answers: string[]
-    image?: string
-    video?: string
+    media?: QuestionMedia
   }
   SHOW_LEADERBOARD: { oldLeaderboard: Player[]; leaderboard: Player[] }
 }

@@ -3,6 +3,7 @@ import Button from "@rahoot/web/components/Button"
 import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
 import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
 import clsx from "clsx"
+import { Check } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
@@ -30,11 +31,13 @@ const ConfigSelectQuizz = () => {
   }
 
   return (
-    <div className="flex flex-col">
-      <h1 className="mb-2 text-lg font-semibold text-gray-600">
-        Select a quizz
-      </h1>
-      <div className="w-full space-y-2">
+    <div className="flex min-h-0 flex-1 flex-col">
+      {quizzList.length > 0 && (
+        <Button className="mb-4 shrink-0" onClick={handleSubmit}>
+          Start game
+        </Button>
+      )}
+      <div className="min-h-0 flex-1 space-y-2 overflow-auto p-0.5">
         {quizzList.map((quizz) => (
           <button
             key={quizz.id}
@@ -45,11 +48,14 @@ const ConfigSelectQuizz = () => {
 
             <div
               className={clsx(
-                "h-5 w-5 rounded outline outline-offset-3 outline-gray-300",
-                selected === quizz.id &&
-                  "bg-primary border-primary/80 shadow-inset",
+                "size-5 rounded p-0.5 outline outline-offset-3 outline-gray-300",
+                selected === quizz.id && "bg-primary border-primary/80",
               )}
-            ></div>
+            >
+              {selected === quizz.id && (
+                <Check className="size-full stroke-2 text-white" />
+              )}
+            </div>
           </button>
         ))}
         {!quizzList.length && (
@@ -59,11 +65,6 @@ const ConfigSelectQuizz = () => {
           </div>
         )}
       </div>
-      {quizzList.length > 0 && (
-        <Button className="mt-4" onClick={handleSubmit}>
-          Start game
-        </Button>
-      )}
     </div>
   )
 }

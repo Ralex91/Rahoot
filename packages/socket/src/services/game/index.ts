@@ -6,6 +6,7 @@ import {
   type Status,
   type StatusDataMap,
 } from "@rahoot/common/types/game/status"
+import Config from "@rahoot/socket/services/config"
 import { CooldownTimer } from "@rahoot/socket/services/game/cooldown-timer"
 import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
 import { RoundManager } from "@rahoot/socket/services/game/round-manager"
@@ -77,6 +78,7 @@ class Game {
         this.playerStatus.clear()
         this.managerStatus = null
       },
+      onGameFinished: Config.saveResult,
     })
 
     socket.join(this.gameId)

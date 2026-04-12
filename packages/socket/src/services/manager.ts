@@ -17,7 +17,10 @@ export const logout = (socket: SocketContext["socket"]) =>
   loggedManagers.delete(getClientId(socket))
 
 export const emitConfig = (socket: SocketContext["socket"]) =>
-  socket.emit(EVENTS.MANAGER.CONFIG, { quizz: Config.quizzMeta() })
+  socket.emit(EVENTS.MANAGER.CONFIG, {
+    quizz: Config.quizzMeta(),
+    results: Config.resultsMeta(),
+  })
 
 export const withAuth =
   <T extends unknown[]>(
