@@ -213,19 +213,12 @@ export class RoundManager {
     })
 
     this.opts.send(this.opts.getManagerId(), STATUS.SHOW_RESPONSES, {
-      question: question.question,
+      ...question,
       responses: totalType,
-      solutions: question.solutions,
-      answers: question.answers,
-      media: question.media,
     })
 
     this.questionsHistory.push({
-      question: question.question,
-      answers: question.answers,
-      solutions: question.solutions,
-      media: question.media,
-      time: question.time,
+      ...question,
       playerAnswers: currentPlayers.map((player) => ({
         playerName: player.username,
         answerId:

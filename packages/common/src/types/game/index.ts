@@ -52,12 +52,7 @@ export type PlayerAnswerRecord = {
   answerId: number | null
 }
 
-export type QuestionResult = {
-  question: string
-  answers: string[]
-  solutions: number[]
-  media?: QuestionMedia
-  time: number
+export type QuestionResult = Question & {
   playerAnswers: PlayerAnswerRecord[]
 }
 
