@@ -12,6 +12,7 @@ import {
 } from "@rahoot/web/features/game/utils/constants"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const PlayerGamePage = () => {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ const PlayerGamePage = () => {
   const { gameId: gameIdParam } = useParams({ from: "/party/$gameId" })
   const { status, setPlayer, setGameId, setStatus, reset } = usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
+  const { t } = useTranslation()
 
   useEvent("connect", () => {
     if (gameIdParam) {
@@ -46,7 +48,7 @@ const PlayerGamePage = () => {
     navigate({ to: "/" })
     reset()
     setQuestionStates(null)
-    toast.error(message)
+    toast.error(t(message))
   })
 
   if (!gameIdParam) {

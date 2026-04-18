@@ -2,6 +2,7 @@ import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import Fire from "@rahoot/web/features/game/components/icons/Fire"
 import { AnimatePresence, motion, useSpring, useTransform } from "motion/react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   data: ManagerStatusDataMap["SHOW_LEADERBOARD"]
@@ -45,6 +46,7 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
   const [displayedLeaderboard, setDisplayedLeaderboard] =
     useState(oldLeaderboard)
   const [isAnimating, setIsAnimating] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setDisplayedLeaderboard(oldLeaderboard)
@@ -63,7 +65,7 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
   return (
     <section className="relative mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-2">
       <h2 className="mb-6 text-5xl font-bold text-white drop-shadow-md">
-        Leaderboard
+        {t("game:leaderboard")}
       </h2>
       <div className="flex w-full flex-col gap-2">
         <AnimatePresence mode="popLayout">

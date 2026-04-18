@@ -1,0 +1,17 @@
+{
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "connecting": "Connecting...",
+  "delete": "Delete",
+  "exit": "Exit",
+  "language": {
+    "en": "English",
+    "fr": "French"
+  },
+  "loading": "Loading...",
+  "next": "Next",
+  "save": "Save",
+  "seconds": "sec",
+  "skip": "Skip",
+  "submit": "Submit"
+}

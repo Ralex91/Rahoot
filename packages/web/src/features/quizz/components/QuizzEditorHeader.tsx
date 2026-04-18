@@ -9,11 +9,13 @@ import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor
 import { useNavigate } from "@tanstack/react-router"
 import type { ChangeEvent } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const QuizzEditorHeader = () => {
   const { quizzId, subject, setSubject, questions } = useQuizzEditor()
   const { socket } = useSocket()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const handleChangeSubject = (e: ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value)
@@ -28,17 +30,17 @@ const QuizzEditorHeader = () => {
   }
 
   useEvent(EVENTS.QUIZZ.SAVE_SUCCESS, () => {
-    toast.success("Quizz saved successfully")
+    toast.success(t("quizz:quizzSaved"))
     navigate({ to: "/manager/config" })
   })
 
   useEvent(EVENTS.QUIZZ.UPDATE_SUCCESS, (_data) => {
-    toast.success("Quizz updated successfully")
+    toast.success(t("quizz:quizzUpdated"))
     navigate({ to: "/manager/config" })
   })
 
   useEvent(EVENTS.QUIZZ.ERROR, (message) => {
-    toast.error(message)
+    toast.error(t(message))
   })
 
   return (
@@ -50,7 +52,7 @@ const QuizzEditorHeader = () => {
           className="text-md focus:border-primary w-64 rounded-md border-2 border-gray-200 px-3 py-1.5 font-semibold outline-none"
           value={subject}
           onChange={handleChangeSubject}
-          placeholder="Quizz title..."
+          placeholder={t("quizz:titleQuizzPlaceholder")}
         />
       </div>
 
@@ -59,10 +61,10 @@ const QuizzEditorHeader = () => {
           className="text-md bg-gray-100 px-4 py-2 font-semibold text-gray-600"
           onClick={() => navigate({ to: "/manager" })}
         >
-          Exit
+          {t("common:exit")}
         </Button>
         <Button className="bg-primary text-md px-4 py-2" onClick={handleSave}>
-          Save
+          {t("common:save")}
         </Button>
       </div>
     </header>

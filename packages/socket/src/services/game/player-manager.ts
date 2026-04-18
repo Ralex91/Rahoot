@@ -17,7 +17,10 @@ export class PlayerManager {
 
   join(socket: Socket, username: string): void {
     if (this.findByClientId(socket.handshake.auth.clientId)) {
-      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "Player already connected")
+      socket.emit(
+        EVENTS.GAME.ERROR_MESSAGE,
+        "errors:game.playerAlreadyConnected",
+      )
 
       return
     }
@@ -61,9 +64,7 @@ export class PlayerManager {
     this.players = this.players.filter((p) => p.id !== playerId)
 
     this.io.in(playerId).socketsLeave(this.gameId)
-    this.io
-      .to(player.id)
-      .emit(EVENTS.GAME.RESET, "You have been kicked by the manager")
+    this.io.to(player.id).emit(EVENTS.GAME.RESET, "errors:game.kickedByManager")
     this.io
       .to(this.getManagerId())
       .emit(EVENTS.MANAGER.PLAYER_KICKED, player.id)

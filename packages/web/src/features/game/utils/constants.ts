@@ -88,14 +88,14 @@ export function isKeyOf<T extends object>(
 }
 
 export const MANAGER_SKIP_BTN = {
-  [STATUS.SHOW_ROOM]: "Start Game",
+  [STATUS.SHOW_ROOM]: "game:startGame",
   [STATUS.SHOW_START]: null,
   [STATUS.SHOW_PREPARED]: null,
   [STATUS.SHOW_QUESTION]: null,
-  [STATUS.SELECT_ANSWER]: "Skip",
+  [STATUS.SELECT_ANSWER]: "common:skip",
   [STATUS.SHOW_RESULT]: null,
-  [STATUS.SHOW_RESPONSES]: "Next",
-  [STATUS.SHOW_LEADERBOARD]: "Next",
-  [STATUS.FINISHED]: "Exit",
+  [STATUS.SHOW_RESPONSES]: "common:next",
+  [STATUS.SHOW_LEADERBOARD]: "common:next",
+  [STATUS.FINISHED]: "common:exit",
   [STATUS.WAIT]: null,
 }

@@ -15,6 +15,7 @@ import {
 } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import useSound from "use-sound"
 
 type Props = {
@@ -29,6 +30,7 @@ const Answers = ({
 
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
+  const { t } = useTranslation()
 
   const [sfxPop] = useSound(SFX.ANSWERS.SOUND, {
     volume: 0.1,
@@ -94,11 +96,13 @@ const Answers = ({
       <div>
         <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
           <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
-            <span className="translate-y-1 text-sm">Time</span>
+            <span className="translate-y-1 text-sm">{t("game:hud.time")}</span>
             <span>{cooldown}</span>
           </div>
           <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
-            <span className="translate-y-1 text-sm">Answers</span>
+            <span className="translate-y-1 text-sm">
+              {t("game:hud.answers")}
+            </span>
             <span>
               {totalAnswer}/{totalPlayer}
             </span>

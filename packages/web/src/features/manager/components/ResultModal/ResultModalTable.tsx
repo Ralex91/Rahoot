@@ -5,18 +5,24 @@ import {
 import { useResultModal } from "@rahoot/web/features/manager/contexts/result-modal-context"
 import clsx from "clsx"
 import { Check, X } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const ResultModalTable = () => {
   const { questionResult, getPlayerPoints } = useResultModal()
+  const { t } = useTranslation()
 
   return (
     <table className="w-full text-sm">
       <thead className="sticky top-0 shadow-sm">
         <tr className="border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
-          <th className="px-5 py-2.5">Player</th>
-          <th className="px-4 py-2.5">Answered</th>
-          <th className="px-4 py-2.5">Correct / Incorrect</th>
-          <th className="px-4 py-2.5 text-right">Points</th>
+          <th className="px-5 py-2.5">{t("manager:result.table.player")}</th>
+          <th className="px-4 py-2.5">{t("manager:result.table.answered")}</th>
+          <th className="px-4 py-2.5">
+            {t("manager:result.table.correctIncorrect")}
+          </th>
+          <th className="px-4 py-2.5 text-right">
+            {t("manager:result.table.points")}
+          </th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-100">
@@ -50,11 +56,13 @@ const ResultModalTable = () => {
               <td className="px-4 py-2.5">
                 {isCorrect ? (
                   <span className="flex items-center gap-1 text-green-600">
-                    <Check className="size-3.5" /> Correct
+                    <Check className="size-3.5" />{" "}
+                    {t("manager:result.table.correct")}
                   </span>
                 ) : (
                   <span className="flex items-center gap-1 text-red-500">
-                    <X className="size-3.5" /> Incorrect
+                    <X className="size-3.5" />{" "}
+                    {t("manager:result.table.incorrect")}
                   </span>
                 )}
               </td>

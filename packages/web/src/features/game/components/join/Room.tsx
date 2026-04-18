@@ -9,6 +9,7 @@ import {
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import { useSearch } from "@tanstack/react-router"
 import { type KeyboardEvent, useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 const Room = () => {
   const { socket, isConnected } = useSocket()
@@ -16,6 +17,7 @@ const Room = () => {
   const [invitation, setInvitation] = useState("")
   const { pin } = useSearch({ from: "/(auth)/" })
   const hasJoinedRef = useRef(false)
+  const { t } = useTranslation()
 
   const handleJoin = () => {
     socket?.emit(EVENTS.PLAYER.JOIN, invitation)
@@ -46,10 +48,10 @@ const Room = () => {
         className="text-center"
         onChange={(e) => setInvitation(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="PIN Code here"
+        placeholder={t("game:pinPlaceholder")}
       />
       <Button className="mt-4" onClick={handleJoin}>
-        Submit
+        {t("common:submit")}
       </Button>
     </Card>
   )

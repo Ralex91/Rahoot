@@ -1,7 +1,7 @@
-import { nanoid } from "nanoid"
 import type { Socket } from "@rahoot/common/types/game/socket"
 import Game from "@rahoot/socket/services/game"
 import Registry from "@rahoot/socket/services/registry"
+import { nanoid } from "nanoid"
 
 export const withGame = (
   gameId: string | undefined,
@@ -9,7 +9,7 @@ export const withGame = (
   callback: (_game: Game) => void,
 ): void => {
   if (!gameId) {
-    socket.emit("game:errorMessage", "Game not found")
+    socket.emit("game:errorMessage", "errors:game.notFound")
 
     return
   }
@@ -18,7 +18,7 @@ export const withGame = (
   const game = registry.getGameById(gameId)
 
   if (!game) {
-    socket.emit("game:errorMessage", "Game not found")
+    socket.emit("game:errorMessage", "errors:game.notFound")
 
     return
   }

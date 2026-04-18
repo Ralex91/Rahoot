@@ -1,0 +1,43 @@
+{
+  "configurationsTitle": "Configurations",
+  "logout": "Logout",
+  "passwordPlaceholder": "Password",
+  "quizz": {
+    "create": "Create Quizz",
+    "delete": "Delete quizz",
+    "deleteConfirm": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+    "deleted": "Quizz deleted",
+    "import": "Import quizz from JSON",
+    "none": "No quizz created yet",
+    "notFound": "No quizz found",
+    "pleaseCreate": "Please create a quizz first",
+    "pleaseSelect": "Please select a quizz",
+    "startGame": "Start game"
+  },
+  "result": {
+    "delete": "Delete result",
+    "deleteConfirm": "Delete result for \"{{name}}\"? This cannot be undone.",
+    "deleted": "Result deleted",
+    "noAnswer": "No answer",
+    "none": "No results yet, finish a game to see reports here",
+    "paginationOf": " of ",
+    "stats": {
+      "correctAnswers": "Correct answers",
+      "playersAnswered": "Players answered"
+    },
+    "table": {
+      "answered": "Answered",
+      "correct": " Correct",
+      "correctIncorrect": "Correct / Incorrect",
+      "incorrect": " Incorrect",
+      "player": "Player",
+      "points": "Points"
+    },
+    "timeLimitSuffix": "s time limit"
+  },
+  "tabs": {
+    "play": "Play",
+    "quizz": "Quizz",
+    "results": "Results"
+  }
+}

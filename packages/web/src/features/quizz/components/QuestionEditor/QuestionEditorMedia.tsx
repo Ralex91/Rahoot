@@ -7,10 +7,12 @@ import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor
 import { Image, ImageOff, Music, Video } from "lucide-react"
 import { type ChangeEvent } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const QuestionEditorMedia = () => {
   const { updateQuestion, currentIndex, currentQuestion } = useQuizzEditor()
   const questionMedia = currentQuestion.media
+  const { t } = useTranslation()
 
   const hadnleChangeMediaType = (type: QuestionMediaType) => () => {
     const result = questionMediaValidator.safeParse({
@@ -49,11 +51,11 @@ const QuestionEditorMedia = () => {
         <Card className="my-14 flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-2 bg-white">
           <ImageOff className="size-16 stroke-gray-600" />
           <p className="text-center text-sm text-gray-600">
-            Add an image, video or audio to your question
+            {t("quizz:question.addMediaHint")}
           </p>
           <input
             className="focus:border-primary w-full max-w-md rounded-md border-2 border-gray-300 px-3 py-2 text-sm outline-none"
-            placeholder={`Enter URL...`}
+            placeholder={t("quizz:question.mediaUrlPlaceholder")}
             value={questionMedia?.url || ""}
             onChange={handleChangeMedia}
           />
@@ -64,7 +66,7 @@ const QuestionEditorMedia = () => {
             >
               <div className="flex items-center gap-1.5">
                 <Image className="size-6" />
-                <p>Image</p>
+                <p>{t("quizz:question.media.image")}</p>
               </div>
             </Button>
             <Button
@@ -73,7 +75,7 @@ const QuestionEditorMedia = () => {
             >
               <div className="flex items-center gap-1.5">
                 <Video className="size-6" />
-                <p>Video</p>
+                <p>{t("quizz:question.media.video")}</p>
               </div>
             </Button>
             <Button
@@ -82,7 +84,7 @@ const QuestionEditorMedia = () => {
             >
               <div className="flex items-center gap-1.5">
                 <Music className="size-6" />
-                <p>Audio</p>
+                <p>{t("quizz:question.media.audio")}</p>
               </div>
             </Button>
           </div>
@@ -95,7 +97,7 @@ const QuestionEditorMedia = () => {
             className="rounded-sm bg-gray-200 px-4 py-2 font-semibold text-gray-700 transition-colors hover:bg-gray-200"
             onClick={handleRemoveMedia}
           >
-            Remove
+            {t("common:delete")}
           </Button>
         </div>
       )}

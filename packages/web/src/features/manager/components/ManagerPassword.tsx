@@ -5,6 +5,7 @@ import Input from "@rahoot/web/components/Input"
 import { useEvent } from "@rahoot/web/features/game/contexts/socket-context"
 import { type KeyboardEvent, useState } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   onSubmit: (_password: string) => void
@@ -12,6 +13,7 @@ type Props = {
 
 const ManagerPassword = ({ onSubmit }: Props) => {
   const [password, setPassword] = useState("")
+  const { t } = useTranslation()
 
   const handleSubmit = () => {
     onSubmit(password)
@@ -24,7 +26,7 @@ const ManagerPassword = ({ onSubmit }: Props) => {
   }
 
   useEvent(EVENTS.MANAGER.ERROR_MESSAGE, (message) => {
-    toast.error(message)
+    toast.error(t(message))
   })
 
   return (
@@ -33,10 +35,10 @@ const ManagerPassword = ({ onSubmit }: Props) => {
         type="password"
         onChange={(e) => setPassword(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Manager password"
+        placeholder={t("manager:passwordPlaceholder")}
       />
       <Button className="mt-4" onClick={handleSubmit}>
-        Submit
+        {t("common:submit")}
       </Button>
     </Card>
   )

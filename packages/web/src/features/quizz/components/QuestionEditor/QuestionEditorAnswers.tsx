@@ -5,6 +5,7 @@ import {
 import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
 import clsx from "clsx"
 import { Minus, Plus } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const Checkmark = () => (
   <svg
@@ -20,6 +21,7 @@ const Checkmark = () => (
 
 const QuestionEditorAnswers = () => {
   const { currentQuestion, currentIndex, updateQuestion } = useQuizzEditor()
+  const { t } = useTranslation()
 
   const updateAnswer = (index: number, value: string) => {
     const next = [...currentQuestion.answers]
@@ -67,7 +69,8 @@ const QuestionEditorAnswers = () => {
     <div className="z-10 flex flex-col gap-3">
       <div className="flex items-center justify-between px-1">
         <div className="rounded bg-white px-2 py-1 text-sm font-semibold text-gray-500">
-          {currentQuestion.answers.length} answers
+          {currentQuestion.answers.length}
+          {t("quizz:answersCountSuffix")}
         </div>
         <div className="flex gap-2">
           <button
@@ -104,7 +107,7 @@ const QuestionEditorAnswers = () => {
               <div className="flex flex-1 items-center justify-between gap-1.5 drop-shadow-md">
                 <input
                   className="w-full bg-transparent font-semibold text-white placeholder-white/70 outline-none"
-                  placeholder="Add an answer..."
+                  placeholder={t("quizz:addAnswerPlaceholder")}
                   value={answer}
                   onChange={(e) => updateAnswer(i, e.target.value)}
                 />

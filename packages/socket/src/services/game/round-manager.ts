@@ -77,7 +77,7 @@ export class RoundManager {
     }
 
     if (this.opts.players.count() === 0) {
-      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "No players connected")
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "errors:game.noPlayersConnected")
 
       return
     }
@@ -204,7 +204,7 @@ export class RoundManager {
 
       this.opts.send(player.id, STATUS.SHOW_RESULT, {
         correct: player.lastCorrect,
-        message: player.lastCorrect ? "Nice!" : "Too bad",
+        message: player.lastCorrect ? "game:correct" : "game:wrong",
         points: player.lastPoints,
         myPoints: player.points,
         rank,
@@ -251,7 +251,7 @@ export class RoundManager {
     })
 
     this.opts.send(socket.id, STATUS.WAIT, {
-      text: "Waiting for the players to answer",
+      text: "game:waitingForAnswers",
     })
 
     socket

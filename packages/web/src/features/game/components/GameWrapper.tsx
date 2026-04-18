@@ -13,6 +13,7 @@ import { MANAGER_SKIP_BTN } from "@rahoot/web/features/game/utils/constants"
 import clsx from "clsx"
 import { type PropsWithChildren, useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 type Props = PropsWithChildren & {
   statusName: Status | undefined
@@ -24,6 +25,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
+  const { t } = useTranslation()
   const [isDisabled, setIsDisabled] = useState(false)
   const next = statusName ? MANAGER_SKIP_BTN[statusName] : null
 
@@ -35,7 +37,8 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
   })
 
   useEvent(EVENTS.GAME.ERROR_MESSAGE, (message) => {
-    toast.error(message)
+    toast.error(t(message))
+    console.log(t(message))
     setIsDisabled(false)
   })
 
@@ -62,7 +65,9 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
         {!isConnected && !statusName ? (
           <div className="flex h-full w-full flex-1 flex-col items-center justify-center">
             <Loader className="h-30" />
-            <h1 className="text-4xl font-bold text-white">Connecting...</h1>
+            <h1 className="text-4xl font-bold text-white">
+              {t("common:connecting")}
+            </h1>
           </div>
         ) : (
           <>
@@ -80,7 +85,7 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
                   })}
                   onClick={handleNext}
                 >
-                  {next}
+                  {t(next)}
                 </Button>
               )}
             </div>

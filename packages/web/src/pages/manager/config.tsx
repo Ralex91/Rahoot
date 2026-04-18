@@ -22,7 +22,7 @@ const ManagerConfigPage = () => {
   useEvent(EVENTS.MANAGER.GAME_CREATED, ({ gameId, inviteCode }) => {
     setGameId(gameId)
     setStatus(STATUS.SHOW_ROOM, {
-      text: "Waiting for the players",
+      text: "game:waitingForPlayers",
       inviteCode,
     })
     navigate({ to: "/party/manager/$gameId", params: { gameId } })

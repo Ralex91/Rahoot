@@ -1,9 +1,11 @@
 import { useResultModal } from "@rahoot/web/features/manager/contexts/result-modal-context"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const ResultModalHeader = () => {
   const { result, questionIndex, total, goNext, goPrev, onClose } =
     useResultModal()
+  const { t } = useTranslation()
 
   return (
     <div className="flex shrink-0 items-center gap-3 border-b border-gray-200 px-5 py-3">
@@ -12,7 +14,9 @@ const ResultModalHeader = () => {
       </h2>
       <div className="flex shrink-0 items-center gap-1">
         <span className="text-sm text-gray-400">
-          {questionIndex + 1} of {total}
+          {questionIndex + 1}
+          {t("manager:result.paginationOf")}
+          {total}
         </span>
         <button
           disabled={questionIndex === 0}

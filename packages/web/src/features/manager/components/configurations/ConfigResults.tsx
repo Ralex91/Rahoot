@@ -10,6 +10,7 @@ import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
 import { Trash2 } from "lucide-react"
 import { useCallback, useState } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const formatDate = (iso: string) => {
   const d = new Date(iso)
@@ -25,6 +26,7 @@ const ConfigResults = () => {
   const { socket } = useSocket()
   const { results } = useConfig()
   const [selectedResult, setSelectedResult] = useState<GameResult | null>(null)
+  const { t } = useTranslation()
 
   useEvent(
     EVENTS.RESULTS.DATA,
@@ -37,7 +39,7 @@ const ConfigResults = () => {
 
   const handleDelete = (id: string) => () => {
     socket?.emit(EVENTS.RESULTS.DELETE, id)
-    toast.success("Result deleted")
+    toast.success(t("manager:result.deleted"))
   }
 
   return (
@@ -63,9 +65,11 @@ const ConfigResults = () => {
                   <Trash2 className="size-4 stroke-red-500" />
                 </button>
               }
-              title="Delete result"
-              description={`Delete result for "${r.subject}"? This cannot be undone.`}
-              confirmLabel="Delete"
+              title={t("manager:result.delete")}
+              description={t("manager:result.deleteConfirm", {
+                name: r.subject,
+              })}
+              confirmLabel={t("common:delete")}
               onConfirm={handleDelete(r.id)}
             />
           </div>
@@ -73,7 +77,7 @@ const ConfigResults = () => {
 
         {results.length === 0 && (
           <p className="my-8 text-center text-gray-500">
-            No results yet, finish a game to see reports here
+            {t("manager:result.none")}
           </p>
         )}
       </div>

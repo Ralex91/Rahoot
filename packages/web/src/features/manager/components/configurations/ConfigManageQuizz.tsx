@@ -10,19 +10,22 @@ import { useNavigate } from "@tanstack/react-router"
 import { SquarePen, Trash2, Upload } from "lucide-react"
 import { type ChangeEvent, useRef } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const ConfigManageQuizz = () => {
   const { quizz } = useConfig()
   const { socket } = useSocket()
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { t } = useTranslation()
 
   useEvent(EVENTS.QUIZZ.ERROR, (message) => {
-    toast.error(message)
+    toast.error(t(message))
   })
 
   const handleDelete = (id: string) => () => {
     socket?.emit(EVENTS.QUIZZ.DELETE, id)
+    toast.success(t("manager:quizz.deleted"))
   }
 
   const handleImport = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,12 +57,12 @@ const ConfigManageQuizz = () => {
           className="flex-1"
           onClick={() => navigate({ to: "/manager/quizz" })}
         >
-          Create Quizz
+          {t("manager:quizz.create")}
         </Button>
         <Button
           className="bg-gray-100 px-3 text-gray-600"
           onClick={() => fileInputRef.current?.click()}
-          title="Import quizz from JSON"
+          title={t("manager:quizz.import")}
         >
           <Upload className="size-4" />
         </Button>
@@ -97,16 +100,20 @@ const ConfigManageQuizz = () => {
                     <Trash2 className="size-4 stroke-red-500" />
                   </button>
                 }
-                title="Delete quizz"
-                description={`Are you sure you want to delete "${q.subject}"? This action cannot be undone.`}
-                confirmLabel="Delete"
+                title={t("manager:quizz.delete")}
+                description={t("manager:quizz.deleteConfirm", {
+                  name: q.subject,
+                })}
+                confirmLabel={t("common:delete")}
                 onConfirm={handleDelete(q.id)}
               />
             </div>
           </div>
         ))}
         {quizz.length === 0 && (
-          <p className="my-8 text-center text-gray-500">No quizz created yet</p>
+          <p className="my-8 text-center text-gray-500">
+            {t("manager:quizz.none")}
+          </p>
         )}
       </div>
     </div>

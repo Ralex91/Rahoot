@@ -1,0 +1,27 @@
+{
+  "auth": {
+    "invalidInviteCode": "Code d'invitation invalide",
+    "usernameTooLong": "Le pseudo ne peut pas dépasser 20 caractères",
+    "usernameTooShort": "Le pseudo doit faire au moins 4 caractères"
+  },
+  "game": {
+    "expired": "La partie a expiré",
+    "kickedByManager": "Vous avez été expulsé par le manager",
+    "managerAlreadyConnected": "Un manager est déjà connecté",
+    "managerDisconnected": "Le manager s'est déconnecté",
+    "noPlayersConnected": "Aucun joueur connecté",
+    "notFound": "Partie introuvable",
+    "playerAlreadyConnected": "Ce joueur est déjà connecté"
+  },
+  "manager": {
+    "failedToReadConfig": "Impossible de lire la configuration",
+    "invalidPassword": "Mot de passe invalide",
+    "passwordNotConfigured": "Mot de passe manager non configuré"
+  },
+  "quizz": {
+    "failedToDelete": "Suppression du quizz a echoué",
+    "failedToSave": "Le quizz est incomplet, vérifiez que chaque question a un titre et au moins une bonne réponse",
+    "failedToUpdate": "La mise à jour du quizz a echoué",
+    "notFound": "Quizz introuvable"
+  }
+}

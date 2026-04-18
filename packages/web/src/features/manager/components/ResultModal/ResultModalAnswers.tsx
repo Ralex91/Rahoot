@@ -8,6 +8,7 @@ import { useResultModal } from "@rahoot/web/features/manager/contexts/result-mod
 import clsx from "clsx"
 import { Check, Clock, ImageOff, Music, Video, X } from "lucide-react"
 import type { ComponentType } from "react"
+import { useTranslation } from "react-i18next"
 
 type AnswerRow = {
   label: string
@@ -54,6 +55,7 @@ const MediaPreview = ({ media }: { media?: QuestionMedia }) => {
 const ResultModalAnswers = () => {
   const { questionResult, totalPlayers, answeredCount, maxAnswerCount } =
     useResultModal()
+  const { t } = useTranslation()
 
   const noAnswerCount = totalPlayers - answeredCount
 
@@ -67,7 +69,7 @@ const ResultModalAnswers = () => {
       Icon: ANSWERS_ICONS[ai % 4],
     })),
     {
-      label: "No answer",
+      label: t("manager:result.noAnswer"),
       count: noAnswerCount,
       isCorrect: false,
       color: null,
@@ -81,7 +83,10 @@ const ResultModalAnswers = () => {
         <MediaPreview media={questionResult.media} />
         <div className="flex items-center gap-1.5 text-xs text-gray-500">
           <Clock className="size-3.5" />
-          <span>{questionResult.time}s time limit</span>
+          <span>
+            {questionResult.time}
+            {t("manager:result.timeLimitSuffix")}
+          </span>
         </div>
       </div>
 

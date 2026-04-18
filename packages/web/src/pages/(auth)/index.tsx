@@ -8,10 +8,12 @@ import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const PlayerAuthPage = () => {
   const { isConnected, connect } = useSocket()
   const { player } = usePlayerStore()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!isConnected) {
@@ -20,7 +22,7 @@ const PlayerAuthPage = () => {
   }, [connect, isConnected])
 
   useEvent("game:errorMessage", (message) => {
-    toast.error(message)
+    toast.error(t(message))
   })
 
   if (player) {

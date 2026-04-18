@@ -14,6 +14,7 @@ import {
 } from "@rahoot/web/features/game/utils/constants"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
 
 const ManagerGamePage = () => {
   const navigate = useNavigate()
@@ -22,6 +23,7 @@ const ManagerGamePage = () => {
   const { gameId, status, setGameId, setStatus, setPlayers, reset } =
     useManagerStore()
   const { setQuestionStates } = useQuestionStore()
+  const { t } = useTranslation()
 
   useEvent(EVENTS.GAME.STATUS, ({ name, data }) => {
     if (name in GAME_STATE_COMPONENTS_MANAGER) {
@@ -49,7 +51,7 @@ const ManagerGamePage = () => {
     navigate({ to: "/manager/config" })
     reset()
     setQuestionStates(null)
-    toast.error(message)
+    toast.error(t(message))
   })
 
   const handleSkip = () => {

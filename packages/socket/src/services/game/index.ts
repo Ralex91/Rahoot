@@ -156,7 +156,7 @@ class Game {
 
   private reconnectManager(socket: Socket) {
     if (this._manager.connected) {
-      socket.emit(EVENTS.GAME.RESET, "Manager already connected")
+      socket.emit(EVENTS.GAME.RESET, "errors:game.managerAlreadyConnected")
 
       return
     }
@@ -168,7 +168,7 @@ class Game {
     const status = this.managerStatus ??
       this.lastBroadcastStatus ?? {
         name: STATUS.WAIT,
-        data: { text: "Waiting for players" },
+        data: { text: "game:waitingForPlayers" },
       }
 
     socket.emit(EVENTS.MANAGER.SUCCESS_RECONNECT, {
@@ -192,7 +192,7 @@ class Game {
     }
 
     if (player.connected) {
-      socket.emit(EVENTS.GAME.RESET, "Player already connected")
+      socket.emit(EVENTS.GAME.RESET, "errors:game.playerAlreadyConnected")
 
       return
     }
@@ -206,7 +206,7 @@ class Game {
     const status = this.playerStatus.get(oldSocketId) ??
       this.lastBroadcastStatus ?? {
         name: STATUS.WAIT,
-        data: { text: "Waiting for players" },
+        data: { text: "game:waitingForPlayers" },
       }
 
     if (this.playerStatus.has(oldSocketId)) {

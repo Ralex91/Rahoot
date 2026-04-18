@@ -27,14 +27,17 @@ export const managerSocketHandlers = ({ socket }: SocketContext) => {
       if (config.managerPassword === "PASSWORD") {
         socket.emit(
           EVENTS.MANAGER.ERROR_MESSAGE,
-          "Manager password is not configured",
+          "manager.passwordNotConfigured",
         )
 
         return
       }
 
       if (password !== config.managerPassword) {
-        socket.emit(EVENTS.MANAGER.ERROR_MESSAGE, "Invalid password")
+        socket.emit(
+          EVENTS.MANAGER.ERROR_MESSAGE,
+          "errors:manager.invalidPassword",
+        )
 
         return
       }
@@ -43,7 +46,7 @@ export const managerSocketHandlers = ({ socket }: SocketContext) => {
       emitConfig(socket)
     } catch (error) {
       console.error("Failed to read game config:", error)
-      socket.emit(EVENTS.MANAGER.ERROR_MESSAGE, "Failed to read game config")
+      socket.emit(EVENTS.MANAGER.ERROR_MESSAGE, "errors:failedToReadConfig")
     }
   })
 }

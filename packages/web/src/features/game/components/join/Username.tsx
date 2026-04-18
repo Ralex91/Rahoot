@@ -11,12 +11,14 @@ import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
 
 import { useNavigate } from "@tanstack/react-router"
 import { type KeyboardEvent, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 const Username = () => {
   const { socket } = useSocket()
   const { gameId, login, setStatus } = usePlayerStore()
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
+  const { t } = useTranslation()
 
   const handleLogin = () => {
     if (!gameId) {
@@ -33,7 +35,7 @@ const Username = () => {
   }
 
   useEvent(EVENTS.GAME.SUCCESS_JOIN, (gameId) => {
-    setStatus(STATUS.WAIT, { text: "Waiting for the players" })
+    setStatus(STATUS.WAIT, { text: "game:waitingForPlayers" })
     login(username)
 
     navigate({ to: "/party/$gameId", params: { gameId } })
@@ -45,10 +47,10 @@ const Username = () => {
         className="text-center"
         onChange={(e) => setUsername(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Username here"
+        placeholder={t("game:usernamePlaceholder")}
       />
       <Button className="mt-4" onClick={handleLogin}>
-        Submit
+        {t("common:submit")}
       </Button>
     </Card>
   )

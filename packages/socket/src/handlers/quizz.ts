@@ -13,7 +13,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         socket.emit(EVENTS.QUIZZ.DATA, quizz)
       } catch (error) {
         console.error("Failed to get quizz:", error)
-        socket.emit(EVENTS.QUIZZ.ERROR, "Quizz not found")
+        socket.emit(EVENTS.QUIZZ.ERROR, "errors:quizz.notFound")
       }
     }),
   )
@@ -28,10 +28,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         emitConfig(socket)
       } catch (error) {
         console.error("Failed to save quizz:", error)
-        socket.emit(
-          EVENTS.QUIZZ.ERROR,
-          "Failed to save quizz, check the format",
-        )
+        socket.emit(EVENTS.QUIZZ.ERROR, "errors:quizz.failedToSave")
       }
     }),
   )
@@ -45,7 +42,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         emitConfig(socket)
       } catch (error) {
         console.error("Failed to delete quizz:", error)
-        socket.emit(EVENTS.QUIZZ.ERROR, "Failed to delete quizz")
+        socket.emit(EVENTS.QUIZZ.ERROR, "errors:quizz.failedToDelete")
       }
     }),
   )
@@ -62,7 +59,9 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         console.error("Failed to update quizz:", error)
         socket.emit(
           EVENTS.QUIZZ.ERROR,
-          error instanceof Error ? error.message : "Failed to update quizz",
+          error instanceof Error
+            ? error.message
+            : "errors:quizz.failedToUpdate",
         )
       }
     }),

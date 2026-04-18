@@ -10,6 +10,7 @@ import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor
 import clsx from "clsx"
 import { Plus } from "lucide-react"
 import { useRef } from "react"
+import { useTranslation } from "react-i18next"
 
 const QuizzEditorSidebar = () => {
   const {
@@ -20,6 +21,7 @@ const QuizzEditorSidebar = () => {
     removeQuestion,
     reorderQuestions,
   } = useQuizzEditor()
+  const { t } = useTranslation()
 
   const isDragging = useRef(false)
 
@@ -93,7 +95,7 @@ const QuizzEditorSidebar = () => {
         className="mt-1 mb-8 flex items-center justify-center gap-1"
       >
         <Plus className="size-6" />
-        Add question
+        {t("quizz:addQuestion")}
       </Button>
     </aside>
   )
