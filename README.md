@@ -172,11 +172,7 @@ Quiz Options:
 
 ## 📝 Contributing
 
-1. Fork the repository
-2. Create a new branch (e.g., `feat/my-feature`)
-3. Make your changes
-4. Create a pull request
-5. Wait for review and merge
+Contributions are welcome! Please read the [CONTRIBUTING.md](.github/CONTRIBUTING.md) guide before submitting a pull request.
 
 For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
 
