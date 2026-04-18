@@ -16,7 +16,7 @@
     "@rahoot/common": "workspace:*",
     "@rahoot/socket": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
-    "@tanstack/react-router": "^1.168.17",
+    "@tanstack/react-router": "^1.168.22",
     "clsx": "^2.1.1",
     "i18next": "^26.0.5",
     "i18next-browser-languagedetector": "^8.2.1",
@@ -39,19 +39,19 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
-    "@tanstack/router-plugin": "^1.167.16",
+    "@tanstack/router-plugin": "^1.167.22",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^16.5.0",
-    "prettier": "^3.8.2",
+    "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "typescript": "~6.0.2",
-    "typescript-eslint": "^8.58.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.58.2",
     "vite": "^8.0.8"
   }
 }
