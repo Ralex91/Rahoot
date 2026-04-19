@@ -1,0 +1,27 @@
+{
+  "auth": {
+    "invalidInviteCode": "Codice di invito non valido",
+    "usernameTooLong": "Il nome utente non può superare i 20 caratteri",
+    "usernameTooShort": "Il nome utente non può avere meno di 4 caratteri"
+  },
+  "game": {
+    "expired": "Partita scaduta",
+    "kickedByManager": "Sei stato espulso dal gestore",
+    "managerAlreadyConnected": "Gestore già connesso",
+    "managerDisconnected": "Gestore disconnesso",
+    "noPlayersConnected": "Nessun giocatore connesso",
+    "notFound": "Partita non trovata",
+    "playerAlreadyConnected": "Giocatore già connesso"
+  },
+  "manager": {
+    "failedToReadConfig": "Impossibile leggere la configurazione del gioco",
+    "invalidPassword": "Password non valida",
+    "passwordNotConfigured": "La password del gestore non è configurata"
+  },
+  "quizz": {
+    "failedToDelete": "Impossibile eliminare il quiz",
+    "failedToSave": "Il quiz è incompleto, assicurati che tutte le domande abbiano un titolo e almeno una risposta corretta",
+    "failedToUpdate": "Impossibile aggiornare il quiz",
+    "notFound": "Quiz non trovato"
+  }
+}

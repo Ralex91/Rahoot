@@ -5,8 +5,11 @@
   "delete": "Delete",
   "exit": "Exit",
   "language": {
+    "de": "German",
     "en": "English",
-    "fr": "French"
+    "es": "Spanish",
+    "fr": "French",
+    "it": "Italian"
   },
   "loading": "Loading...",
   "next": "Next",

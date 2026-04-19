@@ -1,0 +1,27 @@
+{
+  "correct": "Richtig!",
+  "gamePinLabel": "Spiel-PIN:",
+  "hud": {
+    "answers": "Antworten",
+    "time": "Zeit"
+  },
+  "joinInstruction": "Tritt dem Spiel bei auf",
+  "leaderboard": "Bestenliste",
+  "pinPlaceholder": "PIN-Code",
+  "playersJoined": "Verbundene Spieler: ",
+  "questionPrefix": "Frage #",
+  "rank": {
+    "1": "1. Platz",
+    "2": "2. Platz",
+    "3": "3. Platz",
+    "other": "{{rank}}. Platz"
+  },
+  "rankSuffix": ". Platz",
+  "resultBehind": ", hinter ",
+  "resultTop": "Du hast ",
+  "startGame": "Spiel starten",
+  "usernamePlaceholder": "Benutzername hier",
+  "waitingForAnswers": "Warten auf die Antworten der Spieler",
+  "waitingForPlayers": "Warten auf Spieler",
+  "wrong": "Schade"
+}

@@ -1,0 +1,43 @@
+{
+  "configurationsTitle": "Konfigurationen",
+  "logout": "Abmelden",
+  "passwordPlaceholder": "Passwort",
+  "quizz": {
+    "create": "Quiz erstellen",
+    "delete": "Quiz löschen",
+    "deleteConfirm": "Möchtest du \"{{name}}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleted": "Quiz gelöscht",
+    "import": "Quiz aus JSON importieren",
+    "none": "Noch kein Quiz erstellt",
+    "notFound": "Kein Quiz gefunden",
+    "pleaseCreate": "Bitte erstelle zuerst ein Quiz",
+    "pleaseSelect": "Bitte wähle ein Quiz aus",
+    "startGame": "Spiel starten"
+  },
+  "result": {
+    "delete": "Ergebnis löschen",
+    "deleteConfirm": "Ergebnis für \"{{name}}\" löschen? Dies kann nicht rückgängig gemacht werden.",
+    "deleted": "Ergebnis gelöscht",
+    "noAnswer": "Keine Antwort",
+    "none": "Noch keine Ergebnisse, beende ein Spiel, um Berichte hier zu sehen",
+    "paginationOf": " von ",
+    "stats": {
+      "correctAnswers": "Richtige Antworten",
+      "playersAnswered": "Spieler haben geantwortet"
+    },
+    "table": {
+      "answered": "Beantwortet",
+      "correct": " Richtig",
+      "correctIncorrect": "Richtig / Falsch",
+      "incorrect": " Falsch",
+      "player": "Spieler",
+      "points": "Punkte"
+    },
+    "timeLimitSuffix": "s Zeitlimit"
+  },
+  "tabs": {
+    "play": "Spielen",
+    "quizz": "Quiz",
+    "results": "Ergebnisse"
+  }
+}

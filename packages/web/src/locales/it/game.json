@@ -1,0 +1,27 @@
+{
+  "correct": "Bravo!",
+  "gamePinLabel": "PIN del gioco:",
+  "hud": {
+    "answers": "Risposte",
+    "time": "Tempo"
+  },
+  "joinInstruction": "Unisciti al gioco su",
+  "leaderboard": "Classifica",
+  "pinPlaceholder": "Codice PIN",
+  "playersJoined": "Giocatori connessi: ",
+  "questionPrefix": "Domanda #",
+  "rank": {
+    "1": "1° posto",
+    "2": "2° posto",
+    "3": "3° posto",
+    "other": "{{rank}}° posto"
+  },
+  "rankSuffix": "° posto",
+  "resultBehind": ", dietro ",
+  "resultTop": "Hai terminato ",
+  "startGame": "Inizia il gioco",
+  "usernamePlaceholder": "Nome utente qui",
+  "waitingForAnswers": "In attesa delle risposte dei giocatori",
+  "waitingForPlayers": "In attesa di giocatori",
+  "wrong": "Peccato"
+}

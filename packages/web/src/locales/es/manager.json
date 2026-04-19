@@ -1,0 +1,43 @@
+{
+  "configurationsTitle": "Configuraciones",
+  "logout": "Cerrar sesión",
+  "passwordPlaceholder": "Contraseña",
+  "quizz": {
+    "create": "Crear cuestionario",
+    "delete": "Eliminar cuestionario",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer.",
+    "deleted": "Cuestionario eliminado",
+    "import": "Importar cuestionario desde JSON",
+    "none": "Aún no se ha creado ningún cuestionario",
+    "notFound": "No se encontró ningún cuestionario",
+    "pleaseCreate": "Por favor crea un cuestionario primero",
+    "pleaseSelect": "Por favor selecciona un cuestionario",
+    "startGame": "Iniciar juego"
+  },
+  "result": {
+    "delete": "Eliminar resultado",
+    "deleteConfirm": "¿Eliminar el resultado de \"{{name}}\"? Esta acción no se puede deshacer.",
+    "deleted": "Resultado eliminado",
+    "noAnswer": "Sin respuesta",
+    "none": "Aún no hay resultados, termina una partida para ver los informes aquí",
+    "paginationOf": " de ",
+    "stats": {
+      "correctAnswers": "Respuestas correctas",
+      "playersAnswered": "Jugadores que respondieron"
+    },
+    "table": {
+      "answered": "Respondido",
+      "correct": " Correcta",
+      "correctIncorrect": "Correcta / Incorrecta",
+      "incorrect": " Incorrecta",
+      "player": "Jugador",
+      "points": "Puntos"
+    },
+    "timeLimitSuffix": "s de tiempo límite"
+  },
+  "tabs": {
+    "play": "Jugar",
+    "quizz": "Cuestionario",
+    "results": "Resultados"
+  }
+}
