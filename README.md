@@ -112,7 +112,12 @@ Options:
 
 ### 2. Quiz Configuration (`config/quizz/*.json`)
 
-Create your quiz files in the `config/quizz/` directory. You can have multiple quiz files and select which one to use when starting a game.
+Quizzes can be created in two ways:
+
+- **Via the Quiz Editor** — use the built-in editor available in the manager dashboard (recommended)
+- **Via JSON files** — manually create files in the `config/quizz/` directory
+
+You can have multiple quiz files and select which one to use when starting a game.
 
 Example quiz configuration (`config/quizz/example.json`):
 
