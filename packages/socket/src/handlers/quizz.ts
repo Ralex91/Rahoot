@@ -57,12 +57,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         emitConfig(socket)
       } catch (error) {
         console.error("Failed to update quizz:", error)
-        socket.emit(
-          EVENTS.QUIZZ.ERROR,
-          error instanceof Error
-            ? error.message
-            : "errors:quizz.failedToUpdate",
-        )
+        socket.emit(EVENTS.QUIZZ.ERROR, "errors:quizz.failedToUpdate")
       }
     }),
   )
