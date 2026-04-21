@@ -1,23 +1,18 @@
 import { EVENTS } from "@rahoot/common/constants"
 import type { SocketContext } from "@rahoot/socket/handlers/types"
 import Config from "@rahoot/socket/services/config"
-import {
-  emitConfig,
-  login,
-  logout,
-  withAuth,
-} from "@rahoot/socket/services/manager"
+import manager, { emitConfig } from "@rahoot/socket/services/manager"
 
 export const managerSocketHandlers = ({ socket }: SocketContext) => {
   socket.on(
     EVENTS.MANAGER.GET_CONFIG,
-    withAuth(socket, () => {
+    manager.withAuth(socket, () => {
       emitConfig(socket)
     }),
   )
 
   socket.on(EVENTS.MANAGER.LOGOUT, () => {
-    logout(socket)
+    manager.logout(socket)
   })
 
   socket.on(EVENTS.MANAGER.AUTH, (password) => {
@@ -42,7 +37,7 @@ export const managerSocketHandlers = ({ socket }: SocketContext) => {
         return
       }
 
-      login(socket)
+      manager.login(socket)
       emitConfig(socket)
     } catch (error) {
       console.error("Failed to read game config:", error)

@@ -1,12 +1,12 @@
 import { EVENTS } from "@rahoot/common/constants"
 import type { SocketContext } from "@rahoot/socket/handlers/types"
 import Config from "@rahoot/socket/services/config"
-import { emitConfig, withAuth } from "@rahoot/socket/services/manager"
+import manager, { emitConfig } from "@rahoot/socket/services/manager"
 
 export const resultsSocketHandlers = ({ socket }: SocketContext) => {
   socket.on(
     EVENTS.RESULTS.GET,
-    withAuth(socket, (id) => {
+    manager.withAuth(socket, (id) => {
       try {
         socket.emit(EVENTS.RESULTS.DATA, Config.resultById(id))
       } catch (error) {
@@ -17,7 +17,7 @@ export const resultsSocketHandlers = ({ socket }: SocketContext) => {
 
   socket.on(
     EVENTS.RESULTS.DELETE,
-    withAuth(socket, (id) => {
+    manager.withAuth(socket, (id) => {
       try {
         Config.deleteResult(id)
         emitConfig(socket)

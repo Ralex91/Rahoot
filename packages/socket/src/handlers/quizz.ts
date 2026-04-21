@@ -1,12 +1,12 @@
 import { EVENTS } from "@rahoot/common/constants"
 import type { SocketContext } from "@rahoot/socket/handlers/types"
 import Config from "@rahoot/socket/services/config"
-import { emitConfig, withAuth } from "@rahoot/socket/services/manager"
+import manager, { emitConfig } from "@rahoot/socket/services/manager"
 
 export const quizzSocketHandlers = ({ socket }: SocketContext) => {
   socket.on(
     EVENTS.QUIZZ.GET,
-    withAuth(socket, (id) => {
+    manager.withAuth(socket, (id) => {
       try {
         const quizz = Config.quizzById(id)
 
@@ -20,7 +20,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
 
   socket.on(
     EVENTS.QUIZZ.SAVE,
-    withAuth(socket, (data) => {
+    manager.withAuth(socket, (data) => {
       try {
         const { id } = Config.saveQuizz(data)
 
@@ -35,7 +35,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
 
   socket.on(
     EVENTS.QUIZZ.DELETE,
-    withAuth(socket, (id) => {
+    manager.withAuth(socket, (id) => {
       try {
         Config.deleteQuizz(id)
 
@@ -49,7 +49,7 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
 
   socket.on(
     EVENTS.QUIZZ.UPDATE,
-    withAuth(socket, ({ id, ...data }) => {
+    manager.withAuth(socket, ({ id, ...data }) => {
       try {
         const { id: newId } = Config.updateQuizz(id, data)
 
@@ -57,7 +57,9 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         emitConfig(socket)
       } catch (error) {
         console.error("Failed to update quizz:", error)
-        socket.emit(EVENTS.QUIZZ.ERROR, "errors:quizz.failedToUpdate")
+        const message =
+          error instanceof Error ? error.message : "errors:quizz.failedToUpdate"
+        socket.emit(EVENTS.QUIZZ.ERROR, message)
       }
     }),
   )
