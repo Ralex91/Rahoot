@@ -19,9 +19,16 @@
     "passwordNotConfigured": "La contraseña del administrador no está configurada"
   },
   "quizz": {
+    "answerEmpty": "Una respuesta no puede estar vacía",
     "failedToDelete": "Error al eliminar el cuestionario",
     "failedToSave": "El cuestionario está incompleto, asegúrate de que todas las preguntas tengan un título y al menos una respuesta correcta",
     "failedToUpdate": "Error al actualizar el cuestionario",
-    "notFound": "Cuestionario no encontrado"
+    "invalidMediaUrl": "La URL del medio debe ser una URL válida",
+    "noQuestions": "Un cuestionario debe tener al menos una pregunta",
+    "notFound": "Cuestionario no encontrado",
+    "questionEmpty": "La pregunta no puede estar vacía",
+    "subjectEmpty": "El tema no puede estar vacío",
+    "tooFewAnswers": "Una pregunta debe tener al menos 2 respuestas",
+    "tooManyAnswers": "Una pregunta no puede tener más de 4 respuestas"
   }
 }

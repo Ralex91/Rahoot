@@ -19,9 +19,16 @@
     "passwordNotConfigured": "Mot de passe manager non configuré"
   },
   "quizz": {
+    "answerEmpty": "Une réponse ne peut pas être vide",
     "failedToDelete": "Suppression du quizz a echoué",
     "failedToSave": "Le quizz est incomplet, vérifiez que chaque question a un titre et au moins une bonne réponse",
     "failedToUpdate": "La mise à jour du quizz a echoué",
-    "notFound": "Quizz introuvable"
+    "invalidMediaUrl": "L'URL du média doit être une URL valide",
+    "noQuestions": "Un quizz doit avoir au moins une question",
+    "notFound": "Quizz introuvable",
+    "questionEmpty": "La question ne peut pas être vide",
+    "subjectEmpty": "Le sujet ne peut pas être vide",
+    "tooFewAnswers": "Une question doit avoir au moins 2 réponses",
+    "tooManyAnswers": "Une question ne peut pas avoir plus de 4 réponses"
   }
 }

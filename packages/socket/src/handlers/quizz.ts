@@ -28,7 +28,9 @@ export const quizzSocketHandlers = ({ socket }: SocketContext) => {
         emitConfig(socket)
       } catch (error) {
         console.error("Failed to save quizz:", error)
-        socket.emit(EVENTS.QUIZZ.ERROR, "errors:quizz.failedToSave")
+        const message =
+          error instanceof Error ? error.message : "errors:quizz.failedToSave"
+        socket.emit(EVENTS.QUIZZ.ERROR, message)
       }
     }),
   )

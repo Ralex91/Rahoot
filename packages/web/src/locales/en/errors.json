@@ -19,9 +19,16 @@
     "passwordNotConfigured": "Manager password is not configured"
   },
   "quizz": {
+    "answerEmpty": "An answer cannot be empty",
     "failedToDelete": "Failed to delete quizz",
     "failedToSave": "Quizz is incomplete, make sure all questions have a title and at least one correct answer",
     "failedToUpdate": "Failed to update quizz",
-    "notFound": "Quizz not found"
+    "invalidMediaUrl": "Media URL must be a valid URL",
+    "noQuestions": "A quizz must have at least one question",
+    "notFound": "Quizz not found",
+    "questionEmpty": "Question cannot be empty",
+    "subjectEmpty": "Subject cannot be empty",
+    "tooFewAnswers": "A question must have at least 2 answers",
+    "tooManyAnswers": "A question cannot have more than 4 answers"
   }
 }
