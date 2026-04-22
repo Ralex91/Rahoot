@@ -56,7 +56,8 @@ const ConfigResults = () => {
             >
               <p className="truncate font-medium">{r.subject}</p>
               <p className="text-xs text-gray-400">
-                {formatDate(r.date)} · {r.playerCount} player(s)
+                {formatDate(r.date)} -{" "}
+                {t("manager:result.playerCount", { count: r.playerCount })}
               </p>
             </button>
             <AlertDialog

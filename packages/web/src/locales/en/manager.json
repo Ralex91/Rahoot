@@ -33,6 +33,7 @@
       "player": "Player",
       "points": "Points"
     },
+    "playerCount": "{{count}} player(s)",
     "timeLimitSuffix": "s time limit"
   },
   "tabs": {

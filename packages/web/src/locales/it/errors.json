@@ -5,7 +5,7 @@
     "usernameTooShort": "Il nome utente non può avere meno di 4 caratteri"
   },
   "game": {
-    "expired": "Partita scaduta",
+    "expired": "Partita terminata",
     "kickedByManager": "Sei stato espulso dal gestore",
     "managerAlreadyConnected": "Gestore già connesso",
     "managerDisconnected": "Gestore disconnesso",
