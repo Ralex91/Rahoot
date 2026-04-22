@@ -1,0 +1,29 @@
+{
+  "addAnswerPlaceholder": "Antwort hinzufügen...",
+  "addQuestion": "Frage hinzufügen",
+  "answersCountSuffix": " Antworten",
+  "deleteQuestion": "Frage löschen",
+  "noQuestionYet": "Noch keine Fragen",
+  "question": {
+    "addMediaHint": "Füge ein Bild, Video oder Audio zu deiner Frage hinzu",
+    "config": {
+      "answerTime": "Antwortzeit",
+      "answerTimeHint": "Zeit, die Spieler zum Antworten haben",
+      "questionDisplay": "Frageanzeige",
+      "questionDisplayHint": "Dauer bevor Antworten erscheinen",
+      "timings": "Zeiten"
+    },
+    "deleteQuestion": "Frage löschen",
+    "deleteQuestionConfirm": "Möchtest du diese Frage wirklich löschen?",
+    "media": {
+      "audio": "Audio",
+      "image": "Bild",
+      "video": "Video"
+    },
+    "mediaUrlPlaceholder": "URL eingeben...",
+    "placeholder": "Beginne deine Frage zu tippen..."
+  },
+  "quizzSaved": "Quiz erfolgreich gespeichert",
+  "quizzUpdated": "Quiz erfolgreich aktualisiert",
+  "titleQuizzPlaceholder": "Quiz-Titel..."
+}

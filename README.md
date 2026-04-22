@@ -9,7 +9,7 @@
 
 ## 🧩 What is this project?
 
-Rahoot is a straightforward and open-source clone of the Kahoot! platform, allowing users to host it on their own server for smaller events.
+Rahoot is a straightforward and open-source quiz platform, allowing users to host it on their own server for smaller events.
 
 > ⚠️ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
 
@@ -112,7 +112,12 @@ Options:
 
 ### 2. Quiz Configuration (`config/quizz/*.json`)
 
-Create your quiz files in the `config/quizz/` directory. You can have multiple quiz files and select which one to use when starting a game.
+Quizzes can be created in two ways:
+
+- **Via the Quiz Editor** — use the built-in editor available in the manager dashboard (recommended)
+- **Via JSON files** — manually create files in the `config/quizz/` directory
+
+You can have multiple quiz files and select which one to use when starting a game.
 
 Example quiz configuration (`config/quizz/example.json`):
 
@@ -123,10 +128,27 @@ Example quiz configuration (`config/quizz/example.json`):
     {
       "question": "What is the correct answer?",
       "answers": ["No", "Yes", "No", "No"],
-      "image": "https://images.unsplash.com/....",
-      "solution": 1,
+      "solutions": [1],
       "cooldown": 5,
       "time": 15
+    },
+    {
+      "question": "Which of these are primary colors?",
+      "answers": ["Red", "Green", "Blue", "Yellow"],
+      "solutions": [0, 2, 3],
+      "cooldown": 5,
+      "time": 20
+    },
+    {
+      "question": "What is the correct answer with an image?",
+      "answers": ["No", "Yes", "No", "No"],
+      "media": {
+        "type": "image",
+        "url": "https://placehold.co/600x400.png"
+      },
+      "solutions": [1],
+      "cooldown": 5,
+      "time": 20
     }
   ]
 }
@@ -138,12 +160,12 @@ Quiz Options:
 - `questions`: Array of question objects containing:
   - `question`: The question text
   - `answers`: Array of possible answers (2-4 options)
-  - `image`: Optional URL for an image displayed with the question
-  - `video`: Optional URL for a video displayed with the question
-  - `audio`: Optional URL for an audio played during the question
-  - `solution`: Index of correct answer (0-based)
-  - `cooldown`: Time in seconds before showing the question
-  - `time`: Time in seconds allowed to answer
+  - `media`: Optional media object displayed with the question:
+    - `type`: `"image"`, `"video"`, or `"audio"`
+    - `url`: URL of the media
+  - `solutions`: Array of correct answer indices (0-based). Use multiple indices for multi-answer questions
+  - `cooldown`: Time in seconds before answers are revealed (3-15)
+  - `time`: Time in seconds allowed to answer (5-120)
 
 ## 🎮 How to Play
 
@@ -155,11 +177,7 @@ Quiz Options:
 
 ## 📝 Contributing
 
-1. Fork the repository
-2. Create a new branch (e.g., `feat/my-feature`)
-3. Make your changes
-4. Create a pull request
-5. Wait for review and merge
+Contributions are welcome! Please read the [CONTRIBUTING.md](.github/CONTRIBUTING.md) guide before submitting a pull request.
 
 For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
 

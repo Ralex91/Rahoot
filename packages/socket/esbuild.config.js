@@ -1,5 +1,4 @@
 import esbuild from "esbuild"
-import path from "path"
 
 export const config = {
   entryPoints: ["src/index.ts"],
@@ -10,9 +9,6 @@ export const config = {
   sourcemap: true,
   define: {
     "process.env.NODE_ENV": '"production"',
-  },
-  alias: {
-    "@": path.resolve("./src"),
   },
 }
 

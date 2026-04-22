@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "noEmit": true,
     "noErrorTruncation": true,
     "esModuleInterop": true,

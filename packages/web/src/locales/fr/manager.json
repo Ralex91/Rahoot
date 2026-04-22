@@ -1,0 +1,43 @@
+{
+  "configurationsTitle": "Configurations",
+  "logout": "Déconnexion",
+  "passwordPlaceholder": "Mot de passe",
+  "quizz": {
+    "create": "Créer un quizz",
+    "delete": "Supprimer le quizz",
+    "deleteConfirm": "Supprimer \"{{name}}\" ? Cette action est irréversible.",
+    "deleted": "Quizz supprimé",
+    "import": "Importer un quizz (JSON)",
+    "none": "Aucun quizz créé",
+    "notFound": "Aucun quizz trouvé",
+    "pleaseCreate": "Veuillez d'abord créer un quizz",
+    "pleaseSelect": "Veuillez sélectionner un quizz",
+    "startGame": "Démarrer la partie"
+  },
+  "result": {
+    "delete": "Supprimer le résultat",
+    "deleteConfirm": "Supprimer le résultat \"{{name}}\" ? Cette action est irréversible.",
+    "deleted": "Résultat supprimé",
+    "noAnswer": "Sans réponse",
+    "none": "Aucun résultat pour l'instant, terminez une partie pour voir les rapports",
+    "paginationOf": " sur ",
+    "stats": {
+      "correctAnswers": "Bonnes réponses",
+      "playersAnswered": "Joueurs ayant répondu"
+    },
+    "table": {
+      "answered": "A répondu",
+      "correct": " Correct",
+      "correctIncorrect": "Correct / Incorrect",
+      "incorrect": " Incorrect",
+      "player": "Joueur",
+      "points": "Points"
+    },
+    "timeLimitSuffix": "s limite"
+  },
+  "tabs": {
+    "play": "Jouer",
+    "quizz": "Quizz",
+    "results": "Résultats"
+  }
+}

@@ -1,23 +1,26 @@
-import Button from "@rahoot/web/features/game/components/Button"
-import Form from "@rahoot/web/features/game/components/Form"
-import Input from "@rahoot/web/features/game/components/Input"
+import { EVENTS } from "@rahoot/common/constants"
+import Button from "@rahoot/web/components/Button"
+import Card from "@rahoot/web/components/Card"
+import Input from "@rahoot/web/components/Input"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socketProvider"
+} from "@rahoot/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+import { useSearch } from "@tanstack/react-router"
 import { type KeyboardEvent, useEffect, useRef, useState } from "react"
-import { useSearchParams } from "react-router"
+import { useTranslation } from "react-i18next"
 
 const Room = () => {
   const { socket, isConnected } = useSocket()
   const { join } = usePlayerStore()
   const [invitation, setInvitation] = useState("")
-  const [searchParams] = useSearchParams()
+  const { pin } = useSearch({ from: "/(auth)/" })
   const hasJoinedRef = useRef(false)
+  const { t } = useTranslation()
 
   const handleJoin = () => {
-    socket?.emit("player:join", invitation)
+    socket?.emit(EVENTS.PLAYER.JOIN, invitation)
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -26,30 +29,31 @@ const Room = () => {
     }
   }
 
-  useEvent("game:successRoom", (gameId) => {
+  useEvent(EVENTS.GAME.SUCCESS_ROOM, (gameId) => {
     join(gameId)
   })
 
   useEffect(() => {
-    const pinCode = searchParams.get("pin")
-
-    if (!isConnected || !pinCode || hasJoinedRef.current) {
+    if (!isConnected || !pin || hasJoinedRef.current) {
       return
     }
 
-    socket?.emit("player:join", pinCode)
+    socket?.emit("player:join", pin)
     hasJoinedRef.current = true
-  }, [searchParams, isConnected, socket])
+  }, [pin, isConnected, socket])
 
   return (
-    <Form>
+    <Card>
       <Input
+        className="text-center"
         onChange={(e) => setInvitation(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="PIN Code here"
+        placeholder={t("game:pinPlaceholder")}
       />
-      <Button onClick={handleJoin}>Submit</Button>
-    </Form>
+      <Button className="mt-4" onClick={handleJoin}>
+        {t("common:submit")}
+      </Button>
+    </Card>
   )
 }
 

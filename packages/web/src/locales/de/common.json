@@ -1,0 +1,20 @@
+{
+  "cancel": "Abbrechen",
+  "confirm": "Bestätigen",
+  "connecting": "Verbinden...",
+  "delete": "Löschen",
+  "exit": "Beenden",
+  "language": {
+    "de": "Deutsch",
+    "en": "Englisch",
+    "es": "Spanisch",
+    "fr": "Französisch",
+    "it": "Italienisch"
+  },
+  "loading": "Laden...",
+  "next": "Weiter",
+  "save": "Speichern",
+  "seconds": "Sek",
+  "skip": "Überspringen",
+  "submit": "Absenden"
+}

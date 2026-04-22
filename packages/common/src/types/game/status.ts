@@ -1,4 +1,4 @@
-import type { Player } from "@rahoot/common/types/game"
+import type { Player, QuestionMedia } from "@rahoot/common/types/game"
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
@@ -18,13 +18,15 @@ export type Status = (typeof STATUS)[keyof typeof STATUS]
 export type CommonStatusDataMap = {
   SHOW_START: { time: number; subject: string }
   SHOW_PREPARED: { totalAnswers: number; questionNumber: number }
-  SHOW_QUESTION: { question: string; image?: string; cooldown: number }
+  SHOW_QUESTION: {
+    question: string
+    media?: QuestionMedia
+    cooldown: number
+  }
   SELECT_ANSWER: {
     question: string
     answers: string[]
-    image?: string
-    video?: string
-    audio?: string
+    media?: QuestionMedia
     time: number
     totalPlayer: number
   }
@@ -37,7 +39,7 @@ export type CommonStatusDataMap = {
     aheadOfMe: string | null
   }
   WAIT: { text: string }
-  FINISHED: { subject: string; top: Player[] }
+  FINISHED: { subject: string; top: Player[]; rank?: number }
 }
 
 type ManagerExtraStatus = {
@@ -45,10 +47,9 @@ type ManagerExtraStatus = {
   SHOW_RESPONSES: {
     question: string
     responses: Record<number, number>
-    correct: number
+    solutions: number[]
     answers: string[]
-    image?: string
-    video?: string
+    media?: QuestionMedia
   }
   SHOW_LEADERBOARD: { oldLeaderboard: Player[]; leaderboard: Player[] }
 }

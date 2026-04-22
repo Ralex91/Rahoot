@@ -8,6 +8,7 @@
     "meganrogge.template-string-converter",
     "vincaslt.highlight-matching-tag",
     "formulahendry.auto-rename-tag",
-    "naumovs.color-highlight"
+    "naumovs.color-highlight",
+    "lokalise.i18n-ally"
   ]
 }

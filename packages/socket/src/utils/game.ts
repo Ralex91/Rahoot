@@ -1,14 +1,15 @@
-import { Socket } from "@rahoot/common/types/game/socket"
+import type { Socket } from "@rahoot/common/types/game/socket"
 import Game from "@rahoot/socket/services/game"
 import Registry from "@rahoot/socket/services/registry"
+import { nanoid } from "nanoid"
 
 export const withGame = (
   gameId: string | undefined,
   socket: Socket,
-  callback: (_game: Game) => void
+  callback: (_game: Game) => void,
 ): void => {
   if (!gameId) {
-    socket.emit("game:errorMessage", "Game not found")
+    socket.emit("game:errorMessage", "errors:game.notFound")
 
     return
   }
@@ -17,7 +18,7 @@ export const withGame = (
   const game = registry.getGameById(gameId)
 
   if (!game) {
-    socket.emit("game:errorMessage", "Game not found")
+    socket.emit("game:errorMessage", "errors:game.notFound")
 
     return
   }
@@ -36,6 +37,21 @@ export const createInviteCode = (length = 6) => {
   }
 
   return result
+}
+
+export const normalizeFilename = (subject: string) => {
+  const slug = subject
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/gu, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/gu, "-")
+    .replace(/[^a-z0-9-]/gu, "")
+    .slice(0, 10)
+
+  const shortId = nanoid(8)
+
+  return `${slug}-${shortId}`
 }
 
 export const timeToPoint = (startTime: number, secondes: number): number => {

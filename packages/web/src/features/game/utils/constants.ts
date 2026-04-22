@@ -1,5 +1,7 @@
+import { EVENTS } from "@rahoot/common/constants"
 import Answers from "@rahoot/web/features/game/components/states/Answers"
 import Leaderboard from "@rahoot/web/features/game/components/states/Leaderboard"
+import PlayerFinished from "@rahoot/web/features/game/components/states/PlayerFinished"
 import Podium from "@rahoot/web/features/game/components/states/Podium"
 import Prepared from "@rahoot/web/features/game/components/states/Prepared"
 import Question from "@rahoot/web/features/game/components/states/Question"
@@ -42,6 +44,7 @@ export const GAME_STATE_COMPONENTS = {
   [STATUS.SHOW_START]: Start,
   [STATUS.SHOW_RESULT]: Result,
   [STATUS.SHOW_PREPARED]: Prepared,
+  [STATUS.FINISHED]: PlayerFinished,
 }
 
 export const GAME_STATE_COMPONENTS_MANAGER = {
@@ -52,21 +55,27 @@ export const GAME_STATE_COMPONENTS_MANAGER = {
   [STATUS.FINISHED]: Podium,
 }
 
-export const SFX_ANSWERS_MUSIC = "/sounds/answersMusic.mp3"
-export const SFX_ANSWERS_SOUND = "/sounds/answersSound.mp3"
-export const SFX_RESULTS_SOUND = "/sounds/results.mp3"
-export const SFX_SHOW_SOUND = "/sounds/show.mp3"
-export const SFX_BOUMP_SOUND = "/sounds/boump.mp3"
-export const SFX_PODIUM_THREE = "/sounds/three.mp3"
-export const SFX_PODIUM_SECOND = "/sounds/second.mp3"
-export const SFX_PODIUM_FIRST = "/sounds/first.mp3"
-export const SFX_SNEAR_ROOL = "/sounds/snearRoll.mp3"
+export const SFX = {
+  ANSWERS: {
+    MUSIC: "/sounds/answersMusic.mp3",
+    SOUND: "/sounds/answersSound.mp3",
+  },
+  PODIUM: {
+    THREE: "/sounds/three.mp3",
+    SECOND: "/sounds/second.mp3",
+    FIRST: "/sounds/first.mp3",
+    SNEAR_ROOL: "/sounds/snearRoll.mp3",
+  },
+  RESULTS_SOUND: "/sounds/results.mp3",
+  SHOW_SOUND: "/sounds/show.mp3",
+  BOUMP_SOUND: "/sounds/boump.mp3",
+} as const
 
 export const MANAGER_SKIP_EVENTS = {
-  [STATUS.SHOW_ROOM]: "manager:startGame",
-  [STATUS.SELECT_ANSWER]: "manager:abortQuiz",
-  [STATUS.SHOW_RESPONSES]: "manager:showLeaderboard",
-  [STATUS.SHOW_LEADERBOARD]: "manager:nextQuestion",
+  [STATUS.SHOW_ROOM]: EVENTS.MANAGER.START_GAME,
+  [STATUS.SELECT_ANSWER]: EVENTS.MANAGER.ABORT_QUIZ,
+  [STATUS.SHOW_RESPONSES]: EVENTS.MANAGER.SHOW_LEADERBOARD,
+  [STATUS.SHOW_LEADERBOARD]: EVENTS.MANAGER.NEXT_QUESTION,
 } as const satisfies Partial<
   Record<keyof typeof GAME_STATE_COMPONENTS_MANAGER, string>
 >
@@ -79,14 +88,14 @@ export function isKeyOf<T extends object>(
 }
 
 export const MANAGER_SKIP_BTN = {
-  [STATUS.SHOW_ROOM]: "Start Game",
+  [STATUS.SHOW_ROOM]: "game:startGame",
   [STATUS.SHOW_START]: null,
   [STATUS.SHOW_PREPARED]: null,
   [STATUS.SHOW_QUESTION]: null,
-  [STATUS.SELECT_ANSWER]: "Skip",
+  [STATUS.SELECT_ANSWER]: "common:skip",
   [STATUS.SHOW_RESULT]: null,
-  [STATUS.SHOW_RESPONSES]: "Next",
-  [STATUS.SHOW_LEADERBOARD]: "Next",
-  [STATUS.FINISHED]: null,
+  [STATUS.SHOW_RESPONSES]: "common:next",
+  [STATUS.SHOW_LEADERBOARD]: "common:next",
+  [STATUS.FINISHED]: "common:exit",
   [STATUS.WAIT]: null,
 }

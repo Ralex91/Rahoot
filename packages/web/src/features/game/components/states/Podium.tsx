@@ -1,10 +1,5 @@
 import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import {
-  SFX_PODIUM_FIRST,
-  SFX_PODIUM_SECOND,
-  SFX_PODIUM_THREE,
-  SFX_SNEAR_ROOL,
-} from "@rahoot/web/features/game/utils/constants"
+import { SFX } from "@rahoot/web/features/game/utils/constants"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -18,12 +13,12 @@ type Props = {
 const usePodiumAnimation = (topLength: number) => {
   const [apparition, setApparition] = useState(0)
 
-  const [sfxtThree] = useSound(SFX_PODIUM_THREE, { volume: 0.2 })
-  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, { volume: 0.2 })
-  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
+  const [sfxtThree] = useSound(SFX.PODIUM.THREE, { volume: 0.2 })
+  const [sfxSecond] = useSound(SFX.PODIUM.SECOND, { volume: 0.2 })
+  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX.PODIUM.SNEAR_ROOL, {
     volume: 0.2,
   })
-  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, { volume: 0.2 })
+  const [sfxFirst] = useSound(SFX.PODIUM.FIRST, { volume: 0.2 })
 
   useEffect(() => {
     const actions: Partial<Record<number, () => void>> = {
@@ -59,6 +54,46 @@ const usePodiumAnimation = (topLength: number) => {
   }, [apparition, topLength])
 
   return apparition
+}
+
+const medalColor = [
+  {
+    background: "bg-yellow-500",
+    border: "border-yellow-600",
+  },
+  {
+    background: "bg-gray-400",
+    border: "border-gray-200",
+  },
+  {
+    background: "bg-amber-700",
+    border: "border-amber-800",
+  },
+]
+
+const Medal = ({ rank }: { rank: number }) => {
+  const color = medalColor[rank - 1]
+
+  return (
+    <div
+      className={clsx(
+        "relative flex aspect-square size-20 items-center justify-center overflow-hidden rounded-full border-8 text-5xl font-extrabold text-white drop-shadow-sm md:size-26 md:border-10 md:text-6xl",
+        color.background,
+        color.border,
+      )}
+    >
+      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-full">
+        <div className="absolute top-[30%] left-1/2 h-6 w-[160%] -translate-x-1/2 -rotate-40 bg-white/25" />
+        <div className="absolute top-[70%] left-1/2 h-3 w-[160%] -translate-x-1/2 -rotate-40 bg-white/25" />
+      </div>
+      <p
+        className="relative z-10"
+        style={{ textShadow: "2px 2px rgba(0,0,0, 0.25)" }}
+      >
+        {rank}
+      </p>
+    </div>
+  )
 }
 
 const Podium = ({ data: { subject, top } }: Props) => {
@@ -108,10 +143,8 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 {top[1].username}
               </p>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
-                <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-zinc-400 bg-zinc-500 text-3xl font-bold text-white drop-shadow-lg">
-                  <span className="drop-shadow-md">2</span>
-                </p>
-                <p className="text-2xl font-bold text-white drop-shadow-lg">
+                <Medal rank={2} />
+                <p className="text-3xl font-bold text-white drop-shadow-sm md:text-4xl">
                   {top[1].points}
                 </p>
               </div>
@@ -138,10 +171,8 @@ const Podium = ({ data: { subject, top } }: Props) => {
               {top[0].username}
             </p>
             <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
-              <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-400 bg-amber-300 text-3xl font-bold text-white drop-shadow-lg">
-                <span className="drop-shadow-md">1</span>
-              </p>
-              <p className="text-2xl font-bold text-white drop-shadow-lg">
+              <Medal rank={1} />
+              <p className="text-3xl font-bold text-white drop-shadow-sm md:text-4xl">
                 {top[0].points}
               </p>
             </div>
@@ -167,11 +198,9 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 {top[2].username}
               </p>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
-                <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
-                  <span className="drop-shadow-md">3</span>
-                </p>
+                <Medal rank={3} />
 
-                <p className="text-2xl font-bold text-white drop-shadow-lg">
+                <p className="text-3xl font-bold text-white drop-shadow-sm md:text-4xl">
                   {top[2].points}
                 </p>
               </div>

@@ -1,0 +1,27 @@
+{
+  "correct": "Nice!",
+  "gamePinLabel": "Game PIN:",
+  "hud": {
+    "answers": "Answers",
+    "time": "Time"
+  },
+  "joinInstruction": "Join the game at",
+  "leaderboard": "Leaderboard",
+  "pinPlaceholder": "PIN Code",
+  "playersJoined": "Players Joined: ",
+  "questionPrefix": "Question #",
+  "rank": {
+    "1": "1st place",
+    "2": "2nd place",
+    "3": "3rd place",
+    "other": "{{rank}}th place"
+  },
+  "rankSuffix": " place",
+  "resultBehind": ", behind ",
+  "resultTop": "You finished ",
+  "startGame": "Start Game",
+  "usernamePlaceholder": "Username here",
+  "waitingForAnswers": "Waiting for the players to answer",
+  "waitingForPlayers": "Waiting for players",
+  "wrong": "Too bad"
+}

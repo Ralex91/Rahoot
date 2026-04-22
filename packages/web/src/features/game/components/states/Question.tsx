@@ -1,5 +1,6 @@
+import { MEDIA_TYPES } from "@rahoot/common/constants"
 import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { SFX_SHOW_SOUND } from "@rahoot/web/features/game/utils/constants"
+import { SFX } from "@rahoot/web/features/game/utils/constants"
 import { useEffect } from "react"
 import useSound from "use-sound"
 
@@ -7,8 +8,8 @@ type Props = {
   data: CommonStatusDataMap["SHOW_QUESTION"]
 }
 
-const Question = ({ data: { question, image, cooldown } }: Props) => {
-  const [sfxShow] = useSound(SFX_SHOW_SOUND, { volume: 0.5 })
+const Question = ({ data: { question, media, cooldown } }: Props) => {
+  const [sfxShow] = useSound(SFX.SHOW_SOUND, { volume: 0.5 })
 
   useEffect(() => {
     sfxShow()
@@ -21,10 +22,10 @@ const Question = ({ data: { question, image, cooldown } }: Props) => {
           {question}
         </h2>
 
-        {Boolean(image) && (
+        {media?.type === MEDIA_TYPES.IMAGE && (
           <img
             alt={question}
-            src={image}
+            src={media.url}
             className="max-h-60 w-auto rounded-md sm:max-h-100"
           />
         )}

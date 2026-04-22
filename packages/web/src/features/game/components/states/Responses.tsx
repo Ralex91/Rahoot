@@ -3,8 +3,7 @@ import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
 import {
   ANSWERS_COLORS,
   ANSWERS_ICONS,
-  SFX_ANSWERS_MUSIC,
-  SFX_RESULTS_SOUND,
+  SFX,
 } from "@rahoot/web/features/game/utils/constants"
 import { calculatePercentages } from "@rahoot/web/features/game/utils/score"
 import clsx from "clsx"
@@ -16,16 +15,16 @@ type Props = {
 }
 
 const Responses = ({
-  data: { question, answers, responses, correct },
+  data: { question, answers, responses, solutions },
 }: Props) => {
   const [percentages, setPercentages] = useState<Record<string, string>>({})
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
 
-  const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
+  const [sfxResults] = useSound(SFX.RESULTS_SOUND, {
     volume: 0.2,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(SFX_ANSWERS_MUSIC, {
+  const [playMusic, { stop: stopMusic }] = useSound(SFX.ANSWERS.MUSIC, {
     volume: 0.2,
     onplay: () => {
       setIsMusicPlaying(true)
@@ -86,9 +85,10 @@ const Responses = ({
             <AnswerButton
               key={key}
               className={clsx(ANSWERS_COLORS[key], {
-                "opacity-65": responses && correct !== key,
+                "opacity-65": responses && !solutions.includes(key),
               })}
               icon={ANSWERS_ICONS[key]}
+              correct={solutions.includes(key)}
             >
               {answer}
             </AnswerButton>

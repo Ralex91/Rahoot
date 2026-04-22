@@ -1,6 +1,8 @@
 import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import Fire from "@rahoot/web/features/game/components/icons/Fire"
 import { AnimatePresence, motion, useSpring, useTransform } from "motion/react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   data: ManagerStatusDataMap["SHOW_LEADERBOARD"]
@@ -23,10 +25,28 @@ const AnimatedPoints = ({ from, to }: { from: number; to: number }) => {
   return <span className="drop-shadow-md">{displayValue}</span>
 }
 
+const StreakBadge = ({ streak }: { streak: number }) => (
+  <AnimatePresence>
+    {streak >= 2 && (
+      <motion.div
+        key="streak"
+        initial={{ opacity: 0, scale: 0.5, x: -10 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        exit={{ opacity: 0, scale: 0.5, x: -10 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className="ml-2 flex items-center gap-1 rounded-full bg-amber-700 p-1"
+      >
+        <Fire className="size-7" />
+      </motion.div>
+    )}
+  </AnimatePresence>
+)
+
 const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
   const [displayedLeaderboard, setDisplayedLeaderboard] =
     useState(oldLeaderboard)
   const [isAnimating, setIsAnimating] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setDisplayedLeaderboard(oldLeaderboard)
@@ -45,11 +65,11 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
   return (
     <section className="relative mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-2">
       <h2 className="mb-6 text-5xl font-bold text-white drop-shadow-md">
-        Leaderboard
+        {t("game:leaderboard")}
       </h2>
       <div className="flex w-full flex-col gap-2">
         <AnimatePresence mode="popLayout">
-          {displayedLeaderboard.map(({ id, username, points }) => (
+          {displayedLeaderboard.map(({ id, username, points, streak }) => (
             <motion.div
               key={id}
               layout
@@ -70,9 +90,12 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
                   damping: 25,
                 },
               }}
-              className="bg-primary flex w-full justify-between rounded-md p-3 text-2xl font-bold text-white"
+              className="bg-primary flex w-full justify-between rounded-md p-3 text-3xl font-bold text-white"
             >
-              <span className="drop-shadow-md">{username}</span>
+              <span className="flex items-center gap-2 drop-shadow-md">
+                {username}
+                <StreakBadge streak={streak} />
+              </span>
               {isAnimating ? (
                 <AnimatedPoints
                   from={oldLeaderboard.find((u) => u.id === id)?.points || 0}

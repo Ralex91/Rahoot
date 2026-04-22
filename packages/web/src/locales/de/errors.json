@@ -1,0 +1,34 @@
+{
+  "auth": {
+    "invalidInviteCode": "Ungültiger Einladungscode",
+    "usernameTooLong": "Der Benutzername darf nicht mehr als 20 Zeichen haben",
+    "usernameTooShort": "Der Benutzername muss mindestens 4 Zeichen haben"
+  },
+  "game": {
+    "expired": "Spiel abgelaufen",
+    "kickedByManager": "Du wurdest vom Manager entfernt",
+    "managerAlreadyConnected": "Manager bereits verbunden",
+    "managerDisconnected": "Manager getrennt",
+    "noPlayersConnected": "Keine Spieler verbunden",
+    "notFound": "Spiel nicht gefunden",
+    "playerAlreadyConnected": "Spieler bereits verbunden"
+  },
+  "manager": {
+    "failedToReadConfig": "Spielkonfiguration konnte nicht gelesen werden",
+    "invalidPassword": "Ungültiges Passwort",
+    "passwordNotConfigured": "Manager-Passwort ist nicht konfiguriert"
+  },
+  "quizz": {
+    "answerEmpty": "Eine Antwort darf nicht leer sein",
+    "failedToDelete": "Quiz konnte nicht gelöscht werden",
+    "failedToSave": "Quiz ist unvollständig, stelle sicher, dass alle Fragen einen Titel und mindestens eine richtige Antwort haben",
+    "failedToUpdate": "Quiz konnte nicht aktualisiert werden",
+    "invalidMediaUrl": "Die Medien-URL muss eine gültige URL sein",
+    "noQuestions": "Ein Quiz muss mindestens eine Frage haben",
+    "notFound": "Quiz nicht gefunden",
+    "questionEmpty": "Die Frage darf nicht leer sein",
+    "subjectEmpty": "Das Thema darf nicht leer sein",
+    "tooFewAnswers": "Eine Frage muss mindestens 2 Antworten haben",
+    "tooManyAnswers": "Eine Frage darf nicht mehr als 4 Antworten haben"
+  }
+}

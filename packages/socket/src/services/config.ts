@@ -1,4 +1,11 @@
-import { QuizzWithId } from "@rahoot/common/types/game"
+import { EXAMPLE_QUIZZ } from "@rahoot/common/constants"
+import type {
+  GameResult,
+  GameResultMeta,
+  QuizzWithId,
+} from "@rahoot/common/types/game"
+import { quizzValidator } from "@rahoot/common/validators/quizz"
+import { normalizeFilename } from "@rahoot/socket/utils/game"
 import fs from "fs"
 import { resolve } from "path"
 
@@ -39,38 +46,7 @@ class Config {
 
       fs.writeFileSync(
         getPath("quizz/example.json"),
-        JSON.stringify(
-          {
-            subject: "Example Quizz",
-            questions: [
-              {
-                question: "What is good answer ?",
-                answers: ["No", "Good answer", "No", "No"],
-                solution: 1,
-                cooldown: 5,
-                time: 15,
-              },
-              {
-                question: "What is good answer with image ?",
-                answers: ["No", "No", "No", "Good answer"],
-                image: "https://placehold.co/600x400.png",
-                solution: 3,
-                cooldown: 5,
-                time: 20,
-              },
-              {
-                question: "What is good answer with two answers ?",
-                answers: ["Good answer", "No"],
-                image: "https://placehold.co/600x400.png",
-                solution: 0,
-                cooldown: 5,
-                time: 20,
-              },
-            ],
-          },
-          null,
-          2,
-        ),
+        JSON.stringify(EXAMPLE_QUIZZ, null, 2),
       )
     }
   }
@@ -93,6 +69,27 @@ class Config {
     return {}
   }
 
+  static quizzMeta() {
+    return Config.quizz().map(({ id, subject }) => ({ id, subject }))
+  }
+
+  static quizzById(id: string) {
+    const filePath = getPath(`quizz/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Quizz "${id}" not found`)
+    }
+
+    const data = fs.readFileSync(filePath, "utf-8")
+    const result = quizzValidator.safeParse(JSON.parse(data))
+
+    if (!result.success) {
+      throw new Error(`Invalid quizz "${id}"`)
+    }
+
+    return { id, ...result.data }
+  }
+
   static quizz() {
     const isExists = fs.existsSync(getPath("quizz"))
 
@@ -105,16 +102,19 @@ class Config {
         .readdirSync(getPath("quizz"))
         .filter((file) => file.endsWith(".json"))
 
-      const quizz: QuizzWithId[] = files.map((file) => {
+      const quizz: QuizzWithId[] = files.flatMap((file) => {
         const data = fs.readFileSync(getPath(`quizz/${file}`), "utf-8")
-        const config = JSON.parse(data)
-
         const id = file.replace(".json", "")
 
-        return {
-          id,
-          ...config,
+        const result = quizzValidator.safeParse(JSON.parse(data))
+
+        if (!result.success) {
+          console.warn(`Invalid quizz config "${file}":`, result.error.issues)
+
+          return []
         }
+
+        return [{ id, ...result.data }]
       })
 
       return quizz || []
@@ -123,6 +123,123 @@ class Config {
 
       return []
     }
+  }
+
+  static updateQuizz(id: string, data: unknown): { id: string } {
+    const result = quizzValidator.safeParse(data)
+
+    if (!result.success) {
+      throw new Error(result.error.issues[0].message)
+    }
+
+    const oldPath = getPath(`quizz/${id}.json`)
+
+    if (!fs.existsSync(oldPath)) {
+      throw new Error(`Quizz "${id}" not found`)
+    }
+
+    fs.writeFileSync(oldPath, JSON.stringify(result.data, null, 2))
+
+    return { id }
+  }
+
+  static deleteQuizz(id: string): void {
+    const filePath = getPath(`quizz/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Quizz "${id}" not found`)
+    }
+
+    fs.unlinkSync(filePath)
+  }
+
+  static saveResult(data: GameResult): void {
+    try {
+      const resultsPath = getPath("results")
+
+      if (!fs.existsSync(resultsPath)) {
+        fs.mkdirSync(resultsPath)
+      }
+
+      fs.writeFileSync(
+        getPath(`results/${data.id}.json`),
+        JSON.stringify(data, null, 2),
+      )
+
+      console.log(`Saved result for "${data.subject}"`)
+    } catch (error) {
+      console.error("Failed to save result:", error)
+    }
+  }
+
+  static resultsMeta(): GameResultMeta[] {
+    const resultsPath = getPath("results")
+
+    if (!fs.existsSync(resultsPath)) {
+      return []
+    }
+
+    const readMeta = (file: string): GameResultMeta | null => {
+      try {
+        const data = fs.readFileSync(getPath(`results/${file}`), "utf-8")
+        const result = JSON.parse(data) as GameResult
+
+        return {
+          id: result.id,
+          subject: result.subject,
+          date: result.date,
+          playerCount: result.players.length,
+        }
+      } catch {
+        return null
+      }
+    }
+
+    try {
+      return fs
+        .readdirSync(resultsPath)
+        .filter((file) => file.endsWith(".json"))
+        .map(readMeta)
+        .filter((meta): meta is GameResultMeta => meta !== null)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    } catch {
+      return []
+    }
+  }
+
+  static resultById(id: string): GameResult {
+    const filePath = getPath(`results/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Result "${id}" not found`)
+    }
+
+    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as GameResult
+  }
+
+  static deleteResult(id: string): void {
+    const filePath = getPath(`results/${id}.json`)
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Result "${id}" not found`)
+    }
+
+    fs.unlinkSync(filePath)
+  }
+
+  static saveQuizz(data: unknown): { id: string } {
+    const result = quizzValidator.safeParse(data)
+
+    if (!result.success) {
+      throw new Error(result.error.issues[0].message)
+    }
+
+    const id = normalizeFilename(result.data.subject)
+    const filePath = getPath(`quizz/${id}.json`)
+
+    fs.writeFileSync(filePath, JSON.stringify(result.data, null, 2))
+
+    return { id }
   }
 }
 

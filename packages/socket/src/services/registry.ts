@@ -40,13 +40,13 @@ class Registry {
   getPlayerGame(gameId: string, clientId: string): Game | undefined {
     return this.games.find(
       (g) =>
-        g.gameId === gameId && g.players.some((p) => p.clientId === clientId)
+        g.gameId === gameId && g.players.some((p) => p.clientId === clientId),
     )
   }
 
   getManagerGame(gmageId: string, clientId: string): Game | undefined {
     return this.games.find(
-      (g) => g.gameId === gmageId && g.manager.clientId === clientId
+      (g) => g.gameId === gmageId && g.manager.clientId === clientId,
     )
   }
 
@@ -60,7 +60,7 @@ class Registry {
 
   markGameAsEmpty(game: Game): void {
     const alreadyEmpty = this.emptyGames.find(
-      (g) => g.game.gameId === game.gameId
+      (g) => g.game.gameId === game.gameId,
     )
 
     if (!alreadyEmpty) {
@@ -69,7 +69,7 @@ class Registry {
         game,
       })
       console.log(
-        `Game ${game.gameId} marked as empty. Total empty games: ${this.emptyGames.length}`
+        `Game ${game.gameId} marked as empty. Total empty games: ${this.emptyGames.length}`,
       )
     }
   }
@@ -80,7 +80,7 @@ class Registry {
 
     if (this.emptyGames.length < initialLength) {
       console.log(
-        `Game ${gameId} reactivated. Remaining empty games: ${this.emptyGames.length}`
+        `Game ${gameId} reactivated. Remaining empty games: ${this.emptyGames.length}`,
       )
     }
   }
@@ -116,7 +116,7 @@ class Registry {
     const stillEmpty = this.emptyGames.filter(
       (g) =>
         now.diff(dayjs.unix(g.since), "minute") <
-        this.EMPTY_GAME_TIMEOUT_MINUTES
+        this.EMPTY_GAME_TIMEOUT_MINUTES,
     )
 
     if (stillEmpty.length === this.emptyGames.length) {
@@ -130,7 +130,7 @@ class Registry {
     this.emptyGames = stillEmpty
 
     console.log(
-      `Removed ${removed.length} empty game(s). Remaining games: ${this.games.length}`
+      `Removed ${removed.length} empty game(s). Remaining games: ${this.games.length}`,
     )
   }
 

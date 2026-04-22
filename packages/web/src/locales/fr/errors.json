@@ -1,0 +1,34 @@
+{
+  "auth": {
+    "invalidInviteCode": "Code d'invitation invalide",
+    "usernameTooLong": "Le pseudo ne peut pas dépasser 20 caractères",
+    "usernameTooShort": "Le pseudo doit faire au moins 4 caractères"
+  },
+  "game": {
+    "expired": "La partie a expiré",
+    "kickedByManager": "Vous avez été expulsé par le manager",
+    "managerAlreadyConnected": "Un manager est déjà connecté",
+    "managerDisconnected": "Le manager s'est déconnecté",
+    "noPlayersConnected": "Aucun joueur connecté",
+    "notFound": "Partie introuvable",
+    "playerAlreadyConnected": "Ce joueur est déjà connecté"
+  },
+  "manager": {
+    "failedToReadConfig": "Impossible de lire la configuration",
+    "invalidPassword": "Mot de passe invalide",
+    "passwordNotConfigured": "Mot de passe manager non configuré"
+  },
+  "quizz": {
+    "answerEmpty": "Une réponse ne peut pas être vide",
+    "failedToDelete": "Suppression du quizz a echoué",
+    "failedToSave": "Le quizz est incomplet, vérifiez que chaque question a un titre et au moins une bonne réponse",
+    "failedToUpdate": "La mise à jour du quizz a echoué",
+    "invalidMediaUrl": "L'URL du média doit être une URL valide",
+    "noQuestions": "Un quizz doit avoir au moins une question",
+    "notFound": "Quizz introuvable",
+    "questionEmpty": "La question ne peut pas être vide",
+    "subjectEmpty": "Le sujet ne peut pas être vide",
+    "tooFewAnswers": "Une question doit avoir au moins 2 réponses",
+    "tooManyAnswers": "Une question ne peut pas avoir plus de 4 réponses"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "addAnswerPlaceholder": "Add an answer...",
+  "addQuestion": "Add question",
+  "answersCountSuffix": " answers",
+  "deleteQuestion": "Delete question",
+  "noQuestionYet": "No question yet",
+  "question": {
+    "addMediaHint": "Add an image, video or audio to your question",
+    "config": {
+      "answerTime": "Answer time",
+      "answerTimeHint": "Time players have to answer",
+      "questionDisplay": "Question display",
+      "questionDisplayHint": "Duration before answers appear",
+      "timings": "Timings"
+    },
+    "deleteQuestion": "Delete question",
+    "deleteQuestionConfirm": "Are you sure you want to delete this question?",
+    "media": {
+      "audio": "Audio",
+      "image": "Image",
+      "video": "Video"
+    },
+    "mediaUrlPlaceholder": "Enter URL...",
+    "placeholder": "Start typing your question..."
+  },
+  "quizzSaved": "Quizz saved successfully",
+  "quizzUpdated": "Quizz updated successfully",
+  "titleQuizzPlaceholder": "Quizz title..."
+}

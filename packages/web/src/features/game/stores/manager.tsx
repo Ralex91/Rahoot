@@ -1,5 +1,6 @@
 import type { Player } from "@rahoot/common/types/game"
 import type { StatusDataMap } from "@rahoot/common/types/game/status"
+import type { ManagerConfig } from "@rahoot/common/types/manager"
 import {
   createStatus,
   type Status,
@@ -7,10 +8,13 @@ import {
 import { create } from "zustand"
 
 type ManagerStore<T> = {
+  config: ManagerConfig | null
+
   gameId: string | null
   status: Status<T> | null
   players: Player[]
 
+  setConfig: (_config: ManagerConfig) => void
   setGameId: (_gameId: string | null) => void
   setStatus: <K extends keyof T>(_name: K, _data: T[K]) => void
   resetStatus: () => void
@@ -20,6 +24,7 @@ type ManagerStore<T> = {
 }
 
 const initialState = {
+  config: null,
   gameId: null,
   status: null,
   players: [],
@@ -27,6 +32,8 @@ const initialState = {
 
 export const useManagerStore = create<ManagerStore<StatusDataMap>>((set) => ({
   ...initialState,
+
+  setConfig: (config) => set({ config }),
 
   setGameId: (gameId) => set({ gameId }),
 
