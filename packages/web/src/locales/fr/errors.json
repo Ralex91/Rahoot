@@ -30,5 +30,10 @@
     "subjectEmpty": "Le sujet ne peut pas être vide",
     "tooFewAnswers": "Une question doit avoir au moins 2 réponses",
     "tooManyAnswers": "Une question ne peut pas avoir plus de 4 réponses"
+  },
+  "route": {
+    "back": "Retour à l'accueil",
+    "description": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+    "title": "Une erreur est survenue"
   }
 }

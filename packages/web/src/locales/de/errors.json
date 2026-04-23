@@ -1,4 +1,9 @@
 {
+  "route": {
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "back": "Zurück zur Startseite"
+  },
   "auth": {
     "invalidInviteCode": "Ungültiger Einladungscode",
     "usernameTooLong": "Der Benutzername darf nicht mehr als 20 Zeichen haben",
