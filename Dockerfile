@@ -1,5 +1,5 @@
 # ---- BASE ----
-FROM node:24-alpine AS base
+FROM node:25-alpine AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # ---- BUILDER ----
