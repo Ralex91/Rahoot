@@ -30,5 +30,10 @@
     "subjectEmpty": "Il soggetto non può essere vuoto",
     "tooFewAnswers": "Una domanda deve avere almeno 2 risposte",
     "tooManyAnswers": "Una domanda non può avere più di 4 risposte"
+  },
+  "route": {
+    "back": "Torna alla home",
+    "description": "Si è verificato un errore imprevisto. Riprova.",
+    "title": "Qualcosa è andato storto"
   }
 }

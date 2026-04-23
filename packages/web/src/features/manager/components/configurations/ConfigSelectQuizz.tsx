@@ -63,7 +63,7 @@ const ConfigSelectQuizz = () => {
         {!quizzList.length && (
           <div className="my-8 text-center text-gray-500">
             <p>{t("manager:quizz.notFound")}</p>
-            <p className="text-sm">{t("pleaseCreateQuizz")}</p>
+            <p className="text-sm">{t("manager:quizz.pleaseCreate")}</p>
           </div>
         )}
       </div>

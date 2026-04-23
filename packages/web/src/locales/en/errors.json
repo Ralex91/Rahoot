@@ -30,5 +30,10 @@
     "subjectEmpty": "Subject cannot be empty",
     "tooFewAnswers": "A question must have at least 2 answers",
     "tooManyAnswers": "A question cannot have more than 4 answers"
+  },
+  "route": {
+    "back": "Go back home",
+    "description": "An unexpected error occurred. Please try again.",
+    "title": "Something went wrong"
   }
 }
