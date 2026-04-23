@@ -31,7 +31,7 @@
     "react-i18next": "^17.0.4",
     "socket.io-client": "^4.8.3",
     "tailwind-merge": "^3.5.0",
-    "tailwindcss": "^4.2.2",
+    "tailwindcss": "^4.2.4",
     "use-sound": "^5.0.0",
     "uuid": "^13.0.0",
     "zod": "^4.3.6",
