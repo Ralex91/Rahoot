@@ -1,6 +1,6 @@
 # ---- BASE ----
-FROM node:24-alpine AS base
-RUN corepack enable && corepack prepare pnpm@latest --activate
+FROM node:25-alpine AS base
+RUN npm install -g pnpm
 
 # ---- BUILDER ----
 FROM base AS builder
