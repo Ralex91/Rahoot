@@ -30,7 +30,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
       return
     }
 
-    socket.emit(EVENTS.GAME.RESET, "game.expired")
+    socket.emit(EVENTS.GAME.RESET, "errors:game.expired")
   })
 
   socket.on(EVENTS.GAME.CREATE, (quizzId) => {
@@ -38,7 +38,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
     const quizz = quizzList.find((q) => q.id === quizzId)
 
     if (!quizz) {
-      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "quizz.notFound")
+      socket.emit(EVENTS.GAME.ERROR_MESSAGE, "errors:quizz.notFound")
 
       return
     }
@@ -111,7 +111,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
         managerGame.abortCooldown()
         io.to(managerGame.gameId).emit(
           EVENTS.GAME.RESET,
-          "game.managerDisconnected",
+          "errors:game.managerDisconnected",
         )
         registry.removeGame(managerGame.gameId)
 

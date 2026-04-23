@@ -1,3 +1,4 @@
+import ErrorPage from "@rahoot/web/components/ErrorPage"
 import {
   SocketProvider,
   useSocket,
@@ -34,5 +35,10 @@ export const Route = createRootRoute({
     <SocketProvider>
       <GameLayout />
     </SocketProvider>
+  ),
+  errorComponent: ({ error }) => (
+    <div className="bg-secondary antialiased">
+      <ErrorPage error={error} />
+    </div>
   ),
 })
