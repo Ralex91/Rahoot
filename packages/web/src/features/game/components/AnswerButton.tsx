@@ -30,11 +30,11 @@ const AnswerButton = ({
       {...otherProps}
     >
       <Icon className="size-4 shrink-0 md:size-6" />
-      <p className="w-full flex-1 text-sm break-all drop-shadow-md sm:text-base">
+      <p className="w-full flex-1 text-sm break-all drop-shadow-md md:text-lg">
         {children}
       </p>
       {correct !== undefined && (
-        <CorrectIcon className="size-4 stroke-6 sm:size-6" />
+        <CorrectIcon className="size-4 stroke-6 md:size-6" />
       )}
     </button>
   )
