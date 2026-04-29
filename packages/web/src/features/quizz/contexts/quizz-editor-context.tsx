@@ -5,6 +5,7 @@ import {
   useState,
   type PropsWithChildren,
 } from "react"
+import { v7 as uuid } from "uuid"
 
 export type QuestionWithId = Question & {
   id: string
@@ -27,7 +28,7 @@ type QuizzEditorContextType = {
 const QuizzEditorContext = createContext<QuizzEditorContextType | null>(null)
 
 const defaultQuestion = (): QuestionWithId => ({
-  id: crypto.randomUUID(),
+  id: uuid(),
   question: "",
   answers: ["", ""],
   solutions: [0],
@@ -37,7 +38,7 @@ const defaultQuestion = (): QuestionWithId => ({
 
 const toQuestionWithId = (q: Question): QuestionWithId => ({
   ...q,
-  id: crypto.randomUUID(),
+  id: uuid(),
 })
 
 type QuizzEditorProviderProps = PropsWithChildren<{

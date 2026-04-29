@@ -12,7 +12,7 @@ import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
 import { RoundManager } from "@rahoot/socket/services/game/round-manager"
 import Registry from "@rahoot/socket/services/registry"
 import { createInviteCode } from "@rahoot/socket/utils/game"
-import { v4 as uuid } from "uuid"
+import { v7 as uuid } from "uuid"
 
 const registry = Registry.getInstance()
 
