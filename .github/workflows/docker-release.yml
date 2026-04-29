@@ -48,6 +48,7 @@ jobs:
           platforms: ${{ env.DOCKER_PLATFORMS }}
 
       - name: Log in to Docker Hub
+        if: ${{ !env.ACT }}
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -58,7 +59,7 @@ jobs:
         with:
           context: .
           platforms: ${{ env.DOCKER_PLATFORMS }}
-          push: true
+          push: ${{ !env.ACT }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPO_NAME }}:${{ env.VERSION }}
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPO_NAME }}:${{ env.MAJOR_MINOR }}
