@@ -17,22 +17,13 @@ import { v7 as uuid } from "uuid"
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
 interface SocketContextValue {
-  socket: TypedSocket | null
+  socket: TypedSocket
   isConnected: boolean
   clientId: string
   connect: () => void
   disconnect: () => void
   reconnect: () => void
 }
-
-const SocketContext = createContext<SocketContextValue>({
-  socket: null,
-  isConnected: false,
-  clientId: "",
-  connect: () => {},
-  disconnect: () => {},
-  reconnect: () => {},
-})
 
 const getClientId = (): string => {
   try {
@@ -51,76 +42,62 @@ const getClientId = (): string => {
   }
 }
 
+const clientId = getClientId()
+
+export const socketClient: TypedSocket = io("/", {
+  path: "/ws",
+  autoConnect: false,
+  reconnection: true,
+  reconnectionAttempts: Infinity,
+  reconnectionDelay: 1000,
+  auth: { clientId },
+})
+
+const SocketContext = createContext<SocketContextValue>({
+  socket: socketClient,
+  isConnected: false,
+  clientId,
+  connect: () => {},
+  disconnect: () => {},
+  reconnect: () => {},
+})
+
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = useState<TypedSocket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
-  const [clientId] = useState<string>(() => getClientId())
 
   useEffect(() => {
-    if (socket) {
-      return
-    }
+    socketClient.on("connect", () => setIsConnected(true))
+    socketClient.on("disconnect", () => setIsConnected(false))
+    socketClient.on("connect_error", (err) => {
+      console.error("Connection error:", err.message)
+    })
 
-    let socketClient: TypedSocket | null = null
-
-    try {
-      socketClient = io("/", {
-        path: "/ws",
-        autoConnect: false,
-        reconnection: true,
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000,
-        auth: {
-          clientId,
-        },
-      })
-
-      setSocket(socketClient)
-
-      socketClient.on("connect", () => {
-        setIsConnected(true)
-      })
-
-      socketClient.on("disconnect", () => {
-        setIsConnected(false)
-      })
-
-      socketClient.on("connect_error", (err) => {
-        console.error("Connection error:", err.message)
-      })
-    } catch (error) {
-      console.error("Failed to initialize socket:", error)
-    }
-
-    // eslint-disable-next-line consistent-return
     return () => {
-      socketClient?.disconnect()
+      socketClient.disconnect()
     }
-  }, [clientId])
+  }, [])
 
   const connect = useCallback(() => {
-    if (socket && !socket.connected) {
-      socket.connect()
+    if (!socketClient.connected) {
+      socketClient.connect()
     }
-  }, [socket])
+  }, [])
 
   const disconnect = useCallback(() => {
-    if (socket && socket.connected) {
-      socket.disconnect()
+    if (socketClient.connected) {
+      socketClient.disconnect()
     }
-  }, [socket])
+  }, [])
 
   const reconnect = useCallback(() => {
-    if (socket) {
-      socket.disconnect()
-      socket.connect()
-    }
-  }, [socket])
+    socketClient.disconnect()
+    socketClient.connect()
+  }, [])
 
   return (
     <SocketContext.Provider
       value={{
-        socket,
+        socket: socketClient,
         isConnected,
         clientId,
         connect,
@@ -142,13 +119,8 @@ export const useEvent = <E extends keyof ServerToClientEvents>(
   const { socket } = useSocket()
 
   useEffect(() => {
-    if (!socket) {
-      return
-    }
-
     socket.on(event, callback as any)
 
-    // eslint-disable-next-line consistent-return
     return () => {
       socket.off(event, callback as any)
     }

@@ -18,10 +18,17 @@ import { useTranslation } from "react-i18next"
 type Props = PropsWithChildren & {
   statusName: Status | undefined
   onNext?: () => void
+  onBack?: () => void
   manager?: boolean
 }
 
-const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
+const GameWrapper = ({
+  children,
+  statusName,
+  onNext,
+  onBack,
+  manager,
+}: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
@@ -80,12 +87,18 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
 
               {manager && next && (
                 <Button
-                  className={clsx("self-end bg-white px-4 text-black!", {
+                  className={clsx("bg-white px-4 text-black", {
                     "pointer-events-none": isDisabled,
                   })}
                   onClick={handleNext}
                 >
                   {t(next)}
+                </Button>
+              )}
+
+              {manager && onBack && (
+                <Button onClick={onBack} className="bg-white px-4 text-black">
+                  {t("common:exit")}
                 </Button>
               )}
             </div>

@@ -1,6 +1,7 @@
 import { EVENTS } from "@rahoot/common/constants"
 import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
 import {
+  socketClient,
   useEvent,
   useSocket,
 } from "@rahoot/web/features/game/contexts/socket-context"
@@ -24,7 +25,7 @@ const PlayerGamePage = () => {
 
   useEvent("connect", () => {
     if (gameIdParam) {
-      socket?.emit(EVENTS.PLAYER.RECONNECT, { gameId: gameIdParam })
+      socket.emit(EVENTS.PLAYER.RECONNECT, { gameId: gameIdParam })
     }
   })
 
@@ -69,4 +70,7 @@ const PlayerGamePage = () => {
 
 export const Route = createFileRoute("/party/$gameId")({
   component: PlayerGamePage,
+  onLeave: ({ params: { gameId } }) => {
+    socketClient.emit(EVENTS.PLAYER.LEAVE, { gameId })
+  },
 })

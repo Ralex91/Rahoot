@@ -2,6 +2,7 @@ import { EVENTS } from "@rahoot/common/constants"
 import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
 import {
+  socketClient,
   useEvent,
   useSocket,
 } from "@rahoot/web/features/game/contexts/socket-context"
@@ -33,7 +34,7 @@ const ManagerGamePage = () => {
 
   useEvent("connect", () => {
     if (gameIdParam) {
-      socket?.emit(EVENTS.MANAGER.RECONNECT, { gameId: gameIdParam })
+      socket.emit(EVENTS.MANAGER.RECONNECT, { gameId: gameIdParam })
     }
   })
 
@@ -72,8 +73,14 @@ const ManagerGamePage = () => {
     }
 
     if (isKeyOf(MANAGER_SKIP_EVENTS, status.name)) {
-      socket?.emit(MANAGER_SKIP_EVENTS[status.name], { gameId })
+      socket.emit(MANAGER_SKIP_EVENTS[status.name], { gameId })
     }
+  }
+
+  const handleBack = () => {
+    navigate({ to: "/manager/config" })
+    reset()
+    setQuestionStates(null)
   }
 
   const CurrentComponent =
@@ -82,7 +89,12 @@ const ManagerGamePage = () => {
       : null
 
   return (
-    <GameWrapper statusName={status?.name} onNext={handleSkip} manager>
+    <GameWrapper
+      statusName={status?.name}
+      onNext={handleSkip}
+      onBack={status?.name === STATUS.SHOW_ROOM ? handleBack : undefined}
+      manager
+    >
       {CurrentComponent && <CurrentComponent data={status!.data as never} />}
     </GameWrapper>
   )
@@ -90,4 +102,7 @@ const ManagerGamePage = () => {
 
 export const Route = createFileRoute("/party/manager/$gameId")({
   component: ManagerGamePage,
+  onLeave: ({ params: { gameId } }) => {
+    socketClient.emit(EVENTS.MANAGER.LEAVE, { gameId })
+  },
 })

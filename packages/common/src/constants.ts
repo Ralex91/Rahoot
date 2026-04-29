@@ -18,6 +18,7 @@ export const EVENTS = {
     JOIN: "player:join",
     LOGIN: "player:login",
     RECONNECT: "player:reconnect",
+    LEAVE: "player:leave",
     SELECTED_ANSWER: "player:selectedAnswer",
   },
   MANAGER: {
@@ -31,6 +32,7 @@ export const EVENTS = {
     PLAYER_KICKED: "manager:playerKicked",
     AUTH: "manager:auth",
     RECONNECT: "manager:reconnect",
+    LEAVE: "manager:leave",
     KICK_PLAYER: "manager:kickPlayer",
     START_GAME: "manager:startGame",
     ABORT_QUIZ: "manager:abortQuiz",

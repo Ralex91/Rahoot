@@ -95,6 +95,7 @@ export interface ClientToServerEvents {
   [EVENTS.GAME.CREATE]: (_quizzId: string) => void
   [EVENTS.MANAGER.AUTH]: (_password: string) => void
   [EVENTS.MANAGER.RECONNECT]: (_message: { gameId: string }) => void
+  [EVENTS.MANAGER.LEAVE]: (_message: { gameId: string }) => void
   [EVENTS.MANAGER.KICK_PLAYER]: (_message: {
     gameId: string
     playerId: string
@@ -118,6 +119,7 @@ export interface ClientToServerEvents {
     _message: MessageWithoutStatus<{ username: string }>,
   ) => void
   [EVENTS.PLAYER.RECONNECT]: (_message: { gameId: string }) => void
+  [EVENTS.PLAYER.LEAVE]: (_message: { gameId: string }) => void
   [EVENTS.PLAYER.SELECTED_ANSWER]: (
     _message: MessageWithoutStatus<{ answerKey: number }>,
   ) => void

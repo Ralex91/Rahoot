@@ -9,6 +9,34 @@ import { withGame } from "@rahoot/socket/utils/game"
 export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   const registry = Registry.getInstance()
 
+  const handleManagerLeave = (game: Game) => {
+    game.setManagerDisconnected()
+    registry.markGameAsEmpty(game)
+
+    if (!game.started) {
+      game.abortCooldown()
+      io.to(game.gameId).emit(
+        EVENTS.GAME.RESET,
+        "errors:game.managerDisconnected",
+      )
+      registry.removeGame(game.gameId)
+    }
+  }
+
+  const handlePlayerLeave = (game: Game) => {
+    if (!game.started) {
+      const player = game.removePlayer(socket.id)
+
+      if (player) {
+        console.log(`Player ${player.username} left game ${game.gameId}`)
+      }
+
+      return
+    }
+
+    game.setPlayerDisconnected(socket.id)
+  }
+
   socket.on(EVENTS.PLAYER.RECONNECT, ({ gameId }) => {
     const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId)
 
@@ -97,46 +125,39 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
     withGame(gameId, socket, (game) => game.showLeaderboard()),
   )
 
+  socket.on(EVENTS.MANAGER.LEAVE, ({ gameId }) => {
+    const game = registry.getManagerGame(gameId, socket.handshake.auth.clientId)
+
+    if (game) {
+      console.log(`Manager left game ${game.inviteCode}`)
+      handleManagerLeave(game)
+    }
+  })
+
+  socket.on(EVENTS.PLAYER.LEAVE, ({ gameId }) => {
+    const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId)
+
+    if (game) {
+      handlePlayerLeave(game)
+    }
+  })
+
   socket.on("disconnect", () => {
     console.log(`A user disconnected : ${socket.id}`)
 
     const managerGame = registry.getGameByManagerSocketId(socket.id)
 
     if (managerGame) {
-      managerGame.setManagerDisconnected()
-      registry.markGameAsEmpty(managerGame)
-
-      if (!managerGame.started) {
-        console.log("Reset game (manager disconnected)")
-        managerGame.abortCooldown()
-        io.to(managerGame.gameId).emit(
-          EVENTS.GAME.RESET,
-          "errors:game.managerDisconnected",
-        )
-        registry.removeGame(managerGame.gameId)
-
-        return
-      }
-    }
-
-    const game = registry.getGameByPlayerSocketId(socket.id)
-
-    if (!game) {
-      return
-    }
-
-    if (!game.started) {
-      const player = game.removePlayer(socket.id)
-
-      if (player) {
-        console.log(
-          `Removed player ${player.username} from game ${game.gameId}`,
-        )
-      }
+      console.log(`Manager disconnected from game ${managerGame.inviteCode}`)
+      handleManagerLeave(managerGame)
 
       return
     }
 
-    game.setPlayerDisconnected(socket.id)
+    const playerGame = registry.getGameByPlayerSocketId(socket.id)
+
+    if (playerGame) {
+      handlePlayerLeave(playerGame)
+    }
   })
 }
