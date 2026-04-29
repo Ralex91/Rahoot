@@ -29,9 +29,13 @@ const AnswerButton = ({
       )}
       {...otherProps}
     >
-      <Icon className="h-6 w-6 shrink-0" />
-      <p className="w-full flex-1 break-all drop-shadow-md">{children}</p>
-      {correct !== undefined && <CorrectIcon className="size-6 stroke-6" />}
+      <Icon className="size-4 shrink-0 md:size-6" />
+      <p className="w-full flex-1 text-sm break-all drop-shadow-md sm:text-base">
+        {children}
+      </p>
+      {correct !== undefined && (
+        <CorrectIcon className="size-4 stroke-6 sm:size-6" />
+      )}
     </button>
   )
 }
