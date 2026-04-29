@@ -1,3 +1,4 @@
+import * as AlertDialog from "@radix-ui/react-alert-dialog"
 import { EVENTS } from "@rahoot/common/constants"
 import type { Player } from "@rahoot/common/types/game"
 import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
@@ -6,8 +7,10 @@ import {
   useSocket,
 } from "@rahoot/web/features/game/contexts/socket-context"
 import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+import { useOnClickOutside } from "@rahoot/web/hooks/useOnClickOutside"
+import { Maximize2, X } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 type Props = {
@@ -21,7 +24,11 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   const { players } = useManagerStore()
   const [playerList, setPlayerList] = useState<Player[]>(players)
   const [totalPlayers, setTotalPlayers] = useState(0)
+  const [qrOpen, setQrOpen] = useState(false)
+  const qrContentRef = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+
+  useOnClickOutside(qrContentRef, () => setQrOpen(false))
 
   useEvent(EVENTS.MANAGER.NEW_PLAYER, (player) => {
     setPlayerList([...playerList, player])
@@ -50,6 +57,8 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
     })
   }
 
+  const handleCloseQrCode = () => setQrOpen(false)
+
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
       <div className="mb-10 flex flex-col-reverse items-center gap-3 md:flex-row md:items-stretch">
@@ -65,12 +74,40 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
           </div>
         </div>
 
-        <div className="flex h-40 shrink-0 rounded-md bg-white p-2">
-          <QRCodeSVG
-            className="h-auto w-auto"
-            value={`${webUrl}?pin=${inviteCode}`}
-          />
-        </div>
+        <AlertDialog.Root open={qrOpen} onOpenChange={setQrOpen}>
+          <AlertDialog.Trigger asChild>
+            <div className="group relative flex h-40 shrink-0 cursor-pointer rounded-md bg-white p-2">
+              <QRCodeSVG
+                className="h-auto w-auto"
+                value={`${webUrl}?pin=${inviteCode}`}
+              />
+              <div className="absolute inset-0 flex items-center justify-center rounded-md opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="rounded-md bg-black/80 p-2">
+                  <Maximize2 className="size-6 text-white" />
+                </div>
+              </div>
+            </div>
+          </AlertDialog.Trigger>
+
+          <AlertDialog.Portal>
+            <AlertDialog.Overlay className="fixed inset-0 z-50 bg-black/70" />
+            <AlertDialog.Content
+              ref={qrContentRef}
+              className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-6"
+            >
+              <button
+                onClick={handleCloseQrCode}
+                className="absolute -top-3 -right-3 rounded-full bg-white p-1.5 shadow-md hover:bg-gray-100"
+              >
+                <X className="size-6 text-gray-700" />
+              </button>
+              <QRCodeSVG
+                className="size-56 md:size-70 lg:size-95"
+                value={`${webUrl}?pin=${inviteCode}`}
+              />
+            </AlertDialog.Content>
+          </AlertDialog.Portal>
+        </AlertDialog.Root>
       </div>
 
       <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg">
