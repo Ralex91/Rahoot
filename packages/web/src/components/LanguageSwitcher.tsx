@@ -16,11 +16,13 @@ const LanguageSwitcher = () => {
     i18n: { language, changeLanguage },
   } = useTranslation()
 
+  const normalizedLanguage = language.slice(0, 2)
+
   return (
-    <Select.Root value={language} onValueChange={changeLanguage}>
+    <Select.Root value={normalizedLanguage} onValueChange={changeLanguage}>
       <Select.Trigger className="flex cursor-pointer items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm font-semibold text-gray-600 hover:border-gray-300 focus:outline-none">
         <Globe className="size-4 text-gray-500" />
-        <Select.Value>{language.toUpperCase()}</Select.Value>
+        <Select.Value>{normalizedLanguage.toUpperCase()}</Select.Value>
       </Select.Trigger>
 
       <Select.Portal>
