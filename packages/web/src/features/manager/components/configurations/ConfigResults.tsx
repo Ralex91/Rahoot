@@ -1,12 +1,12 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { GameResult } from "@rahoot/common/types/game"
-import AlertDialog from "@rahoot/web/components/AlertDialog"
+import { EVENTS } from "@razzia/common/constants"
+import type { GameResult } from "@razzia/common/types/game"
+import AlertDialog from "@razzia/web/components/AlertDialog"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import ResultModal from "@rahoot/web/features/manager/components/ResultModal"
-import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
+} from "@razzia/web/features/game/contexts/socket-context"
+import ResultModal from "@razzia/web/features/manager/components/ResultModal"
+import { useConfig } from "@razzia/web/features/manager/contexts/config-context"
 import { Trash2 } from "lucide-react"
 import { useCallback, useState } from "react"
 import toast from "react-hot-toast"
@@ -34,11 +34,11 @@ const ConfigResults = () => {
   )
 
   const handleOpen = (id: string) => () => {
-    socket?.emit(EVENTS.RESULTS.GET, id)
+    socket.emit(EVENTS.RESULTS.GET, id)
   }
 
   const handleDelete = (id: string) => () => {
-    socket?.emit(EVENTS.RESULTS.DELETE, id)
+    socket.emit(EVENTS.RESULTS.DELETE, id)
     toast.success(t("manager:result.deleted"))
   }
 

@@ -1,17 +1,13 @@
-import { MEDIA_TYPES } from "@rahoot/common/constants"
-import type { QuestionMedia as QuestionMediaType } from "@rahoot/common/types/game"
+import { MEDIA_TYPES } from "@razzia/common/constants"
+import type { QuestionMedia as QuestionMediaType } from "@razzia/common/types/game"
 
-type Props = {
+interface Props {
   media?: QuestionMediaType
   alt?: string
 }
 
 const QuestionMedia = ({ media, alt = "" }: Props) => {
-  if (!media?.type) {
-    return null
-  }
-
-  if (media.type === MEDIA_TYPES.IMAGE) {
+  if (media?.type === MEDIA_TYPES.IMAGE) {
     return (
       <img
         alt={alt}
@@ -21,7 +17,7 @@ const QuestionMedia = ({ media, alt = "" }: Props) => {
     )
   }
 
-  if (media.type === MEDIA_TYPES.VIDEO) {
+  if (media?.type === MEDIA_TYPES.VIDEO) {
     return (
       <video
         className="m-4 mb-2 aspect-video max-h-60 w-auto rounded-md px-4 sm:max-h-100"
@@ -32,7 +28,7 @@ const QuestionMedia = ({ media, alt = "" }: Props) => {
     )
   }
 
-  if (media.type === MEDIA_TYPES.AUDIO) {
+  if (media?.type === MEDIA_TYPES.AUDIO) {
     return (
       <audio
         className="m-4 mb-2 w-auto rounded-md"

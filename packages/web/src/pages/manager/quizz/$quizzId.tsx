@@ -1,14 +1,14 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { QuizzWithId } from "@rahoot/common/types/game"
-import Loader from "@rahoot/web/components/Loader"
+import { EVENTS } from "@razzia/common/constants"
+import type { QuizzWithId } from "@razzia/common/types/game"
+import Loader from "@razzia/web/components/Loader"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import QuestionEditor from "@rahoot/web/features/quizz/components/QuestionEditor"
-import QuizzEditorHeader from "@rahoot/web/features/quizz/components/QuizzEditorHeader"
-import QuizzEditorSidebar from "@rahoot/web/features/quizz/components/QuizzEditorSidebar"
-import { QuizzEditorProvider } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
+} from "@razzia/web/features/game/contexts/socket-context"
+import QuestionEditor from "@razzia/web/features/quizz/components/QuestionEditor"
+import QuizzEditorHeader from "@razzia/web/features/quizz/components/QuizzEditorHeader"
+import QuizzEditorSidebar from "@razzia/web/features/quizz/components/QuizzEditorSidebar"
+import { QuizzEditorProvider } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
 import { createFileRoute } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 
@@ -18,7 +18,7 @@ const QuizzEditPage = () => {
   const [quizz, setQuizz] = useState<QuizzWithId | null>(null)
 
   useEffect(() => {
-    socket?.emit(EVENTS.QUIZZ.GET, quizzId)
+    socket.emit(EVENTS.QUIZZ.GET, quizzId)
   }, [socket, quizzId])
 
   useEvent(EVENTS.QUIZZ.DATA, (data) => {

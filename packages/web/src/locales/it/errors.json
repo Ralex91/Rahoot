@@ -18,6 +18,11 @@
     "invalidPassword": "Password non valida",
     "passwordNotConfigured": "La password del gestore non è configurata"
   },
+  "notFound": {
+    "back": "Torna alla home",
+    "description": "La pagina che cerchi non esiste.",
+    "title": "Pagina non trovata"
+  },
   "quizz": {
     "answerEmpty": "Una risposta non può essere vuota",
     "failedToDelete": "Impossibile eliminare il quiz",

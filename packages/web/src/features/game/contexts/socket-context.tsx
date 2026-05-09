@@ -1,9 +1,7 @@
-/* eslint-disable no-empty-function */
-
 import type {
   ClientToServerEvents,
   ServerToClientEvents,
-} from "@rahoot/common/types/game/socket"
+} from "@razzia/common/types/game/socket"
 import React, {
   createContext,
   useCallback,
@@ -57,9 +55,15 @@ const SocketContext = createContext<SocketContextValue>({
   socket: socketClient,
   isConnected: false,
   clientId,
-  connect: () => {},
-  disconnect: () => {},
-  reconnect: () => {},
+  connect: () => {
+    /* Empty */
+  },
+  disconnect: () => {
+    /* Empty */
+  },
+  reconnect: () => {
+    /* Empty */
+  },
 })
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
@@ -119,9 +123,11 @@ export const useEvent = <E extends keyof ServerToClientEvents>(
   const { socket } = useSocket()
 
   useEffect(() => {
+    // oxlint-disable-next-line no-explicit-any, no-unsafe-argument
     socket.on(event, callback as any)
 
     return () => {
+      // oxlint-disable-next-line no-explicit-any, no-unsafe-argument
       socket.off(event, callback as any)
     }
   }, [socket, event, callback])

@@ -1,20 +1,16 @@
 import clsx from "clsx"
 import { Check, X } from "lucide-react"
-import type {
-  ButtonHTMLAttributes,
-  ElementType,
-  PropsWithChildren,
-} from "react"
+import type { ButtonHTMLAttributes, PropsWithChildren } from "react"
 
 type Props = PropsWithChildren &
   ButtonHTMLAttributes<HTMLButtonElement> & {
-    icon: ElementType
+    label: string
     correct?: boolean
   }
 
 const AnswerButton = ({
   className,
-  icon: Icon,
+  label,
   children,
   correct,
   ...otherProps
@@ -24,12 +20,14 @@ const AnswerButton = ({
   return (
     <button
       className={clsx(
-        "shadow-inset flex items-center gap-3 rounded px-4 py-6 text-left",
+        "relative flex items-center gap-3 rounded-2xl px-4 py-6 text-left",
         className,
       )}
       {...otherProps}
     >
-      <Icon className="size-4 shrink-0 md:size-6" />
+      <span className="flex size-5 shrink-0 items-center justify-center rounded bg-black/20 text-sm font-bold sm:size-7 sm:rounded-md md:size-8 md:text-base">
+        {label}
+      </span>
       <p className="w-full flex-1 text-sm break-all drop-shadow-md md:text-lg">
         {children}
       </p>

@@ -1,13 +1,14 @@
-import { EVENTS } from "@rahoot/common/constants"
-import { inviteCodeValidator } from "@rahoot/common/validators/auth"
-import type { SocketContext } from "@rahoot/socket/handlers/types"
-import Config from "@rahoot/socket/services/config"
-import Game from "@rahoot/socket/services/game"
-import Registry from "@rahoot/socket/services/registry"
-import { withGame } from "@rahoot/socket/utils/game"
+import { EVENTS } from "@razzia/common/constants"
+import { inviteCodeValidator } from "@razzia/common/validators/auth"
+import type { SocketContext } from "@razzia/socket/handlers/types"
+import { getQuizz } from "@razzia/socket/services/config"
+import Game from "@razzia/socket/services/game"
+import Registry from "@razzia/socket/services/registry"
+import { withGame } from "@razzia/socket/utils/game"
 
 export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   const registry = Registry.getInstance()
+  const clientId = socket.handshake.auth.clientId as string
 
   const handleManagerLeave = (game: Game) => {
     game.setManagerDisconnected()
@@ -38,7 +39,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   }
 
   socket.on(EVENTS.PLAYER.RECONNECT, ({ gameId }) => {
-    const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId)
+    const game = registry.getPlayerGame(gameId, clientId)
 
     if (game) {
       game.reconnect(socket)
@@ -50,7 +51,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   })
 
   socket.on(EVENTS.MANAGER.RECONNECT, ({ gameId }) => {
-    const game = registry.getManagerGame(gameId, socket.handshake.auth.clientId)
+    const game = registry.getManagerGame(gameId, clientId)
 
     if (game) {
       game.reconnect(socket)
@@ -62,7 +63,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   })
 
   socket.on(EVENTS.GAME.CREATE, (quizzId) => {
-    const quizzList = Config.quizz()
+    const quizzList = getQuizz()
     const quizz = quizzList.find((q) => q.id === quizzId)
 
     if (!quizz) {
@@ -126,7 +127,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   )
 
   socket.on(EVENTS.MANAGER.LEAVE, ({ gameId }) => {
-    const game = registry.getManagerGame(gameId, socket.handshake.auth.clientId)
+    const game = registry.getManagerGame(gameId, clientId)
 
     if (game) {
       console.log(`Manager left game ${game.inviteCode}`)
@@ -135,7 +136,7 @@ export const gameSocketHandlers = ({ io, socket }: SocketContext) => {
   })
 
   socket.on(EVENTS.PLAYER.LEAVE, ({ gameId }) => {
-    const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId)
+    const game = registry.getPlayerGame(gameId, clientId)
 
     if (game) {
       handlePlayerLeave(game)

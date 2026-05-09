@@ -1,16 +1,16 @@
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
+import type { ManagerStatusDataMap } from "@razzia/common/types/game/status"
+import AnswerButton from "@razzia/web/features/game/components/AnswerButton"
 import {
   ANSWERS_COLORS,
-  ANSWERS_ICONS,
+  ANSWERS_LABELS,
   SFX,
-} from "@rahoot/web/features/game/utils/constants"
-import { calculatePercentages } from "@rahoot/web/features/game/utils/score"
+} from "@razzia/web/features/game/utils/constants"
+import { calculatePercentages } from "@razzia/web/features/game/utils/score"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import useSound from "use-sound"
 
-type Props = {
+interface Props {
   data: ManagerStatusDataMap["SHOW_RESPONSES"]
 }
 
@@ -85,9 +85,10 @@ const Responses = ({
             <AnswerButton
               key={key}
               className={clsx(ANSWERS_COLORS[key], {
+                // oxlint-disable-next-line typescript/no-unnecessary-condition
                 "opacity-65": responses && !solutions.includes(key),
               })}
-              icon={ANSWERS_ICONS[key]}
+              label={ANSWERS_LABELS[key]}
               correct={solutions.includes(key)}
             >
               {answer}

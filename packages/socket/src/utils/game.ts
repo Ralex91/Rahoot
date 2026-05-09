@@ -1,12 +1,12 @@
-import type { Socket } from "@rahoot/common/types/game/socket"
-import Game from "@rahoot/socket/services/game"
-import Registry from "@rahoot/socket/services/registry"
+import type { Socket } from "@razzia/common/types/game/socket"
+import Game from "@razzia/socket/services/game"
+import Registry from "@razzia/socket/services/registry"
 import { nanoid } from "nanoid"
 
 export const withGame = (
   gameId: string | undefined,
   socket: Socket,
-  callback: (_game: Game) => void,
+  callback: (_game: Game) => void | Promise<void>,
 ): void => {
   if (!gameId) {
     socket.emit("game:errorMessage", "errors:game.notFound")

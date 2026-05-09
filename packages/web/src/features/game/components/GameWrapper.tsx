@@ -1,15 +1,15 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { Status } from "@rahoot/common/types/game/status"
-import background from "@rahoot/web/assets/background.webp"
-import Button from "@rahoot/web/components/Button"
-import Loader from "@rahoot/web/components/Loader"
+import { EVENTS } from "@razzia/common/constants"
+import type { Status } from "@razzia/common/types/game/status"
+import background from "@razzia/web/assets/background.png"
+import Button from "@razzia/web/components/Button"
+import Loader from "@razzia/web/components/Loader"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
-import { MANAGER_SKIP_BTN } from "@rahoot/web/features/game/utils/constants"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
+import { useQuestionStore } from "@razzia/web/features/game/stores/question"
+import { MANAGER_SKIP_BTN } from "@razzia/web/features/game/utils/constants"
 import clsx from "clsx"
 import { type PropsWithChildren, useEffect, useState } from "react"
 import toast from "react-hot-toast"
@@ -80,16 +80,19 @@ const GameWrapper = ({
           <>
             <div className="flex w-full justify-between p-4">
               {questionStates && (
-                <div className="shadow-inset flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
+                <div className="flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
                   {`${questionStates.current} / ${questionStates.total}`}
                 </div>
               )}
 
               {manager && next && (
                 <Button
-                  className={clsx("bg-white px-4 text-black", {
-                    "pointer-events-none": isDisabled,
-                  })}
+                  className={clsx(
+                    "bg-white px-4 text-black hover:bg-gray-200",
+                    {
+                      "pointer-events-none": isDisabled,
+                    },
+                  )}
                   onClick={handleNext}
                 >
                   {t(next)}
@@ -97,7 +100,10 @@ const GameWrapper = ({
               )}
 
               {manager && onBack && (
-                <Button onClick={onBack} className="bg-white px-4 text-black">
+                <Button
+                  onClick={onBack}
+                  className="bg-white px-4 text-black hover:bg-gray-200"
+                >
                   {t("common:exit")}
                 </Button>
               )}
@@ -108,7 +114,7 @@ const GameWrapper = ({
             {!manager && (
               <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
                 <p className="text-gray-800">{player?.username}</p>
-                <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
+                <div className="rounded-lg bg-gray-800 px-3 py-1 text-lg">
                   {player?.points}
                 </div>
               </div>

@@ -1,30 +1,30 @@
-import { EVENTS } from "@rahoot/common/constants"
+import { EVENTS } from "@razzia/common/constants"
 import type {
   GameResult,
   GameUpdateQuestion,
   Player,
-  Quizz,
   QuizzWithId,
-} from "@rahoot/common/types/game"
-import type { Status, StatusDataMap } from "@rahoot/common/types/game/status"
-import type { ManagerConfig } from "@rahoot/common/types/manager"
+} from "@razzia/common/types/game"
+import type { Status, StatusDataMap } from "@razzia/common/types/game/status"
+import type { ManagerConfig } from "@razzia/common/types/manager"
 import { Server as ServerIO, Socket as SocketIO } from "socket.io"
 
 export type Server = ServerIO<ClientToServerEvents, ServerToClientEvents>
+
 export type Socket = SocketIO<ClientToServerEvents, ServerToClientEvents>
 
-export type Message<K extends keyof StatusDataMap = keyof StatusDataMap> = {
+export interface Message<K extends keyof StatusDataMap = keyof StatusDataMap> {
   gameId?: string
   status: K
   data: StatusDataMap[K]
 }
 
-export type MessageWithoutStatus<T = any> = {
+export interface MessageWithoutStatus<T = unknown> {
   gameId?: string
   data: T
 }
 
-export type MessageGameId = {
+export interface MessageGameId {
   gameId?: string
 }
 
@@ -109,7 +109,7 @@ export interface ClientToServerEvents {
 
   // Quizz actions
   [EVENTS.QUIZZ.GET]: (_id: string) => void
-  [EVENTS.QUIZZ.SAVE]: (_quizz: Quizz) => void
+  [EVENTS.QUIZZ.SAVE]: (_quizz: unknown) => void
   [EVENTS.QUIZZ.UPDATE]: (_data: QuizzWithId) => void
   [EVENTS.QUIZZ.DELETE]: (_id: string) => void
 

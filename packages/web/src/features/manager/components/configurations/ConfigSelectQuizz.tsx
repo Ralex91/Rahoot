@@ -1,7 +1,7 @@
-import { EVENTS } from "@rahoot/common/constants"
-import Button from "@rahoot/web/components/Button"
-import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
-import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
+import { EVENTS } from "@razzia/common/constants"
+import Button from "@razzia/web/components/Button"
+import { useSocket } from "@razzia/web/features/game/contexts/socket-context"
+import { useConfig } from "@razzia/web/features/manager/contexts/config-context"
 import clsx from "clsx"
 import { Check } from "lucide-react"
 import { useState } from "react"
@@ -29,7 +29,7 @@ const ConfigSelectQuizz = () => {
       return
     }
 
-    socket?.emit(EVENTS.GAME.CREATE, selected)
+    socket.emit(EVENTS.GAME.CREATE, selected)
   }
 
   return (
@@ -55,7 +55,7 @@ const ConfigSelectQuizz = () => {
               )}
             >
               {selected === quizz.id && (
-                <Check className="size-full stroke-2 text-white" />
+                <Check className="size-full stroke-4 text-white" />
               )}
             </div>
           </button>

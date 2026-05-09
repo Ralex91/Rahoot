@@ -3,8 +3,12 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import react from "@vitejs/plugin-react"
 import { fileURLToPath } from "url"
 import { defineConfig } from "vite"
+import { version } from "../../package.json"
 
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+  },
   plugins: [
     tanstackRouter({
       target: "react",
@@ -17,11 +21,11 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@rahoot/web": fileURLToPath(new URL("./src", import.meta.url)),
-      "@rahoot/common": fileURLToPath(
+      "@razzia/web": fileURLToPath(new URL("./src", import.meta.url)),
+      "@razzia/common": fileURLToPath(
         new URL("../common/src", import.meta.url),
       ),
-      "@rahoot/socket": fileURLToPath(
+      "@razzia/socket": fileURLToPath(
         new URL("../socket/src", import.meta.url),
       ),
     },

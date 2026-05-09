@@ -1,6 +1,6 @@
-import type { MEDIA_TYPES } from "@rahoot/common/constants"
+import type { MEDIA_TYPES } from "@razzia/common/constants"
 
-export type Player = {
+export interface Player {
   id: string
   clientId: string
   connected: boolean
@@ -9,7 +9,7 @@ export type Player = {
   streak: number
 }
 
-export type Answer = {
+export interface Answer {
   playerId: string
   answerId: number
   points: number
@@ -19,12 +19,12 @@ export type QuestionMediaType =
   | (typeof MEDIA_TYPES)[keyof typeof MEDIA_TYPES]
   | undefined
 
-export type QuestionMedia = {
+export interface QuestionMedia {
   type?: QuestionMediaType
   url: string
 }
 
-export type Question = {
+export interface Question {
   question: string
   media?: QuestionMedia
   answers: string[]
@@ -33,21 +33,24 @@ export type Question = {
   time: number
 }
 
-export type Quizz = {
+export interface Quizz {
   subject: string
   questions: Question[]
 }
 
 export type QuizzWithId = Quizz & { id: string }
 
-export type QuizzMeta = { id: string; subject: string }
+export interface QuizzMeta {
+  id: string
+  subject: string
+}
 
-export type GameUpdateQuestion = {
+export interface GameUpdateQuestion {
   current: number
   total: number
 }
 
-export type PlayerAnswerRecord = {
+export interface PlayerAnswerRecord {
   playerName: string
   answerId: number | null
 }
@@ -56,13 +59,13 @@ export type QuestionResult = Question & {
   playerAnswers: PlayerAnswerRecord[]
 }
 
-export type GameResultPlayer = {
+export interface GameResultPlayer {
   username: string
   points: number
   rank: number
 }
 
-export type GameResult = {
+export interface GameResult {
   id: string
   subject: string
   date: string
@@ -70,7 +73,7 @@ export type GameResult = {
   questions: QuestionResult[]
 }
 
-export type GameResultMeta = {
+export interface GameResultMeta {
   id: string
   subject: string
   date: string

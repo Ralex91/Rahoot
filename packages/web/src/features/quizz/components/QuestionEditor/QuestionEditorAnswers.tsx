@@ -1,23 +1,11 @@
 import {
   ANSWERS_COLORS,
-  ANSWERS_ICONS,
-} from "@rahoot/web/features/game/utils/constants"
-import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
+  ANSWERS_LABELS,
+} from "@razzia/web/features/game/utils/constants"
+import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
 import clsx from "clsx"
-import { Minus, Plus } from "lucide-react"
+import { Check, Minus, Plus } from "lucide-react"
 import { useTranslation } from "react-i18next"
-
-const Checkmark = () => (
-  <svg
-    className="size-4"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={3}
-  >
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-)
 
 const QuestionEditorAnswers = () => {
   const { currentQuestion, currentIndex, updateQuestion } = useQuizzEditor()
@@ -68,7 +56,7 @@ const QuestionEditorAnswers = () => {
   return (
     <div className="z-10 flex flex-col gap-3">
       <div className="flex items-center justify-between px-1">
-        <div className="rounded bg-white px-2 py-1 text-sm font-semibold text-gray-500">
+        <div className="rounded-lg bg-white px-2 py-1 text-sm font-semibold text-gray-500">
           {currentQuestion.answers.length}
           {t("quizz:answersCountSuffix")}
         </div>
@@ -76,14 +64,14 @@ const QuestionEditorAnswers = () => {
           <button
             onClick={removeAnswer}
             disabled={currentQuestion.answers.length <= 2}
-            className="flex size-7 items-center justify-center rounded bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-40"
+            className="flex size-7 items-center justify-center rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-40"
           >
             <Minus className="size-4" />
           </button>
           <button
             onClick={addAnswer}
             disabled={currentQuestion.answers.length >= 4}
-            className="flex size-7 items-center justify-center rounded bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-40"
+            className="flex size-7 items-center justify-center rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 disabled:opacity-40"
           >
             <Plus className="size-4" />
           </button>
@@ -92,18 +80,19 @@ const QuestionEditorAnswers = () => {
 
       <div className="grid grid-cols-2 gap-3">
         {currentQuestion.answers.map((answer, i) => {
-          const Icon = ANSWERS_ICONS[i]
           const isSelected = currentQuestion.solutions.includes(i)
 
           return (
             <div
               key={i}
               className={clsx(
-                "shadow-inset flex items-center gap-3 rounded px-4 py-6",
+                "flex items-center gap-3 rounded-2xl px-4 py-6",
                 ANSWERS_COLORS[i],
               )}
             >
-              <Icon className="h-6 w-6 shrink-0 fill-white" />
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-black/20 text-sm font-bold text-white md:size-8 md:text-base">
+                {ANSWERS_LABELS[i]}
+              </span>
               <div className="flex flex-1 items-center justify-between gap-1.5 drop-shadow-md">
                 <input
                   className="w-full bg-transparent font-semibold text-white placeholder-white/70 outline-none"
@@ -121,7 +110,7 @@ const QuestionEditorAnswers = () => {
                       : "border-white/60 bg-transparent",
                   )}
                 >
-                  {isSelected && <Checkmark />}
+                  {isSelected && <Check className="size-4 stroke-5" />}
                 </button>
               </div>
             </div>

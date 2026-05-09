@@ -1,17 +1,17 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { Player, Quizz } from "@rahoot/common/types/game"
-import type { Server, Socket } from "@rahoot/common/types/game/socket"
+import { EVENTS } from "@razzia/common/constants"
+import type { Player, Quizz } from "@razzia/common/types/game"
+import type { Server, Socket } from "@razzia/common/types/game/socket"
 import {
   STATUS,
   type Status,
   type StatusDataMap,
-} from "@rahoot/common/types/game/status"
-import Config from "@rahoot/socket/services/config"
-import { CooldownTimer } from "@rahoot/socket/services/game/cooldown-timer"
-import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
-import { RoundManager } from "@rahoot/socket/services/game/round-manager"
-import Registry from "@rahoot/socket/services/registry"
-import { createInviteCode } from "@rahoot/socket/utils/game"
+} from "@razzia/common/types/game/status"
+import { saveResult } from "@razzia/socket/services/config"
+import { CooldownTimer } from "@razzia/socket/services/game/cooldown-timer"
+import { PlayerManager } from "@razzia/socket/services/game/player-manager"
+import { RoundManager } from "@razzia/socket/services/game/round-manager"
+import Registry from "@razzia/socket/services/registry"
+import { createInviteCode } from "@razzia/socket/utils/game"
 import { v7 as uuid } from "uuid"
 
 const registry = Registry.getInstance()
@@ -38,22 +38,20 @@ class Game {
     name: Status
     data: StatusDataMap[Status]
   } | null = null
-  private playerStatus: Map<
+  private playerStatus = new Map<
     string,
     { name: Status; data: StatusDataMap[Status] }
-  > = new Map()
+  >()
 
   constructor(io: Server, socket: Socket, quizz: Quizz) {
-    if (!io) {
-      throw new Error("Socket server not initialized")
-    }
+    const clientId = socket.handshake.auth.clientId as string
 
     this.io = io
     this.gameId = uuid()
     this.inviteCode = createInviteCode()
     this._manager = {
       id: socket.id,
-      clientId: socket.handshake.auth.clientId,
+      clientId,
       connected: true,
     }
 
@@ -78,7 +76,7 @@ class Game {
         this.playerStatus.clear()
         this.managerStatus = null
       },
-      onGameFinished: Config.saveResult,
+      onGameFinished: saveResult,
     })
 
     socket.join(this.gameId)
@@ -184,7 +182,7 @@ class Game {
   }
 
   private reconnectPlayer(socket: Socket) {
-    const { clientId } = socket.handshake.auth
+    const clientId = socket.handshake.auth.clientId as string
     const player = this.playerManager.findByClientId(clientId)
 
     if (!player) {
@@ -209,8 +207,9 @@ class Game {
         data: { text: "game:waitingForPlayers" },
       }
 
-    if (this.playerStatus.has(oldSocketId)) {
-      const oldStatus = this.playerStatus.get(oldSocketId)!
+    const oldStatus = this.playerStatus.get(oldSocketId)
+
+    if (oldStatus) {
       this.playerStatus.delete(oldSocketId)
       this.playerStatus.set(socket.id, oldStatus)
     }

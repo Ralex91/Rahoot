@@ -1,15 +1,15 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { Socket } from "@rahoot/common/types/game/socket"
-import type { SocketContext } from "@rahoot/socket/handlers/types"
-import Config from "@rahoot/socket/services/config"
+import { EVENTS } from "@razzia/common/constants"
+import type { Socket } from "@razzia/common/types/game/socket"
+import type { SocketContext } from "@razzia/socket/handlers/types"
+import { getQuizzMeta, getResultsMeta } from "@razzia/socket/services/config"
 
 const getClientId = (socket: SocketContext["socket"]) =>
   socket.handshake.auth.clientId as string
 
 export const emitConfig = (socket: SocketContext["socket"]) =>
   socket.emit(EVENTS.MANAGER.CONFIG, {
-    quizz: Config.quizzMeta(),
-    results: Config.resultsMeta(),
+    quizz: getQuizzMeta(),
+    results: getResultsMeta(),
   })
 
 class Manager {

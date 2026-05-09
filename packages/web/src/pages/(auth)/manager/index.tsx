@@ -1,10 +1,10 @@
-import { EVENTS } from "@rahoot/common/constants"
+import { EVENTS } from "@razzia/common/constants"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
-import ManagerPassword from "@rahoot/web/features/manager/components/ManagerPassword"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { useManagerStore } from "@razzia/web/features/game/stores/manager"
+import ManagerPassword from "@razzia/web/features/manager/components/ManagerPassword"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useEffect } from "react"
 
@@ -18,7 +18,8 @@ const ManagerAuthPage = () => {
       return
     }
 
-    socket?.emit(EVENTS.MANAGER.GET_CONFIG)
+    socket.emit(EVENTS.MANAGER.GET_CONFIG)
+    // oxlint-disable-next-line
   }, [isConnected])
 
   useEvent(EVENTS.MANAGER.CONFIG, (data) => {
@@ -27,7 +28,7 @@ const ManagerAuthPage = () => {
   })
 
   const handleAuth = (password: string) => {
-    socket?.emit(EVENTS.MANAGER.AUTH, password)
+    socket.emit(EVENTS.MANAGER.AUTH, password)
   }
 
   return <ManagerPassword onSubmit={handleAuth} />

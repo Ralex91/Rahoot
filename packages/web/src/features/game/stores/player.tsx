@@ -1,16 +1,16 @@
-import type { StatusDataMap } from "@rahoot/common/types/game/status"
+import type { StatusDataMap } from "@razzia/common/types/game/status"
 import {
   createStatus,
   type Status,
-} from "@rahoot/web/features/game/utils/createStatus"
+} from "@razzia/web/features/game/utils/createStatus"
 import { create } from "zustand"
 
-type PlayerState = {
+interface PlayerState {
   username?: string
   points?: number
 }
 
-type PlayerStore<T> = {
+interface PlayerStore<T> {
   gameId: string | null
   player: PlayerState | null
   status: Status<T> | null

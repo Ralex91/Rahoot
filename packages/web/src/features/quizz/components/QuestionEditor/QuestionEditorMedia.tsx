@@ -1,9 +1,10 @@
-import type { QuestionMediaType } from "@rahoot/common/types/game"
-import { questionMediaValidator } from "@rahoot/common/validators/quizz"
-import Button from "@rahoot/web/components/Button"
-import Card from "@rahoot/web/components/Card"
-import QuestionMedia from "@rahoot/web/components/QuestionMedia"
-import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
+import type { QuestionMediaType } from "@razzia/common/types/game"
+import { questionMediaValidator } from "@razzia/common/validators/quizz"
+import Button from "@razzia/web/components/Button"
+import Card from "@razzia/web/components/Card"
+import Input from "@razzia/web/components/Input"
+import QuestionMedia from "@razzia/web/components/QuestionMedia"
+import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
 import { Image, ImageOff, Music, Video } from "lucide-react"
 import { type ChangeEvent } from "react"
 import toast from "react-hot-toast"
@@ -21,7 +22,7 @@ const QuestionEditorMedia = () => {
     })
 
     if (!result.success) {
-      toast.error(result.error.issues[0].message)
+      toast.error(t(result.error.issues[0].message))
 
       return
     }
@@ -48,15 +49,16 @@ const QuestionEditorMedia = () => {
       <QuestionMedia media={currentQuestion.media} alt="Question Media" />
 
       {!questionMedia?.type && (
-        <Card className="my-14 flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-2 bg-white">
+        <Card className="my-auto flex max-h-100 w-full max-w-xl flex-1 flex-col items-center justify-center gap-2 bg-white">
           <ImageOff className="size-16 stroke-gray-600" />
           <p className="text-center text-sm text-gray-600">
             {t("quizz:question.addMediaHint")}
           </p>
-          <input
-            className="focus:border-primary w-full max-w-md rounded-md border-2 border-gray-300 px-3 py-2 text-sm outline-none"
+          <Input
+            variant="sm"
+            className="w-full max-w-md"
             placeholder={t("quizz:question.mediaUrlPlaceholder")}
-            value={questionMedia?.url || ""}
+            value={questionMedia?.url ?? ""}
             onChange={handleChangeMedia}
           />
           <div className="flex flex-wrap justify-center gap-2">

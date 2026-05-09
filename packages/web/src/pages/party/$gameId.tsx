@@ -1,16 +1,16 @@
-import { EVENTS } from "@rahoot/common/constants"
-import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
+import { EVENTS } from "@razzia/common/constants"
+import GameWrapper from "@razzia/web/features/game/components/GameWrapper"
 import {
   socketClient,
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
+import { useQuestionStore } from "@razzia/web/features/game/stores/question"
 import {
   GAME_STATE_COMPONENTS,
   isKeyOf,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@razzia/web/features/game/utils/constants"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
@@ -31,9 +31,14 @@ const PlayerGamePage = () => {
 
   useEvent(
     EVENTS.PLAYER.SUCCESS_RECONNECT,
-    ({ gameId, status, player, currentQuestion }) => {
-      setGameId(gameId)
-      setStatus(status.name, status.data)
+    ({
+      gameId: reconnectGameId,
+      status: reconnectStatus,
+      player,
+      currentQuestion,
+    }) => {
+      setGameId(reconnectGameId)
+      setStatus(reconnectStatus.name, reconnectStatus.data)
       setPlayer(player)
       setQuestionStates(currentQuestion)
     },
@@ -61,9 +66,13 @@ const PlayerGamePage = () => {
       ? GAME_STATE_COMPONENTS[status.name]
       : null
 
+  if (!status) {
+    return null
+  }
+
   return (
-    <GameWrapper statusName={status?.name}>
-      {CurrentComponent && <CurrentComponent data={status!.data as never} />}
+    <GameWrapper statusName={status.name}>
+      {CurrentComponent && <CurrentComponent data={status.data as never} />}
     </GameWrapper>
   )
 }

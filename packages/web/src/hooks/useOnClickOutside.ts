@@ -8,17 +8,24 @@ type EventType =
   | "focusin"
   | "focusout"
 
-export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
-  ref: RefObject<T | null> | RefObject<T | null>[],
-  handler: (_event: MouseEvent | TouchEvent | FocusEvent) => void,
-  eventType: EventType = "mousedown",
-  eventListenerOptions: AddEventListenerOptions = {},
-): void {
+interface Options {
+  ref: RefObject<HTMLElement | null> | Array<RefObject<HTMLElement | null>>
+  handler: (_event: MouseEvent | TouchEvent | FocusEvent) => void
+  eventType?: EventType
+  eventListenerOptions?: AddEventListenerOptions
+}
+
+export const useOnClickOutside = <T extends HTMLElement = HTMLElement>({
+  ref,
+  handler,
+  eventType = "mousedown",
+  eventListenerOptions = {},
+}: Options & { ref: RefObject<T | null> | Array<RefObject<T | null>> }) => {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent | FocusEvent) => {
       const target = event.target as Node
 
-      if (!target || !target.isConnected) {
+      if (!target.isConnected) {
         return
       }
 

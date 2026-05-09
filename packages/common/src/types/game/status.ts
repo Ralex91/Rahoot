@@ -1,4 +1,4 @@
-import type { Player, QuestionMedia } from "@rahoot/common/types/game"
+import type { Player, QuestionMedia } from "@razzia/common/types/game"
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
@@ -15,7 +15,7 @@ export const STATUS = {
 
 export type Status = (typeof STATUS)[keyof typeof STATUS]
 
-export type CommonStatusDataMap = {
+export interface CommonStatusDataMap {
   SHOW_START: { time: number; subject: string }
   SHOW_PREPARED: { totalAnswers: number; questionNumber: number }
   SHOW_QUESTION: {
@@ -42,7 +42,7 @@ export type CommonStatusDataMap = {
   FINISHED: { subject: string; top: Player[]; rank?: number }
 }
 
-type ManagerExtraStatus = {
+interface ManagerExtraStatus {
   SHOW_ROOM: { text: string; inviteCode?: string }
   SHOW_RESPONSES: {
     question: string
@@ -55,5 +55,7 @@ type ManagerExtraStatus = {
 }
 
 export type PlayerStatusDataMap = CommonStatusDataMap
+
 export type ManagerStatusDataMap = CommonStatusDataMap & ManagerExtraStatus
+
 export type StatusDataMap = PlayerStatusDataMap & ManagerStatusDataMap

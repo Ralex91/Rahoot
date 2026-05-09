@@ -1,7 +1,7 @@
-import type { GameUpdateQuestion } from "@rahoot/common/types/game"
+import type { GameUpdateQuestion } from "@razzia/common/types/game"
 import { create } from "zustand"
 
-type QuestionStore = {
+interface QuestionStore {
   questionStates: GameUpdateQuestion | null
   setQuestionStates: (_state: GameUpdateQuestion | null) => void
 }

@@ -18,6 +18,11 @@
     "invalidPassword": "Invalid password",
     "passwordNotConfigured": "Manager password is not configured"
   },
+  "notFound": {
+    "back": "Go back home",
+    "description": "The page you are looking for does not exist.",
+    "title": "Page not found"
+  },
   "quizz": {
     "answerEmpty": "An answer cannot be empty",
     "failedToDelete": "Failed to delete quizz",

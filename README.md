@@ -1,22 +1,22 @@
 <p align="center">
-  <img width="450" height="120" align="center" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/logo.svg">
+  <img width="450" height="120" align="center" src=".github/logo.svg">
   <br>
   <div align="center">
-    <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Rahoot/edit/main/README.md&countColor=%2337d67a">
-    <img src="https://img.shields.io/docker/pulls/ralex91/rahoot?style=for-the-badge&color=37d67a" alt="Docker Pulls">
+    <img alt="Visitor Badge" src="https://api.visitorbadge.io/api/visitors?path=https://github.com/Ralex91/Razzia/edit/main/README.md&countColor=%23FF9900">
+    <img src="https://img.shields.io/docker/pulls/ralex91/razzia?style=for-the-badge&color=FF9900" alt="Docker Pulls">
   </div>
 </p>
 
 ## 🧩 What is this project?
 
-Rahoot is a straightforward and open-source quiz platform, allowing users to host it on their own server for smaller events.
+Razzia is a straightforward and open-source quiz platform, allowing users to host it on their own server for smaller events.
 
-> ⚠️ This project is still under development, please report any bugs or suggestions in the [issues](https://github.com/Ralex91/Rahoot/issues)
+> **Disclaimer**: Razzia is an independent, open-source software project. It is not affiliated with, endorsed by, or sponsored by any third-party quiz platform or service. Any resemblance to other quiz platforms is purely incidental.
 
 <p align="center">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview1.jpg" alt="Login">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview2.jpg" alt="Manager Dashboard">
-  <img width="30%" src="https://raw.githubusercontent.com/Ralex91/Rahoot/main/.github/preview3.jpg" alt="Question Screen">
+  <img width="30%" src=".github/previews/1.png" alt="Login">
+  <img width="30%" src=".github/previews/2.png" alt="Manager Room">
+  <img width="30%" src=".github/previews/3.png" alt="Question Screen">
 </p>
 
 ## ⚙️ Prerequisites
@@ -52,7 +52,7 @@ Or using Docker directly:
 docker run -d \
   -p 3000:3000 \
   -v ./config:/app/config \
-  ralex91/rahoot:latest
+  ralex91/razzia:latest
 ```
 
 **Configuration Volume:**
@@ -71,8 +71,8 @@ The application will be available at http://localhost:3000
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Ralex91/Rahoot.git
-cd ./Rahoot
+git clone https://github.com/Ralex91/Razzia.git
+cd ./Razzia
 ```
 
 2. Install dependencies:
@@ -179,8 +179,8 @@ Quiz Options:
 
 Contributions are welcome! Please read the [CONTRIBUTING.md](.github/CONTRIBUTING.md) guide before submitting a pull request.
 
-For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Rahoot/issues).
+For bug reports or feature requests, please [create an issue](https://github.com/Ralex91/Razzia/issues).
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Rahoot&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Rahoot&type=date&legend=bottom-right)
+[![Star History Chart](https://api.star-history.com/svg?repos=Ralex91/Razzia&type=date&legend=bottom-right)](https://www.star-history.com/#Ralex91/Razzia&type=date&legend=bottom-right)

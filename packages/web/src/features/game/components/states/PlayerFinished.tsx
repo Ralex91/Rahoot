@@ -1,8 +1,8 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import { useTranslation } from "react-i18next"
 
-type Props = {
+interface Props {
   data: CommonStatusDataMap["FINISHED"]
 }
 

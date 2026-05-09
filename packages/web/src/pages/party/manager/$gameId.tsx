@@ -1,18 +1,18 @@
-import { EVENTS } from "@rahoot/common/constants"
-import { STATUS } from "@rahoot/common/types/game/status"
-import GameWrapper from "@rahoot/web/features/game/components/GameWrapper"
+import { EVENTS } from "@razzia/common/constants"
+import { STATUS } from "@razzia/common/types/game/status"
+import GameWrapper from "@razzia/web/features/game/components/GameWrapper"
 import {
   socketClient,
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
-import { useQuestionStore } from "@rahoot/web/features/game/stores/question"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { useManagerStore } from "@razzia/web/features/game/stores/manager"
+import { useQuestionStore } from "@razzia/web/features/game/stores/question"
 import {
   GAME_STATE_COMPONENTS_MANAGER,
   MANAGER_SKIP_EVENTS,
   isKeyOf,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@razzia/web/features/game/utils/constants"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
@@ -40,9 +40,14 @@ const ManagerGamePage = () => {
 
   useEvent(
     EVENTS.MANAGER.SUCCESS_RECONNECT,
-    ({ gameId, status, players, currentQuestion }) => {
-      setGameId(gameId)
-      setStatus(status.name, status.data)
+    ({
+      gameId: reconnectGameId,
+      status: reconnectStatus,
+      players,
+      currentQuestion,
+    }) => {
+      setGameId(reconnectGameId)
+      setStatus(reconnectStatus.name, reconnectStatus.data)
       setPlayers(players)
       setQuestionStates(currentQuestion)
     },
@@ -88,14 +93,18 @@ const ManagerGamePage = () => {
       ? GAME_STATE_COMPONENTS_MANAGER[status.name]
       : null
 
+  if (!status) {
+    return null
+  }
+
   return (
     <GameWrapper
-      statusName={status?.name}
+      statusName={status.name}
       onNext={handleSkip}
-      onBack={status?.name === STATUS.SHOW_ROOM ? handleBack : undefined}
+      onBack={status.name === STATUS.SHOW_ROOM ? handleBack : undefined}
       manager
     >
-      {CurrentComponent && <CurrentComponent data={status!.data as never} />}
+      {CurrentComponent && <CurrentComponent data={status.data as never} />}
     </GameWrapper>
   )
 }

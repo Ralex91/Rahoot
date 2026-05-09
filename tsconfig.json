@@ -4,9 +4,9 @@
     "noErrorTruncation": true,
     "esModuleInterop": true,
     "paths": {
-      "@rahoot/common/*": ["./packages/common/src/*"],
-      "@rahoot/socket/*": ["./packages/socket/src/*"],
-      "@rahoot/web/*": ["./packages/web/src/*"]
+      "@razzia/common/*": ["./packages/common/src/*"],
+      "@razzia/socket/*": ["./packages/socket/src/*"],
+      "@razzia/web/*": ["./packages/web/src/*"]
     },
     "strict": true,
     "strictNullChecks": true

@@ -1,4 +1,4 @@
-import { useResultModal } from "@rahoot/web/features/manager/contexts/result-modal-context"
+import { useResultModal } from "@razzia/web/features/manager/contexts/result-modal-context"
 import { Users } from "lucide-react"
 import { useTranslation } from "react-i18next"
 

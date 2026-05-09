@@ -1,10 +1,10 @@
-import { EVENTS } from "@rahoot/common/constants"
-import Loader from "@rahoot/web/components/Loader"
+import { EVENTS } from "@razzia/common/constants"
+import Loader from "@razzia/web/components/Loader"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { useManagerStore } from "@razzia/web/features/game/stores/manager"
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router"
 import { useEffect } from "react"
 
@@ -19,7 +19,7 @@ function RouteComponent() {
 
   useEffect(() => {
     if (isConnected && !config) {
-      socket?.emit(EVENTS.MANAGER.GET_CONFIG)
+      socket.emit(EVENTS.MANAGER.GET_CONFIG)
     }
   }, [isConnected, config, socket])
 

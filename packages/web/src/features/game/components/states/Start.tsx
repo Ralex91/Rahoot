@@ -1,12 +1,12 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { useEvent } from "@rahoot/web/features/game/contexts/socket-context"
-import { SFX } from "@rahoot/web/features/game/utils/constants"
+import { EVENTS } from "@razzia/common/constants"
+import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
+import { useEvent } from "@razzia/web/features/game/contexts/socket-context"
+import { SFX } from "@razzia/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"
 import useSound from "use-sound"
 
-type Props = {
+interface Props {
   data: CommonStatusDataMap["SHOW_START"]
 }
 
@@ -38,7 +38,7 @@ const Start = ({ data: { time, subject } }: Props) => {
         <>
           <div
             className={clsx(
-              `anim-show bg-primary aspect-square h-32 transition-all md:h-60`,
+              `anim-show bg-primary aspect-square h-32 rounded-2xl transition-all md:h-60`,
             )}
             style={{
               transform: `rotate(${45 * (time - cooldown)}deg)`,

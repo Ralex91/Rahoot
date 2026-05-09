@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge"
 
-type Props = {
+interface Props {
   className?: string
 }
 
@@ -17,7 +17,7 @@ const Loader = ({ className }: Props) => (
       r="34"
       stroke="currentColor"
       strokeWidth="13"
-      strokeLinecap="square"
+      strokeLinecap="round"
       fill="none"
     >
       <animateTransform

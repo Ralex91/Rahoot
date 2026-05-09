@@ -1,4 +1,4 @@
-import type { GameResult, QuestionResult } from "@rahoot/common/types/game"
+import type { GameResult, QuestionResult } from "@razzia/common/types/game"
 import {
   createContext,
   useContext,
@@ -6,7 +6,7 @@ import {
   type PropsWithChildren,
 } from "react"
 
-type ResultModalContextType = {
+interface ResultModalContextType {
   result: GameResult
   questionResult: QuestionResult
   questionIndex: number

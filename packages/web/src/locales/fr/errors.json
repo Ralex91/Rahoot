@@ -18,6 +18,11 @@
     "invalidPassword": "Mot de passe invalide",
     "passwordNotConfigured": "Mot de passe manager non configuré"
   },
+  "notFound": {
+    "back": "Retour à l'accueil",
+    "description": "La page que vous recherchez n'existe pas.",
+    "title": "Page introuvable"
+  },
   "quizz": {
     "answerEmpty": "Une réponse ne peut pas être vide",
     "failedToDelete": "Suppression du quizz a echoué",

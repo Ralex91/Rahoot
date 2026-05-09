@@ -1,14 +1,14 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { ManagerConfig } from "@rahoot/common/types/manager"
-import Card from "@rahoot/web/components/Card"
-import LanguageSwitcher from "@rahoot/web/components/LanguageSwitcher"
-import { useSocket } from "@rahoot/web/features/game/contexts/socket-context"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
-import ConfigManageQuizz from "@rahoot/web/features/manager/components/configurations/ConfigManageQuizz"
-import ConfigResults from "@rahoot/web/features/manager/components/configurations/ConfigResults"
-import ConfigSelectQuizz from "@rahoot/web/features/manager/components/configurations/ConfigSelectQuizz"
-import ConfigTabButton from "@rahoot/web/features/manager/components/configurations/ConfigTabButton"
-import { ConfigProvider } from "@rahoot/web/features/manager/contexts/config-context"
+import { EVENTS } from "@razzia/common/constants"
+import type { ManagerConfig } from "@razzia/common/types/manager"
+import Card from "@razzia/web/components/Card"
+import LanguageSwitcher from "@razzia/web/components/LanguageSwitcher"
+import { useSocket } from "@razzia/web/features/game/contexts/socket-context"
+import { useManagerStore } from "@razzia/web/features/game/stores/manager"
+import ConfigManageQuizz from "@razzia/web/features/manager/components/configurations/ConfigManageQuizz"
+import ConfigResults from "@razzia/web/features/manager/components/configurations/ConfigResults"
+import ConfigSelectQuizz from "@razzia/web/features/manager/components/configurations/ConfigSelectQuizz"
+import ConfigTabButton from "@razzia/web/features/manager/components/configurations/ConfigTabButton"
+import { ConfigProvider } from "@razzia/web/features/manager/contexts/config-context"
 import { LogOut } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -28,7 +28,7 @@ const tabs = [
   },
 ]
 
-type Props = {
+interface Props {
   data: ManagerConfig
 }
 
@@ -44,7 +44,7 @@ const Configurations = ({ data }: Props) => {
   }
 
   const handleLogout = () => {
-    socket?.emit(EVENTS.MANAGER.LOGOUT)
+    socket.emit(EVENTS.MANAGER.LOGOUT)
     reset()
   }
 
@@ -58,7 +58,7 @@ const Configurations = ({ data }: Props) => {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <button
-              className="rounded-sm p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              className="rounded-sm p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600"
               onClick={handleLogout}
               title={t("manager:logout")}
             >
@@ -66,7 +66,7 @@ const Configurations = ({ data }: Props) => {
             </button>
           </div>
         </div>
-        <div className="flex shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+        <div className="flex shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-100">
           {tabs.map((tab, index) => (
             <ConfigTabButton
               key={tab.nameKey}

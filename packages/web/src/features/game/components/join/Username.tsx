@@ -1,13 +1,13 @@
-import { EVENTS } from "@rahoot/common/constants"
-import { STATUS } from "@rahoot/common/types/game/status"
-import Button from "@rahoot/web/components/Button"
-import Card from "@rahoot/web/components/Card"
-import Input from "@rahoot/web/components/Input"
+import { EVENTS } from "@razzia/common/constants"
+import { STATUS } from "@razzia/common/types/game/status"
+import Button from "@razzia/web/components/Button"
+import Card from "@razzia/web/components/Card"
+import Input from "@razzia/web/components/Input"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 
 import { useNavigate } from "@tanstack/react-router"
 import { type KeyboardEvent, useState } from "react"
@@ -25,7 +25,7 @@ const Username = () => {
       return
     }
 
-    socket?.emit(EVENTS.PLAYER.LOGIN, { gameId, data: { username } })
+    socket.emit(EVENTS.PLAYER.LOGIN, { gameId, data: { username } })
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -34,11 +34,11 @@ const Username = () => {
     }
   }
 
-  useEvent(EVENTS.GAME.SUCCESS_JOIN, (gameId) => {
+  useEvent(EVENTS.GAME.SUCCESS_JOIN, (joinedGameId) => {
     setStatus(STATUS.WAIT, { text: "game:waitingForPlayers" })
     login(username)
 
-    navigate({ to: "/party/$gameId", params: { gameId } })
+    navigate({ to: "/party/$gameId", params: { gameId: joinedGameId } })
   })
 
   return (

@@ -4,18 +4,13 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit",
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.oxc": "explicit"
   },
   "files.associations": {
     "*.css": "tailwindcss",
     "*.scss": "tailwindcss"
   },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "oxc.enable": true,
   "i18n-ally.localesPaths": ["packages/web/src/locales"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.namespace": true,

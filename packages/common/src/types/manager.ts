@@ -1,6 +1,6 @@
-import type { GameResultMeta, QuizzMeta } from "@rahoot/common/types/game"
+import type { GameResultMeta, QuizzMeta } from "@razzia/common/types/game"
 
-export type ManagerConfig = {
+export interface ManagerConfig {
   quizz: QuizzMeta[]
   results: GameResultMeta[]
 }

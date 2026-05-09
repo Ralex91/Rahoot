@@ -1,13 +1,22 @@
 import clsx from "clsx"
 import React from "react"
 
-type Props = React.InputHTMLAttributes<HTMLInputElement>
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
+  variant?: "sm" | "md"
+}
 
-const Input = ({ className, type = "text", ...otherProps }: Props) => (
+const Input = ({
+  className,
+  type = "text",
+  variant = "md",
+  ...otherProps
+}: Props) => (
   <input
     type={type}
     className={clsx(
-      "rounded-sm p-2 text-lg font-semibold outline-2 outline-gray-300",
+      "focus:outline-primary rounded-lg font-semibold outline-2 outline-gray-300",
+      variant === "md" && "p-2 text-lg",
+      variant === "sm" && "px-3 py-2 text-sm",
       className,
     )}
     {...otherProps}

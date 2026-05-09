@@ -1,7 +1,7 @@
-import ConfigField from "@rahoot/web/features/quizz/components/QuestionEditor/QuestionEditorConfig/ConfigField"
-import ConfigNumberInput from "@rahoot/web/features/quizz/components/QuestionEditor/QuestionEditorConfig/ConfigNumberInput"
-import ConfigSection from "@rahoot/web/features/quizz/components/QuestionEditor/QuestionEditorConfig/ConfigSection"
-import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
+import ConfigField from "@razzia/web/features/quizz/components/QuestionEditor/QuestionEditorConfig/ConfigField"
+import ConfigNumberInput from "@razzia/web/features/quizz/components/QuestionEditor/QuestionEditorConfig/ConfigNumberInput"
+import ConfigSection from "@razzia/web/features/quizz/components/QuestionEditor/QuestionEditorConfig/ConfigSection"
+import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
 import { Clock, Timer } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
@@ -14,7 +14,7 @@ const QuestionEditorConfig = () => {
   }
 
   return (
-    <aside className="z-10 flex w-68 shrink-0 flex-col gap-6 overflow-auto bg-white p-4 shadow-sm">
+    <aside className="z-10 m-3 flex w-68 shrink-0 flex-col gap-6 self-start overflow-auto rounded-xl bg-white p-4 shadow-sm">
       <ConfigSection title={t("quizz:question.config.timings")}>
         <ConfigField>
           <ConfigField.Label

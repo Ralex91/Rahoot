@@ -12,4 +12,4 @@ export const config = {
   },
 }
 
-esbuild.build(config)
+void esbuild.build(config)

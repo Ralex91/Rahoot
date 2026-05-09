@@ -1,10 +1,10 @@
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import Fire from "@rahoot/web/features/game/components/icons/Fire"
+import type { ManagerStatusDataMap } from "@razzia/common/types/game/status"
+import Fire from "@razzia/web/features/game/components/icons/Fire"
 import { AnimatePresence, motion, useSpring, useTransform } from "motion/react"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
-type Props = {
+interface Props {
   data: ManagerStatusDataMap["SHOW_LEADERBOARD"]
 }
 
@@ -90,7 +90,7 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
                   damping: 25,
                 },
               }}
-              className="bg-primary flex w-full justify-between rounded-md p-3 text-3xl font-bold text-white"
+              className="bg-primary flex w-full justify-between rounded-xl p-3 text-3xl font-bold text-white"
             >
               <span className="flex items-center gap-2 drop-shadow-md">
                 {username}
@@ -98,8 +98,8 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
               </span>
               {isAnimating ? (
                 <AnimatedPoints
-                  from={oldLeaderboard.find((u) => u.id === id)?.points || 0}
-                  to={leaderboard.find((u) => u.id === id)?.points || 0}
+                  from={oldLeaderboard.find((u) => u.id === id)?.points ?? 0}
+                  to={leaderboard.find((u) => u.id === id)?.points ?? 0}
                 />
               ) : (
                 <span className="drop-shadow-md">{points}</span>

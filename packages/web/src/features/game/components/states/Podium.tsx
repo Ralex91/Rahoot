@@ -1,24 +1,24 @@
-import type { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
-import { SFX } from "@rahoot/web/features/game/utils/constants"
-import useScreenSize from "@rahoot/web/hooks/useScreenSize"
+import type { ManagerStatusDataMap } from "@razzia/common/types/game/status"
+import { SFX } from "@razzia/web/features/game/utils/constants"
+import useScreenSize from "@razzia/web/hooks/useScreenSize"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
 import useSound from "use-sound"
 
-type Props = {
+interface Props {
   data: ManagerStatusDataMap["FINISHED"]
 }
 
 const usePodiumAnimation = (topLength: number) => {
   const [apparition, setApparition] = useState(0)
 
-  const [sfxtThree] = useSound(SFX.PODIUM.THREE, { volume: 0.2 })
-  const [sfxSecond] = useSound(SFX.PODIUM.SECOND, { volume: 0.2 })
+  const [sfxtThree] = useSound(SFX.PODIUM.THREE, { volume: 0.1 })
+  const [sfxSecond] = useSound(SFX.PODIUM.SECOND, { volume: 0.1 })
   const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX.PODIUM.SNEAR_ROOL, {
-    volume: 0.2,
+    volume: 0.1,
   })
-  const [sfxFirst] = useSound(SFX.PODIUM.FIRST, { volume: 0.2 })
+  const [sfxFirst] = useSound(SFX.PODIUM.FIRST, { volume: 0.1 })
 
   useEffect(() => {
     const actions: Partial<Record<number, () => void>> = {
@@ -49,7 +49,6 @@ const usePodiumAnimation = (topLength: number) => {
       setApparition((value) => value + 1)
     }, 2000)
 
-    // eslint-disable-next-line consistent-return
     return () => clearInterval(interval)
   }, [apparition, topLength])
 
@@ -142,7 +141,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
               >
                 {top[1].username}
               </p>
-              <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
+              <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-xl pt-6 text-center shadow-2xl">
                 <Medal rank={2} />
                 <p className="text-3xl font-bold text-white drop-shadow-sm md:text-4xl">
                   {top[1].points}
@@ -170,7 +169,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
             >
               {top[0].username}
             </p>
-            <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
+            <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-xl pt-6 text-center shadow-2xl">
               <Medal rank={1} />
               <p className="text-3xl font-bold text-white drop-shadow-sm md:text-4xl">
                 {top[0].points}
@@ -197,7 +196,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
               >
                 {top[2].username}
               </p>
-              <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
+              <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-xl pt-6 text-center shadow-2xl">
                 <Medal rank={3} />
 
                 <p className="text-3xl font-bold text-white drop-shadow-sm md:text-4xl">

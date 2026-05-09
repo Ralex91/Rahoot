@@ -1,13 +1,13 @@
-import type { Player } from "@rahoot/common/types/game"
-import type { StatusDataMap } from "@rahoot/common/types/game/status"
-import type { ManagerConfig } from "@rahoot/common/types/manager"
+import type { Player } from "@razzia/common/types/game"
+import type { StatusDataMap } from "@razzia/common/types/game/status"
+import type { ManagerConfig } from "@razzia/common/types/manager"
 import {
   createStatus,
   type Status,
-} from "@rahoot/web/features/game/utils/createStatus"
+} from "@razzia/web/features/game/utils/createStatus"
 import { create } from "zustand"
 
-type ManagerStore<T> = {
+interface ManagerStore<T> {
   config: ManagerConfig | null
 
   gameId: string | null

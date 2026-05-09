@@ -1,6 +1,6 @@
 import type { PropsWithChildren, ReactNode } from "react"
 
-type LabelProps = {
+interface LabelProps {
   icon: ReactNode
   label: string
   unit?: string

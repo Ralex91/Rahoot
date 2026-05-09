@@ -1,6 +1,7 @@
+import Input from "@razzia/web/components/Input"
 import { useEffect, useState } from "react"
 
-type Props = {
+interface Props {
   value: number
   min?: number
   max?: number
@@ -28,14 +29,15 @@ const ConfigNumberInput = ({ value, min, max, onChange }: Props) => {
   }
 
   return (
-    <input
+    <Input
+      variant="sm"
       type="number"
       min={min}
       max={max}
       value={input}
       onChange={(e) => handleChange(e.target.value)}
       onBlur={() => setInput(String(value))}
-      className="focus:border-primary w-full rounded-md border-2 border-gray-300 px-3 py-1.5 text-sm outline-none"
+      className="w-full"
     />
   )
 }

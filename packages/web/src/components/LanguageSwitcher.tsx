@@ -11,16 +11,15 @@ const LANGUAGES = [
 ]
 
 const LanguageSwitcher = () => {
-  const {
-    t,
-    i18n: { language, changeLanguage },
-  } = useTranslation()
-
-  const normalizedLanguage = language.slice(0, 2)
+  const { t, i18n } = useTranslation()
+  const normalizedLanguage = i18n.language.slice(0, 2)
 
   return (
-    <Select.Root value={normalizedLanguage} onValueChange={changeLanguage}>
-      <Select.Trigger className="flex cursor-pointer items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm font-semibold text-gray-600 hover:border-gray-300 focus:outline-none">
+    <Select.Root
+      value={normalizedLanguage}
+      onValueChange={(lang) => i18n.changeLanguage(lang)}
+    >
+      <Select.Trigger className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-sm font-semibold text-gray-600 hover:border-gray-300 focus:outline-none">
         <Globe className="size-4 text-gray-500" />
         <Select.Value>{normalizedLanguage.toUpperCase()}</Select.Value>
       </Select.Trigger>
@@ -29,7 +28,7 @@ const LanguageSwitcher = () => {
         <Select.Content
           position="popper"
           sideOffset={4}
-          className="z-50 min-w-32 overflow-hidden rounded-md border border-gray-200 bg-white shadow-md"
+          className="z-50 min-w-32 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md"
         >
           <Select.Viewport className="p-1">
             {LANGUAGES.map((l) => (

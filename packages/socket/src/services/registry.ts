@@ -1,4 +1,4 @@
-import Game from "@rahoot/socket/services/game"
+import Game from "@razzia/socket/services/game"
 import dayjs from "dayjs"
 
 interface EmptyGame {
@@ -19,7 +19,7 @@ class Registry {
   }
 
   static getInstance(): Registry {
-    Registry.instance ||= new Registry()
+    Registry.instance ??= new Registry()
 
     return Registry.instance
   }

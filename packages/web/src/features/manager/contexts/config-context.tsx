@@ -1,4 +1,4 @@
-import type { ManagerConfig } from "@rahoot/common/types/manager"
+import type { ManagerConfig } from "@razzia/common/types/manager"
 import { createContext, useContext, type ReactNode } from "react"
 
 const ConfigContext = createContext<ManagerConfig>({
@@ -6,7 +6,7 @@ const ConfigContext = createContext<ManagerConfig>({
   results: [],
 })
 
-type Props = {
+interface Props {
   children: ReactNode
   data: ManagerConfig
 }
@@ -18,6 +18,7 @@ export const ConfigProvider = ({ children, data }: Props) => (
 export const useConfig = () => {
   const context = useContext(ConfigContext)
 
+  // oxlint-disable-next-line typescript/no-unnecessary-condition
   if (context === undefined) {
     throw new Error("useConfig must be used within a ConfigProvider")
   }

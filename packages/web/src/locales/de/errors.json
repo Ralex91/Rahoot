@@ -1,9 +1,4 @@
 {
-  "route": {
-    "title": "Etwas ist schiefgelaufen",
-    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
-    "back": "Zurück zur Startseite"
-  },
   "auth": {
     "invalidInviteCode": "Ungültiger Einladungscode",
     "usernameTooLong": "Der Benutzername darf nicht mehr als 20 Zeichen haben",
@@ -23,6 +18,11 @@
     "invalidPassword": "Ungültiges Passwort",
     "passwordNotConfigured": "Manager-Passwort ist nicht konfiguriert"
   },
+  "notFound": {
+    "back": "Zurück zur Startseite",
+    "description": "Die gesuchte Seite existiert nicht.",
+    "title": "Seite nicht gefunden"
+  },
   "quizz": {
     "answerEmpty": "Eine Antwort darf nicht leer sein",
     "failedToDelete": "Quiz konnte nicht gelöscht werden",
@@ -35,5 +35,10 @@
     "subjectEmpty": "Das Thema darf nicht leer sein",
     "tooFewAnswers": "Eine Frage muss mindestens 2 Antworten haben",
     "tooManyAnswers": "Eine Frage darf nicht mehr als 4 Antworten haben"
+  },
+  "route": {
+    "back": "Zurück zur Startseite",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "title": "Etwas ist schiefgelaufen"
   }
 }

@@ -26,7 +26,7 @@ const Button = ({
   <button
     className={twMerge(
       clsx(
-        "btn-shadow bg-primary rounded-md font-semibold text-white",
+        "bg-primary rounded-lg font-semibold text-white hover:brightness-[1.05] active:brightness-[0.95]",
         sizeClasses[size],
         className,
       ),
@@ -35,10 +35,7 @@ const Button = ({
   >
     <div
       className={twMerge(
-        clsx(
-          "btn-content flex items-center justify-center gap-2",
-          classNameContent,
-        ),
+        clsx("flex items-center justify-center gap-2", classNameContent),
       )}
     >
       {children}

@@ -3,52 +3,12 @@
 @theme {
   --color-primary: #ff9900;
   --color-secondary: #1a140b;
+  --font-display: "Rubik Variable", sans-serif;
 }
 
 button:not(:disabled),
 [role="button"]:not(:disabled) {
   cursor: pointer;
-}
-
-.btn-shadow {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
-}
-
-.btn-shadow .btn-content {
-  transform: translateY(-2px);
-}
-
-.btn-shadow:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px -2px inset;
-}
-
-.btn-shadow:hover .btn-content {
-  transform: translateY(0);
-}
-
-.btn-shadow:active {
-  transform: translateY(1px);
-  box-shadow: none;
-}
-
-.text-outline {
-  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.25);
-}
-
-.shadow-inset {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px -4px inset;
-}
-
-@media (min-width: 768px) {
-  .game-pin-out {
-    clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
-    padding-right: 10px !important;
-  }
-  .game-pin-in {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 9.8% 50%);
-    padding-left: 50px !important;
-    margin-left: -35px;
-  }
 }
 
 .spotlight {

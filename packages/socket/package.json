@@ -1,32 +1,28 @@
 {
-  "name": "@rahoot/socket",
+  "name": "@razzia/socket",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "node esbuild.config.js",
     "start": "node dist/index.cjs",
-    "lint": "tsc --noEmit && eslint",
+    "types": "tsc --noEmit",
     "format": "prettier --check . --log-level warn",
     "format:fix": "prettier --write . --log-level warn"
   },
   "license": "ISC",
   "dependencies": {
-    "@rahoot/common": "workspace:*",
+    "@razzia/common": "workspace:*",
     "dayjs": "^1.11.20",
-    "nanoid": "^5.1.9",
+    "nanoid": "^5.1.11",
     "socket.io": "^4.8.3",
     "typescript": "^6.0.3",
     "uuid": "^14.0.0",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.6.2",
     "esbuild": "^0.28.0",
-    "eslint": "^9.39.4",
-    "globals": "^17.5.0",
     "prettier": "^3.8.3",
-    "tsx": "^4.21.0",
-    "typescript-eslint": "^8.59.1"
+    "tsx": "^4.21.0"
   }
 }

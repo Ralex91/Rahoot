@@ -1,6 +1,6 @@
-import type { Server, Socket } from "@rahoot/common/types/game/socket"
+import type { Server, Socket } from "@razzia/common/types/game/socket"
 
-export type SocketContext = {
+export interface SocketContext {
   io: Server
   socket: Socket
 }

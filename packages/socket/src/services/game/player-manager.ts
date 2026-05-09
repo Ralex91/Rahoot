@@ -1,7 +1,7 @@
-import { EVENTS } from "@rahoot/common/constants"
-import type { Player } from "@rahoot/common/types/game"
-import type { Server, Socket } from "@rahoot/common/types/game/socket"
-import { usernameValidator } from "@rahoot/common/validators/auth"
+import { EVENTS } from "@razzia/common/constants"
+import type { Player } from "@razzia/common/types/game"
+import type { Server, Socket } from "@razzia/common/types/game/socket"
+import { usernameValidator } from "@razzia/common/validators/auth"
 
 export class PlayerManager {
   private readonly io: Server
@@ -16,7 +16,9 @@ export class PlayerManager {
   }
 
   join(socket: Socket, username: string): void {
-    if (this.findByClientId(socket.handshake.auth.clientId)) {
+    const clientId = socket.handshake.auth.clientId as string
+
+    if (this.findByClientId(clientId)) {
       socket.emit(
         EVENTS.GAME.ERROR_MESSAGE,
         "errors:game.playerAlreadyConnected",
@@ -37,7 +39,7 @@ export class PlayerManager {
 
     const player: Player = {
       id: socket.id,
-      clientId: socket.handshake.auth.clientId,
+      clientId,
       connected: true,
       username,
       points: 0,

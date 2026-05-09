@@ -1,13 +1,13 @@
-import { EVENTS } from "@rahoot/common/constants"
-import { STATUS } from "@rahoot/common/types/game/status"
-import Background from "@rahoot/web/components/Background"
-import Loader from "@rahoot/web/components/Loader"
+import { EVENTS } from "@razzia/common/constants"
+import { STATUS } from "@razzia/common/types/game/status"
+import Background from "@razzia/web/components/Background"
+import Loader from "@razzia/web/components/Loader"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { useManagerStore } from "@rahoot/web/features/game/stores/manager"
-import Configurations from "@rahoot/web/features/manager/components/configurations"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { useManagerStore } from "@razzia/web/features/game/stores/manager"
+import Configurations from "@razzia/web/features/manager/components/configurations"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 
 const ManagerConfigPage = () => {

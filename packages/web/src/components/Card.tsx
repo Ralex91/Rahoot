@@ -10,7 +10,7 @@ const Card = ({ children, className }: Props) => (
   <div
     className={twMerge(
       clsx(
-        "z-10 flex w-full max-w-80 flex-col rounded-md bg-white p-4 shadow-sm",
+        "z-10 flex w-full max-w-80 flex-col rounded-xl bg-white p-4 shadow-sm",
         className,
       ),
     )}

@@ -1,13 +1,12 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
+import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
 import {
   ANSWERS_COLORS,
-  ANSWERS_ICONS,
-} from "@rahoot/web/features/game/utils/constants"
+  ANSWERS_LABELS,
+} from "@razzia/web/features/game/utils/constants"
 import clsx from "clsx"
-import { createElement } from "react"
 import { useTranslation } from "react-i18next"
 
-type Props = {
+interface Props {
   data: CommonStatusDataMap["SHOW_PREPARED"]
 }
 
@@ -21,7 +20,7 @@ const Prepared = ({ data: { totalAnswers, questionNumber } }: Props) => {
         {questionNumber}
       </h2>
       <div className="anim-quizz grid aspect-square w-60 grid-cols-2 gap-4 rounded-2xl bg-gray-700 p-5 md:w-60">
-        {[...Array(totalAnswers)].map((_, key) => (
+        {Array.from({ length: totalAnswers }).map((_, key) => (
           <div
             key={key}
             className={clsx(
@@ -29,7 +28,9 @@ const Prepared = ({ data: { totalAnswers, questionNumber } }: Props) => {
               ANSWERS_COLORS[key],
             )}
           >
-            {createElement(ANSWERS_ICONS[key], { className: "h-10 md:h-14" })}
+            <span className="text-2xl font-bold text-white md:text-3xl">
+              {ANSWERS_LABELS[key]}
+            </span>
           </div>
         ))}
       </div>

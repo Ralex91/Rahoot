@@ -1,8 +1,8 @@
-import type { PlayerStatusDataMap } from "@rahoot/common/types/game/status"
-import Loader from "@rahoot/web/components/Loader"
+import type { PlayerStatusDataMap } from "@razzia/common/types/game/status"
+import Loader from "@razzia/web/components/Loader"
 import { useTranslation } from "react-i18next"
 
-type Props = {
+interface Props {
   data: PlayerStatusDataMap["WAIT"]
 }
 

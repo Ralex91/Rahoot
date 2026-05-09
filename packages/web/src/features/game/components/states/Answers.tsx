@@ -1,24 +1,24 @@
-import { EVENTS, MEDIA_TYPES } from "@rahoot/common/constants"
-import type { QuestionMediaType } from "@rahoot/common/types/game"
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import QuestionMedia from "@rahoot/web/components/QuestionMedia"
-import AnswerButton from "@rahoot/web/features/game/components/AnswerButton"
+import { EVENTS, MEDIA_TYPES } from "@razzia/common/constants"
+import type { QuestionMediaType } from "@razzia/common/types/game"
+import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
+import QuestionMedia from "@razzia/web/components/QuestionMedia"
+import AnswerButton from "@razzia/web/features/game/components/AnswerButton"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import {
   ANSWERS_COLORS,
-  ANSWERS_ICONS,
+  ANSWERS_LABELS,
   SFX,
-} from "@rahoot/web/features/game/utils/constants"
+} from "@razzia/web/features/game/utils/constants"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import useSound from "use-sound"
 
-type Props = {
+interface Props {
   data: CommonStatusDataMap["SELECT_ANSWER"]
 }
 
@@ -47,7 +47,7 @@ const Answers = ({
       return
     }
 
-    socket?.emit(EVENTS.PLAYER.SELECTED_ANSWER, {
+    socket.emit(EVENTS.PLAYER.SELECTED_ANSWER, {
       gameId,
       data: {
         answerKey,
@@ -68,10 +68,10 @@ const Answers = ({
 
     playMusic()
 
-    // eslint-disable-next-line consistent-return
     return () => {
       stopMusic()
     }
+    // oxlint-disable-next-line
   }, [playMusic])
 
   useEvent(EVENTS.GAME.COOLDOWN, (sec) => {
@@ -95,11 +95,11 @@ const Answers = ({
 
       <div>
         <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
-          <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
+          <div className="flex flex-col items-center rounded-lg bg-black/40 px-4 text-lg font-bold">
             <span className="translate-y-1 text-sm">{t("game:hud.time")}</span>
             <span>{cooldown}</span>
           </div>
-          <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
+          <div className="flex flex-col items-center rounded-lg bg-black/40 px-4 text-lg font-bold">
             <span className="translate-y-1 text-sm">
               {t("game:hud.answers")}
             </span>
@@ -109,12 +109,12 @@ const Answers = ({
           </div>
         </div>
 
-        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-xl">
+        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 px-2 text-lg font-bold text-white md:text-xl">
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}
               className={clsx(ANSWERS_COLORS[key])}
-              icon={ANSWERS_ICONS[key]}
+              label={ANSWERS_LABELS[key]}
               onClick={handleAnswer(key)}
             >
               {answer}

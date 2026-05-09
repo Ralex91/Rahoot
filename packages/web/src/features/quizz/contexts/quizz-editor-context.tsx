@@ -1,4 +1,4 @@
-import type { Question, QuizzWithId } from "@rahoot/common/types/game"
+import type { Question, QuizzWithId } from "@razzia/common/types/game"
 import {
   createContext,
   useContext,
@@ -11,7 +11,7 @@ export type QuestionWithId = Question & {
   id: string
 }
 
-type QuizzEditorContextType = {
+interface QuizzEditorContextType {
   quizzId: string | null
   subject: string
   setSubject: (_subject: string) => void
@@ -66,8 +66,17 @@ export const QuizzEditorProvider = ({
   }
 
   const removeQuestion = (index: number) => {
-    setQuestions((prev) => prev.filter((_, i) => i !== index))
-    setCurrentIndex((prev) => Math.max(0, prev >= index ? prev - 1 : prev))
+    setQuestions((list) => {
+      const next = list.filter((_, i) => i !== index)
+      setCurrentIndex((current) =>
+        Math.min(
+          Math.max(0, current >= index ? current - 1 : current),
+          next.length - 1,
+        ),
+      )
+
+      return next
+    })
   }
 
   const reorderQuestions = (from: number, to: number) => {

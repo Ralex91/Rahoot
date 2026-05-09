@@ -1,9 +1,4 @@
 {
-  "route": {
-    "title": "Algo salió mal",
-    "description": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
-    "back": "Volver al inicio"
-  },
   "auth": {
     "invalidInviteCode": "Código de invitación inválido",
     "usernameTooLong": "El nombre de usuario no puede superar los 20 caracteres",
@@ -23,6 +18,11 @@
     "invalidPassword": "Contraseña incorrecta",
     "passwordNotConfigured": "La contraseña del administrador no está configurada"
   },
+  "notFound": {
+    "back": "Volver al inicio",
+    "description": "La página que buscas no existe.",
+    "title": "Página no encontrada"
+  },
   "quizz": {
     "answerEmpty": "Una respuesta no puede estar vacía",
     "failedToDelete": "Error al eliminar el cuestionario",
@@ -35,5 +35,10 @@
     "subjectEmpty": "El tema no puede estar vacío",
     "tooFewAnswers": "Una pregunta debe tener al menos 2 respuestas",
     "tooManyAnswers": "Una pregunta no puede tener más de 4 respuestas"
+  },
+  "route": {
+    "back": "Volver al inicio",
+    "description": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+    "title": "Algo salió mal"
   }
 }

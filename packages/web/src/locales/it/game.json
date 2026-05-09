@@ -7,7 +7,7 @@
   },
   "joinInstruction": "Unisciti al gioco su",
   "leaderboard": "Classifica",
-  "pinPlaceholder": "Codice PIN",
+  "pinLabel": "Codice PIN",
   "playersJoined": "Giocatori connessi: ",
   "questionPrefix": "Domanda #",
   "rank": {

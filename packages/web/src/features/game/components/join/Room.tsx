@@ -1,14 +1,14 @@
-import { EVENTS } from "@rahoot/common/constants"
-import Button from "@rahoot/web/components/Button"
-import Card from "@rahoot/web/components/Card"
-import Input from "@rahoot/web/components/Input"
+import { EVENTS } from "@razzia/common/constants"
+import Button from "@razzia/web/components/Button"
+import Card from "@razzia/web/components/Card"
+import PinInput from "@razzia/web/components/PinInput"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import { useSearch } from "@tanstack/react-router"
-import { type KeyboardEvent, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 const Room = () => {
@@ -20,13 +20,7 @@ const Room = () => {
   const { t } = useTranslation()
 
   const handleJoin = () => {
-    socket?.emit(EVENTS.PLAYER.JOIN, invitation)
-  }
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Enter") {
-      handleJoin()
-    }
+    socket.emit(EVENTS.PLAYER.JOIN, invitation.replace(/\s/gu, ""))
   }
 
   useEvent(EVENTS.GAME.SUCCESS_ROOM, (gameId) => {
@@ -38,18 +32,14 @@ const Room = () => {
       return
     }
 
-    socket?.emit("player:join", pin)
+    socket.emit("player:join", pin)
     hasJoinedRef.current = true
   }, [pin, isConnected, socket])
 
   return (
     <Card>
-      <Input
-        className="text-center"
-        onChange={(e) => setInvitation(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={t("game:pinPlaceholder")}
-      />
+      <p className="mb-2 text-lg font-semibold">{t("game:pinLabel")}</p>
+      <PinInput value={invitation} onChange={setInvitation} />
       <Button className="mt-4" onClick={handleJoin}>
         {t("common:submit")}
       </Button>

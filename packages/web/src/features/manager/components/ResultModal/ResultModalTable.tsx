@@ -1,8 +1,8 @@
 import {
   ANSWERS_COLORS,
-  ANSWERS_ICONS,
-} from "@rahoot/web/features/game/utils/constants"
-import { useResultModal } from "@rahoot/web/features/manager/contexts/result-modal-context"
+  ANSWERS_LABELS,
+} from "@razzia/web/features/game/utils/constants"
+import { useResultModal } from "@razzia/web/features/manager/contexts/result-modal-context"
 import clsx from "clsx"
 import { Check, X } from "lucide-react"
 import { useTranslation } from "react-i18next"
@@ -30,21 +30,21 @@ const ResultModalTable = () => {
           const isCorrect =
             pa.answerId !== null &&
             questionResult.solutions.includes(pa.answerId)
-          const AnswerIcon =
-            pa.answerId !== null ? ANSWERS_ICONS[pa.answerId % 4] : null
+          const answerLabel =
+            pa.answerId !== null ? ANSWERS_LABELS[pa.answerId % 4] : null
 
           return (
             <tr key={i} className="hover:bg-gray-50">
               <td className="px-5 py-2.5 font-medium">{pa.playerName}</td>
               <td className="px-4 py-2.5">
-                {pa.answerId !== null && AnswerIcon ? (
+                {pa.answerId !== null && answerLabel ? (
                   <span
                     className={clsx(
-                      "inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs text-white",
+                      "inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-white",
                       ANSWERS_COLORS[pa.answerId % 4],
                     )}
                   >
-                    <AnswerIcon className="size-3" />
+                    <span className="font-bold">{answerLabel}</span>
                     <span className="max-w-30 truncate">
                       {questionResult.answers[pa.answerId]}
                     </span>

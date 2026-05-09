@@ -4,9 +4,9 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd"
-import Button from "@rahoot/web/components/Button"
-import QuizzEditorCard from "@rahoot/web/features/quizz/components/QuizzEditorCard"
-import { useQuizzEditor } from "@rahoot/web/features/quizz/contexts/quizz-editor-context"
+import Button from "@razzia/web/components/Button"
+import QuizzEditorCard from "@razzia/web/features/quizz/components/QuizzEditorCard"
+import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
 import clsx from "clsx"
 import { Plus } from "lucide-react"
 import { useRef } from "react"
@@ -49,7 +49,7 @@ const QuizzEditorSidebar = () => {
   }
 
   return (
-    <aside className="z-10 flex w-72 shrink-0 flex-col gap-2 overflow-auto bg-white p-3 shadow-sm">
+    <aside className="z-10 m-3 flex w-72 shrink-0 flex-col gap-2 overflow-auto rounded-xl bg-white p-3 shadow-sm">
       <DragDropContext
         onDragStart={() => {
           isDragging.current = true
@@ -65,11 +65,11 @@ const QuizzEditorSidebar = () => {
             >
               {questions.map((q, index) => (
                 <Draggable key={q.id} draggableId={q.id} index={index}>
-                  {(provided, snapshot) => (
+                  {(draggableProvided, snapshot) => (
                     <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
+                      ref={draggableProvided.innerRef}
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
                       className={clsx(snapshot.isDragging && "shadow-lg")}
                     >
                       <QuizzEditorCard
@@ -92,7 +92,7 @@ const QuizzEditorSidebar = () => {
 
       <Button
         onClick={addQuestion}
-        className="mt-1 mb-8 flex items-center justify-center gap-1"
+        className="bg text-md mt-1 mb-8 flex items-center justify-center gap-1 bg-gray-200 text-gray-600"
       >
         <Plus className="size-6" />
         {t("quizz:addQuestion")}

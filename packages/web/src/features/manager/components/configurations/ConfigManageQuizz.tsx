@@ -1,11 +1,11 @@
-import { EVENTS } from "@rahoot/common/constants"
-import AlertDialog from "@rahoot/web/components/AlertDialog"
-import Button from "@rahoot/web/components/Button"
+import { EVENTS } from "@razzia/common/constants"
+import AlertDialog from "@razzia/web/components/AlertDialog"
+import Button from "@razzia/web/components/Button"
 import {
   useEvent,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
-import { useConfig } from "@rahoot/web/features/manager/contexts/config-context"
+} from "@razzia/web/features/game/contexts/socket-context"
+import { useConfig } from "@razzia/web/features/manager/contexts/config-context"
 import { useNavigate } from "@tanstack/react-router"
 import { SquarePen, Trash2, Upload } from "lucide-react"
 import { type ChangeEvent, useRef } from "react"
@@ -24,7 +24,7 @@ const ConfigManageQuizz = () => {
   })
 
   const handleDelete = (id: string) => () => {
-    socket?.emit(EVENTS.QUIZZ.DELETE, id)
+    socket.emit(EVENTS.QUIZZ.DELETE, id)
     toast.success(t("manager:quizz.deleted"))
   }
 
@@ -39,8 +39,8 @@ const ConfigManageQuizz = () => {
 
     reader.onload = (event) => {
       try {
-        const data = JSON.parse(event.target?.result as string)
-        socket?.emit(EVENTS.QUIZZ.SAVE, data)
+        const data: unknown = JSON.parse(event.target?.result as string)
+        socket.emit(EVENTS.QUIZZ.SAVE, data)
       } catch {
         toast.error("Invalid JSON file")
       }
@@ -60,7 +60,7 @@ const ConfigManageQuizz = () => {
           {t("manager:quizz.create")}
         </Button>
         <Button
-          className="bg-gray-100 px-3 text-gray-600"
+          className="aspect-square bg-gray-200 px-3 text-gray-600"
           onClick={() => fileInputRef.current?.click()}
           title={t("manager:quizz.import")}
         >

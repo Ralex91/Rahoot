@@ -1,6 +1,6 @@
-import Background from "@rahoot/web/components/Background"
-import Button from "@rahoot/web/components/Button"
-import Card from "@rahoot/web/components/Card"
+import Background from "@razzia/web/components/Background"
+import Button from "@razzia/web/components/Button"
+import Card from "@razzia/web/components/Card"
 import { useRouter } from "@tanstack/react-router"
 import { CircleX } from "lucide-react"
 import { useTranslation } from "react-i18next"
@@ -21,7 +21,7 @@ const ErrorPage = ({ error }: { error: Error }) => {
             {t("errors:route.description")}
           </p>
         </div>
-        {error?.message && (
+        {error.message && (
           <pre className="max-h-60 overflow-auto rounded-md bg-gray-200 px-3 py-2 text-left font-mono text-sm wrap-break-word">
             {error.message}
           </pre>

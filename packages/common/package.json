@@ -1,22 +1,18 @@
 {
-  "name": "@rahoot/common",
+  "name": "@razzia/common",
   "type": "module",
   "scripts": {
-    "lint": "tsc --noEmit && eslint",
+    "types": "tsc --noEmit",
     "format": "prettier --check . --log-level warn",
     "format:fix": "prettier --write . --log-level warn"
   },
   "dependencies": {
     "socket.io": "^4.8.3",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@types/node": "^25.6.0",
-    "eslint": "^9.39.4",
-    "globals": "^17.5.0",
+    "@types/node": "^25.6.2",
     "prettier": "^3.8.3",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.1"
+    "typescript": "^6.0.3"
   }
 }

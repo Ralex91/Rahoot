@@ -1,4 +1,5 @@
-import { EVENTS, MEDIA_TYPES } from "@rahoot/common/constants"
+// oxlint-disable typescript/no-unnecessary-condition
+import { EVENTS, MEDIA_TYPES } from "@razzia/common/constants"
 import type {
   Answer,
   GameResult,
@@ -6,17 +7,17 @@ import type {
   Question,
   QuestionResult,
   Quizz,
-} from "@rahoot/common/types/game"
-import type { Server, Socket } from "@rahoot/common/types/game/socket"
+} from "@razzia/common/types/game"
+import type { Server, Socket } from "@razzia/common/types/game/socket"
 import {
   type Status,
   STATUS,
   type StatusDataMap,
-} from "@rahoot/common/types/game/status"
-import { CooldownTimer } from "@rahoot/socket/services/game/cooldown-timer"
-import { PlayerManager } from "@rahoot/socket/services/game/player-manager"
-import { timeToPoint } from "@rahoot/socket/utils/game"
-import sleep from "@rahoot/socket/utils/sleep"
+} from "@razzia/common/types/game/status"
+import { CooldownTimer } from "@razzia/socket/services/game/cooldown-timer"
+import { PlayerManager } from "@razzia/socket/services/game/player-manager"
+import { timeToPoint } from "@razzia/socket/utils/game"
+import sleep from "@razzia/socket/utils/sleep"
 import { nanoid } from "nanoid"
 
 type BroadcastFn = <T extends Status>(

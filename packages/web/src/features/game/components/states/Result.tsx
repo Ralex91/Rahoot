@@ -1,13 +1,13 @@
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import CricleCheck from "@rahoot/web/features/game/components/icons/CricleCheck"
-import CricleXmark from "@rahoot/web/features/game/components/icons/CricleXmark"
-import { usePlayerStore } from "@rahoot/web/features/game/stores/player"
-import { SFX } from "@rahoot/web/features/game/utils/constants"
+import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
+import CricleCheck from "@razzia/web/features/game/components/icons/CricleCheck"
+import CricleXmark from "@razzia/web/features/game/components/icons/CricleXmark"
+import { usePlayerStore } from "@razzia/web/features/game/stores/player"
+import { SFX } from "@razzia/web/features/game/utils/constants"
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import useSound from "use-sound"
 
-type Props = {
+interface Props {
   data: CommonStatusDataMap["SHOW_RESULT"]
 }
 
@@ -31,6 +31,7 @@ const Result = ({
     player.updatePoints(myPoints)
 
     sfxResults()
+    // oxlint-disable-next-line
   }, [sfxResults])
 
   return (
@@ -49,7 +50,7 @@ const Result = ({
         {aheadOfMe ? `${t("game:resultBehind")}${aheadOfMe}` : ""}
       </p>
       {correct && (
-        <span className="mt-2 rounded bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
+        <span className="mt-2 rounded-lg bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
           +{points}
         </span>
       )}

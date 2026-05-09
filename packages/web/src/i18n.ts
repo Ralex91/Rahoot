@@ -4,13 +4,22 @@ import { initReactI18next } from "react-i18next"
 
 const modules = import.meta.glob("./locales/*/*.json", { eager: true })
 
-const resources = Object.entries(modules).reduce((acc, [path, mod]) => {
-  const [, lang, ns] = path.match(/\.\/locales\/(\w+)\/(\w+)\.json$/u)!
-  acc[lang] ??= {}
-  acc[lang][ns] = (mod as { default: ResourceKey }).default
+const resources = Object.entries(modules).reduce<Resource>(
+  (acc, [path, mod]) => {
+    const match = /\.\/locales\/(\w+)\/(\w+)\.json$/u.exec(path)
 
-  return acc
-}, {} as Resource)
+    if (!match) {
+      return acc
+    }
+
+    const [, lang, ns] = match
+    acc[lang] ??= {}
+    acc[lang][ns] = (mod as { default: ResourceKey }).default
+
+    return acc
+  },
+  {},
+)
 
 i18n
   .use(LanguageDetector)

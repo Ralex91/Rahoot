@@ -1,10 +1,10 @@
-import { MEDIA_TYPES } from "@rahoot/common/constants"
-import type { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { SFX } from "@rahoot/web/features/game/utils/constants"
+import { MEDIA_TYPES } from "@razzia/common/constants"
+import type { CommonStatusDataMap } from "@razzia/common/types/game/status"
+import { SFX } from "@razzia/web/features/game/utils/constants"
 import { useEffect } from "react"
 import useSound from "use-sound"
 
-type Props = {
+interface Props {
   data: CommonStatusDataMap["SHOW_QUESTION"]
 }
 

@@ -1,11 +1,11 @@
-# Contributing to Rahoot
+# Contributing to Razzia
 
 Thank you for your interest in contributing!
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/Rahoot.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/Razzia.git`
 3. Install dependencies: `npm install` (in both root and client folders if applicable)
 4. Create a branch: `git checkout -b feat/your-feature-name`
 

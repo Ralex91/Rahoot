@@ -1,8 +1,9 @@
-import ErrorPage from "@rahoot/web/components/ErrorPage"
+import ErrorPage from "@razzia/web/components/ErrorPage"
+import NotFound from "@razzia/web/components/NotFound"
 import {
   SocketProvider,
   useSocket,
-} from "@rahoot/web/features/game/contexts/socket-context"
+} from "@razzia/web/features/game/contexts/socket-context"
 import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { useEffect } from "react"
 
@@ -39,6 +40,11 @@ export const Route = createRootRoute({
   errorComponent: ({ error }) => (
     <div className="bg-secondary antialiased">
       <ErrorPage error={error} />
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="bg-secondary antialiased">
+      <NotFound />
     </div>
   ),
 })

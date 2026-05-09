@@ -1,30 +1,26 @@
-import { EVENTS } from "@rahoot/common/constants"
-import Answers from "@rahoot/web/features/game/components/states/Answers"
-import Leaderboard from "@rahoot/web/features/game/components/states/Leaderboard"
-import PlayerFinished from "@rahoot/web/features/game/components/states/PlayerFinished"
-import Podium from "@rahoot/web/features/game/components/states/Podium"
-import Prepared from "@rahoot/web/features/game/components/states/Prepared"
-import Question from "@rahoot/web/features/game/components/states/Question"
-import Responses from "@rahoot/web/features/game/components/states/Responses"
-import Result from "@rahoot/web/features/game/components/states/Result"
-import Room from "@rahoot/web/features/game/components/states/Room"
-import Start from "@rahoot/web/features/game/components/states/Start"
-import Wait from "@rahoot/web/features/game/components/states/Wait"
+import { EVENTS } from "@razzia/common/constants"
+import Answers from "@razzia/web/features/game/components/states/Answers"
+import Leaderboard from "@razzia/web/features/game/components/states/Leaderboard"
+import PlayerFinished from "@razzia/web/features/game/components/states/PlayerFinished"
+import Podium from "@razzia/web/features/game/components/states/Podium"
+import Prepared from "@razzia/web/features/game/components/states/Prepared"
+import Question from "@razzia/web/features/game/components/states/Question"
+import Responses from "@razzia/web/features/game/components/states/Responses"
+import Result from "@razzia/web/features/game/components/states/Result"
+import Room from "@razzia/web/features/game/components/states/Room"
+import Start from "@razzia/web/features/game/components/states/Start"
+import Wait from "@razzia/web/features/game/components/states/Wait"
 
-import { STATUS } from "@rahoot/common/types/game/status"
-import Circle from "@rahoot/web/features/game/components/icons/Circle"
-import Rhombus from "@rahoot/web/features/game/components/icons/Rhombus"
-import Square from "@rahoot/web/features/game/components/icons/Square"
-import Triangle from "@rahoot/web/features/game/components/icons/Triangle"
+import { STATUS } from "@razzia/common/types/game/status"
 
 export const ANSWERS_COLORS = [
-  "bg-red-500",
-  "bg-blue-500",
-  "bg-yellow-500",
-  "bg-green-500",
+  "bg-[#E69F00] text-white",
+  "bg-[#56B4E9] text-white",
+  "bg-[#3DBFA0] text-white",
+  "bg-[#CC79A7] text-white",
 ]
 
-export const ANSWERS_ICONS = [Triangle, Rhombus, Circle, Square]
+export const ANSWERS_LABELS = ["A", "B", "C", "D"]
 
 export const GAME_STATES = {
   status: {

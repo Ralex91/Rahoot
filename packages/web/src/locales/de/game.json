@@ -7,7 +7,7 @@
   },
   "joinInstruction": "Tritt dem Spiel bei auf",
   "leaderboard": "Bestenliste",
-  "pinPlaceholder": "PIN-Code",
+  "pinLabel": "PIN-Code",
   "playersJoined": "Verbundene Spieler: ",
   "questionPrefix": "Frage #",
   "rank": {
