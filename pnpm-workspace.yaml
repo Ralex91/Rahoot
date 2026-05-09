@@ -1,2 +1,7 @@
 packages:
   - "packages/*"
+
+allowBuilds:
+  esbuild: true
+  oxlint: true
+  oxlint-tsgolint: true

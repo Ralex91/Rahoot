@@ -12,13 +12,6 @@
     "format": "pnpm -r --parallel run format",
     "format:fix": "pnpm -r --parallel run format:fix"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "oxlint",
-      "oxlint-tsgolint"
-    ]
-  },
   "devDependencies": {
     "@stylistic/eslint-plugin": "latest",
     "dotenv-cli": "^11.0.0",
