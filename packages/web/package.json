@@ -31,7 +31,7 @@
     "react-hot-toast": "^2.6.0",
     "react-i18next": "^17.0.7",
     "socket.io-client": "^4.8.3",
-    "tailwind-merge": "^3.5.0",
+    "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.0",
     "use-sound": "^5.0.0",
     "uuid": "^14.0.0",
